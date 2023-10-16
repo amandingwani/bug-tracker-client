@@ -5,18 +5,16 @@ import { GOOGLE_OAUTH_CLIENT_ID } from "./config/env";
 function App() {
   const [loaded, setLoaded] = useState(false);
 
-  const handleGoogleAuthResponse = (response: any) => {
+  const handleGoogleAuthResponse = async (response: any) => {
     console.log("Encoded JWT ID token: " + response.credential);
-    // submit jwt to server
-    axios.post('/auth/login', {
-      token: response.credential
-    })
-    .then(function (response) {
-      console.log(response);
-    })
-    .catch(function (error) {
+    try {
+      const { data } = await axios.post("/auth/login", {
+        token: response.credential,
+      });
+      console.log(data);
+    } catch (error) {
       console.log(error);
-    });
+    }
   };
 
   useEffect(() => {
@@ -31,27 +29,30 @@ function App() {
     // @ts-ignore
     google.accounts.id.renderButton(
       document.getElementById("googleSignInButton"),
-      { theme: "outline", size: "large" }  // customization attributes
+      { theme: "outline", size: "large" } // customization attributes
     );
   }, [loaded]);
 
   useEffect(() => {
-    const scriptTag = document.createElement('script');
-    scriptTag.src = 'https://accounts.google.com/gsi/client';
-    scriptTag.addEventListener('load', () => setLoaded(true));
+    const scriptTag = document.createElement("script");
+    scriptTag.src = "https://accounts.google.com/gsi/client";
+    scriptTag.addEventListener("load", () => setLoaded(true));
     document.body.appendChild(scriptTag);
   }, []);
 
-  function getHealth() {
-    console.log('pressed')
-    axios.get('http://localhost:3000/health').then(res => {
+  async function getHealth() {
+    console.log("pressed");
+    try {
+      const res = await axios.get("http://localhost:3000/health");
       console.log(res);
-    })
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
     <>
-      <div id="googleSignInButton" ></div>
+      <div id="googleSignInButton"></div>
       <button onClick={getHealth}>Get backend Health</button>
     </>
   );
