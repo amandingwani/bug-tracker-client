@@ -1,11 +1,22 @@
 import { useEffect, useState } from "react";
-// import "./App.css";
+import axios from "./config/axios";
+import { GOOGLE_OAUTH_CLIENT_ID } from "./config/env";
 
 function App() {
   const [loaded, setLoaded] = useState(false);
 
   const handleGoogleAuthResponse = (response: any) => {
     console.log("Encoded JWT ID token: " + response.credential);
+    // submit jwt to server
+    axios.post('/auth/login', {
+      token: response.credential
+    })
+    .then(function (response) {
+      console.log(response);
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   };
 
   useEffect(() => {
@@ -13,7 +24,7 @@ function App() {
     // Script tag is loaded!
     // @ts-ignore
     google.accounts.id.initialize({
-      client_id: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
+      client_id: GOOGLE_OAUTH_CLIENT_ID,
       callback: handleGoogleAuthResponse,
     });
 
@@ -31,9 +42,17 @@ function App() {
     document.body.appendChild(scriptTag);
   }, []);
 
+  function getHealth() {
+    console.log('pressed')
+    axios.get('http://localhost:3000/health').then(res => {
+      console.log(res);
+    })
+  }
+
   return (
     <>
       <div id="googleSignInButton" ></div>
+      <button onClick={getHealth}>Get backend Health</button>
     </>
   );
 }
