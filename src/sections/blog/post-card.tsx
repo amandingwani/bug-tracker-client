@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
@@ -17,7 +15,7 @@ import SvgColor from 'src/components/svg-color';
 
 // ----------------------------------------------------------------------
 
-export default function PostCard({ post, index }) {
+export default function PostCard({ post, index }: { post: any; index: number }) {
   const { cover, title, view, comment, share, author, createdAt } = post;
 
   const latestPostLarge = index === 0;
@@ -201,8 +199,3 @@ export default function PostCard({ post, index }) {
     </Grid>
   );
 }
-
-PostCard.propTypes = {
-  post: PropTypes.object.isRequired,
-  index: PropTypes.number,
-};

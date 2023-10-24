@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -11,13 +10,14 @@ import CardHeader from '@mui/material/CardHeader';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Iconify from 'src/components/iconify';
+import { AppInnerProps } from './appInnerProps';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsTasks({ title, subheader, list, ...other }) {
+export default function AnalyticsTasks({ title, subheader, list, ...other }: AppInnerProps) {
   const [selected, setSelected] = useState(['2']);
 
-  const handleClickComplete = (taskId) => {
+  const handleClickComplete = (taskId: any) => {
     const tasksCompleted = selected.includes(taskId)
       ? selected.filter((value) => value !== taskId)
       : [...selected, taskId];
@@ -41,18 +41,18 @@ export default function AnalyticsTasks({ title, subheader, list, ...other }) {
   );
 }
 
-AnalyticsTasks.propTypes = {
-  list: PropTypes.array,
-  subheader: PropTypes.string,
-  title: PropTypes.string,
-};
-
 // ----------------------------------------------------------------------
 
-function TaskItem({ task, checked, onChange }) {
+interface TaskItemProps {
+  checked: boolean;
+  onChange: any;
+  task: any;
+}
+
+function TaskItem({ task, checked, onChange }: TaskItemProps) {
   const [open, setOpen] = useState(null);
 
-  const handleOpenMenu = (event) => {
+  const handleOpenMenu = (event: any) => {
     setOpen(event.currentTarget);
   };
 
@@ -139,9 +139,3 @@ function TaskItem({ task, checked, onChange }) {
     </>
   );
 }
-
-TaskItem.propTypes = {
-  checked: PropTypes.bool,
-  onChange: PropTypes.func,
-  task: PropTypes.object,
-};

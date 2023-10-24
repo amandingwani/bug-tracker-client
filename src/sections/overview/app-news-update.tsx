@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
@@ -13,10 +11,11 @@ import { fToNow } from 'src/utils/format-time';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
+import { AppInnerProps } from './appInnerProps';
 
 // ----------------------------------------------------------------------
 
-export default function AppNewsUpdate({ title, subheader, list, ...other }) {
+export default function AppNewsUpdate({ title, subheader, list, ...other }: AppInnerProps) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
@@ -44,15 +43,13 @@ export default function AppNewsUpdate({ title, subheader, list, ...other }) {
   );
 }
 
-AppNewsUpdate.propTypes = {
-  title: PropTypes.string,
-  subheader: PropTypes.string,
-  list: PropTypes.array.isRequired,
-};
-
 // ----------------------------------------------------------------------
 
-function NewsItem({ news }) {
+function NewsItem({
+  news,
+}: {
+  news: { image: string; title: string; description: string; postedAt: Date };
+}) {
   const { image, title, description, postedAt } = news;
 
   return (
@@ -80,12 +77,3 @@ function NewsItem({ news }) {
     </Stack>
   );
 }
-
-NewsItem.propTypes = {
-  news: PropTypes.shape({
-    image: PropTypes.string,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    postedAt: PropTypes.instanceOf(Date),
-  }),
-};

@@ -2,22 +2,16 @@ import { Theme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import { alpha, styled } from '@mui/material/styles';
 
+import { LabelVariant, LabelColor } from './labelSubTypes';
 // ----------------------------------------------------------------------
 
-// type StyledLabelProps = {
-//   ownerState: {
-//     variant: 'filled' | 'outlined' | 'soft';
-//     color: 'default' | string;
-//   };
-// };
-
 interface OwnerState {
-  variant: 'filled' | 'outlined' | 'soft';
-  color: 'default' | string;
+  variant: LabelVariant;
+  color: LabelColor;
 }
 
 // type ColorValue = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
-
+// or try PaletteOptions | 'default'
 
 export const StyledLabel = styled(Box)(({ theme, ownerState }: { theme: Theme, ownerState: OwnerState }) => {
   const lightMode = theme.palette.mode === 'light';
@@ -50,24 +44,24 @@ export const StyledLabel = styled(Box)(({ theme, ownerState }: { theme: Theme, o
   };
 
   const colorStyle = {
-    // ...(ownerState.color !== 'default' && {
-    //   // FILLED
-    //   ...(filledVariant && {
-    //     color: theme.palette[ownerState.color as keyof typeof theme.palette].contrastText,
-    //     backgroundColor: theme.palette[ownerState.color].main,
-    //   }),
-    //   // OUTLINED
-    //   ...(outlinedVariant && {
-    //     backgroundColor: 'transparent',
-    //     color: theme.palette[ownerState.color as keyof typeof theme.palette].main,
-    //     border: `2px solid ${theme.palette[ownerState.color].main}`,
-    //   }),
-    //   // SOFT
-    //   ...(softVariant && {
-    //     color: theme.palette[ownerState.color][lightMode ? 'dark' : 'light'],
-    //     backgroundColor: alpha(theme.palette[ownerState.color].main, 0.16),
-    //   }),
-    // }),
+    ...(ownerState.color !== 'default' && {
+      // FILLED
+      ...(filledVariant && {
+        color: theme.palette[ownerState.color].contrastText,
+        backgroundColor: theme.palette[ownerState.color].main,
+      }),
+      // OUTLINED
+      ...(outlinedVariant && {
+        backgroundColor: 'transparent',
+        color: theme.palette[ownerState.color].main,
+        border: `2px solid ${theme.palette[ownerState.color].main}`,
+      }),
+      // SOFT
+      ...(softVariant && {
+        color: theme.palette[ownerState.color][lightMode ? 'dark' : 'light'],
+        backgroundColor: alpha(theme.palette[ownerState.color].main, 0.16),
+      }),
+    }),
   };
 
   return {

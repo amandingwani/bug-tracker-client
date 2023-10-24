@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Paper from '@mui/material/Paper';
@@ -7,10 +5,11 @@ import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 
 import { fShortenNumber } from 'src/utils/format-number';
+import { AppInnerProps } from './appInnerProps';
 
 // ----------------------------------------------------------------------
 
-export default function AppTrafficBySite({ title, subheader, list, ...other }) {
+export default function AppTrafficBySite({ title, subheader, list, ...other }: AppInnerProps) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
@@ -23,7 +22,7 @@ export default function AppTrafficBySite({ title, subheader, list, ...other }) {
           gridTemplateColumns: 'repeat(2, 1fr)',
         }}
       >
-        {list.map((site) => (
+        {list.map((site: any) => (
           <Paper
             key={site.name}
             variant="outlined"
@@ -42,9 +41,3 @@ export default function AppTrafficBySite({ title, subheader, list, ...other }) {
     </Card>
   );
 }
-
-AppTrafficBySite.propTypes = {
-  title: PropTypes.string,
-  subheader: PropTypes.string,
-  list: PropTypes.array.isRequired,
-};

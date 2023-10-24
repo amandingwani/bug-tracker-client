@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 
 import Box from '@mui/material/Box';
 import Avatar from '@mui/material/Avatar';
@@ -31,9 +31,9 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState<null | HTMLElement>(null);
 
-  const handleOpen = (event) => {
+  const handleOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
   };
 

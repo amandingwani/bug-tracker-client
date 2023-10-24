@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Card from '@mui/material/Card';
 import Timeline from '@mui/lab/Timeline';
 import TimelineDot from '@mui/lab/TimelineDot';
@@ -11,10 +9,16 @@ import TimelineConnector from '@mui/lab/TimelineConnector';
 import TimelineItem, { timelineItemClasses } from '@mui/lab/TimelineItem';
 
 import { fDateTime } from 'src/utils/format-time';
+import { AppInnerProps } from './appInnerProps';
 
 // ----------------------------------------------------------------------
 
-export default function AnalyticsOrderTimeline({ title, subheader, list, ...other }) {
+export default function AnalyticsOrderTimeline({
+  title,
+  subheader,
+  list,
+  ...other
+}: AppInnerProps) {
   return (
     <Card {...other}>
       <CardHeader title={title} subheader={subheader} />
@@ -37,15 +41,9 @@ export default function AnalyticsOrderTimeline({ title, subheader, list, ...othe
   );
 }
 
-AnalyticsOrderTimeline.propTypes = {
-  list: PropTypes.array,
-  subheader: PropTypes.string,
-  title: PropTypes.string,
-};
-
 // ----------------------------------------------------------------------
 
-function OrderItem({ item, lastTimeline }) {
+function OrderItem({ item, lastTimeline }: { item: any; lastTimeline: boolean }) {
   const { type, title, time } = item;
   return (
     <TimelineItem>
@@ -72,8 +70,3 @@ function OrderItem({ item, lastTimeline }) {
     </TimelineItem>
   );
 }
-
-OrderItem.propTypes = {
-  item: PropTypes.object,
-  lastTimeline: PropTypes.bool,
-};

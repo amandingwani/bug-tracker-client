@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import PropTypes from 'prop-types';
+import { useState, MouseEvent } from 'react';
 import { set, sub } from 'date-fns';
 import { faker } from '@faker-js/faker';
 
@@ -78,9 +77,9 @@ export default function NotificationsPopover() {
 
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
 
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState<null | HTMLElement>(null);
 
-  const handleOpen = (event) => {
+  const handleOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
   };
 
@@ -180,19 +179,17 @@ export default function NotificationsPopover() {
 
 // ----------------------------------------------------------------------
 
-NotificationItem.propTypes = {
-  notification: PropTypes.shape({
-    createdAt: PropTypes.instanceOf(Date),
-    id: PropTypes.string,
-    isUnRead: PropTypes.bool,
-    title: PropTypes.string,
-    description: PropTypes.string,
-    type: PropTypes.string,
-    avatar: PropTypes.any,
-  }),
-};
+interface NotificationType {
+  createdAt: Date;
+  id: string;
+  isUnRead: boolean;
+  title: string;
+  description: string;
+  type: string;
+  avatar: any;
+}
 
-function NotificationItem({ notification }) {
+function NotificationItem({ notification }: { notification: NotificationType }) {
   const { avatar, title } = renderContent(notification);
 
   return (
@@ -232,7 +229,7 @@ function NotificationItem({ notification }) {
 
 // ----------------------------------------------------------------------
 
-function renderContent(notification) {
+function renderContent(notification: NotificationType) {
   const title = (
     <Typography variant="subtitle2">
       {notification.title}

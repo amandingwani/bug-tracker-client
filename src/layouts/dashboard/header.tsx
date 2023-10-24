@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
@@ -18,10 +16,15 @@ import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
 import LanguagePopover from './common/language-popover';
 import NotificationsPopover from './common/notifications-popover';
+import React from 'react';
 
 // ----------------------------------------------------------------------
 
-export default function Header({ onOpenNav }) {
+export default function Header({
+  onOpenNav,
+}: {
+  onOpenNav: React.MouseEventHandler<HTMLButtonElement>;
+}) {
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
@@ -58,10 +61,10 @@ export default function Header({ onOpenNav }) {
         transition: theme.transitions.create(['height'], {
           duration: theme.transitions.duration.shorter,
         }),
-        ...(lgUp && {
+        ...((lgUp && {
           width: `calc(100% - ${NAV.WIDTH + 1}px)`,
           height: HEADER.H_DESKTOP,
-        }),
+        }) as React.CSSProperties),
       }}
     >
       <Toolbar
@@ -75,7 +78,3 @@ export default function Header({ onOpenNav }) {
     </AppBar>
   );
 }
-
-Header.propTypes = {
-  onOpenNav: PropTypes.func,
-};

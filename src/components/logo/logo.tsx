@@ -2,7 +2,7 @@ import { forwardRef } from 'react';
 
 import Box from '@mui/material/Box';
 import Link, { LinkProps } from '@mui/material/Link';
-import { useTheme } from '@mui/material/styles';
+import { SxProps, Theme, useTheme } from '@mui/material/styles';
 
 import { RouterLink } from 'src/routes/components';
 
@@ -10,7 +10,7 @@ import { RouterLink } from 'src/routes/components';
 
 interface LogoProps {
   disabledLink?: boolean;
-  sx?: React.CSSProperties;
+  sx?: SxProps<Theme>;
 }
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(

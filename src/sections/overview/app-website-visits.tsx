@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -8,7 +6,19 @@ import Chart, { useChart } from 'src/components/chart';
 
 // ----------------------------------------------------------------------
 
-export default function AppWebsiteVisits({ title, subheader, chart, ...other }) {
+interface AppWebsiteVisitsProps {
+  chart: any;
+  subheader: string;
+  title: string;
+  [other: string]: any;
+}
+
+export default function AppWebsiteVisits({
+  title,
+  subheader,
+  chart,
+  ...other
+}: AppWebsiteVisitsProps) {
   const { labels, colors, series, options } = chart;
 
   const chartOptions = useChart({
@@ -19,7 +29,7 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
       },
     },
     fill: {
-      type: series.map((i) => i.fill),
+      type: series.map((i: any) => i.fill),
     },
     labels,
     xaxis: {
@@ -57,9 +67,3 @@ export default function AppWebsiteVisits({ title, subheader, chart, ...other }) 
     </Card>
   );
 }
-
-AppWebsiteVisits.propTypes = {
-  chart: PropTypes.object,
-  subheader: PropTypes.string,
-  title: PropTypes.string,
-};

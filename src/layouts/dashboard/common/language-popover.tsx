@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 
 import Box from '@mui/material/Box';
 import Popover from '@mui/material/Popover';
@@ -28,9 +28,9 @@ const LANGS = [
 // ----------------------------------------------------------------------
 
 export default function LanguagePopover() {
-  const [open, setOpen] = useState(null);
+  const [open, setOpen] = useState<null | HTMLElement>(null);
 
-  const handleOpen = (event) => {
+  const handleOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
   };
 

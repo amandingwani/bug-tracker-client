@@ -1,9 +1,9 @@
-import { alpha } from '@mui/material/styles';
+import { Theme, alpha } from '@mui/material/styles';
 import { outlinedInputClasses } from '@mui/material/OutlinedInput';
 
 // ----------------------------------------------------------------------
 
-export function overrides(theme) {
+export function overrides(theme: Theme) {
   return {
     MuiCssBaseline: {
       styleOverrides: {
