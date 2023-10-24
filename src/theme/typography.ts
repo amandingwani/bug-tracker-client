@@ -1,3 +1,6 @@
+import { Palette } from "@mui/material";
+import { TypographyOptions } from "@mui/material/styles/createTypography";
+
 // ----------------------------------------------------------------------
 
 export function remToPx(value: string) {
@@ -8,18 +11,18 @@ export function pxToRem(value: number) {
   return `${value / 16}rem`;
 }
 
-interface fontSizes { sm: number, md: number, lg: number }
+type FontSizes = { sm: number, md: number, lg: number }
 
-export function responsiveFontSizes({ sm, md, lg }: fontSizes) {
+export function responsiveFontSizes(fontsizes: FontSizes) {
   return {
     '@media (min-width:600px)': {
-      fontSize: pxToRem(sm),
+      fontSize: pxToRem(fontsizes.sm),
     },
     '@media (min-width:900px)': {
-      fontSize: pxToRem(md),
+      fontSize: pxToRem(fontsizes.md),
     },
     '@media (min-width:1200px)': {
-      fontSize: pxToRem(lg),
+      fontSize: pxToRem(fontsizes.lg),
     },
   };
 }
@@ -29,12 +32,12 @@ export const secondaryFont = 'Barlow, sans-serif';
 
 // ----------------------------------------------------------------------
 
-export const typography = {
+export const typography: TypographyOptions | ((palette: Palette) => TypographyOptions) = {
   fontFamily: primaryFont,
-  fontSecondaryFamily: secondaryFont,
+  // fontSecondaryFamily: secondaryFont,
   fontWeightRegular: 400,
   fontWeightMedium: 500,
-  fontWeightSemiBold: 600,
+  // fontWeightSemiBold: 600,
   fontWeightBold: 700,
   h1: {
     fontWeight: 800,

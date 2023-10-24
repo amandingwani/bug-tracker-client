@@ -1,9 +1,9 @@
 import 'src/global.css';
 
-import { useScrollToTop } from './hooks/use-scroll-to-top';
+import { useScrollToTop } from 'src/hooks/use-scroll-to-top';
 
-import Router from './routes/sections';
-import ThemeProvider from './theme';
+import Router from 'src/routes/sections';
+import ThemeProvider from 'src/theme';
 
 // import { useEffect, useState } from 'react';
 // import axios from './config/axios';
@@ -15,7 +15,11 @@ import ThemeProvider from './theme';
 export default function App() {
   useScrollToTop();
 
-  return <ThemeProvider>{/* <Router /> */}</ThemeProvider>;
+  return (
+    <ThemeProvider>
+      <Router />
+    </ThemeProvider>
+  );
 
   // const [loaded, setLoaded] = useState(false);
 
