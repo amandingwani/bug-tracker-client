@@ -26,7 +26,7 @@ import navConfig from './config-navigation';
 
 interface NavProps {
   openNav: boolean;
-  onCloseNav: Function;
+  onCloseNav: () => void;
 }
 
 export default function Nav({ openNav, onCloseNav }: NavProps) {

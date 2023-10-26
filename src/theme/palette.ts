@@ -1,4 +1,4 @@
-import { Palette, alpha } from '@mui/material/styles';
+import { CommonColors, PaletteOptions, TypeAction, alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -71,12 +71,12 @@ export const error = {
   contrastText: '#FFFFFF',
 };
 
-export const common = {
+export const common: CommonColors = {
   black: '#000000',
   white: '#FFFFFF',
 };
 
-export const action = {
+export const action: Partial<TypeAction> = {
   hover: alpha(grey[500], 0.08),
   selected: alpha(grey[500], 0.16),
   disabled: alpha(grey[500], 0.8),
@@ -101,7 +101,7 @@ const base = {
 
 // ----------------------------------------------------------------------
 
-export function palette(): Palette {
+export function palette(): PaletteOptions {
   return {
     ...base,
     mode: 'light',
