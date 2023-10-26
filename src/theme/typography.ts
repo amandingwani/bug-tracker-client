@@ -1,5 +1,5 @@
-import { Palette } from "@mui/material";
-import { TypographyOptions } from "@mui/material/styles/createTypography";
+import { Palette } from '@mui/material';
+import { TypographyOptions } from '@mui/material/styles/createTypography';
 
 // ----------------------------------------------------------------------
 
@@ -11,7 +11,7 @@ export function pxToRem(value: number) {
   return `${value / 16}rem`;
 }
 
-type FontSizes = { sm: number, md: number, lg: number }
+type FontSizes = { sm: number; md: number; lg: number };
 
 export function responsiveFontSizes(fontsizes: FontSizes) {
   return {

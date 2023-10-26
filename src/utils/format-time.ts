@@ -21,7 +21,7 @@ export function fTimestamp(date: Date | null | undefined) {
 export function fToNow(date: Date | null | undefined) {
   return date
     ? formatDistanceToNow(new Date(date), {
-      addSuffix: true,
-    })
+        addSuffix: true,
+      })
     : '';
 }

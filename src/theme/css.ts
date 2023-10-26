@@ -7,9 +7,9 @@ import { autocompleteClasses } from '@mui/material/Autocomplete';
 // ----------------------------------------------------------------------
 
 interface PaperProps {
-  theme: Theme,
-  bgcolor: string,
-  dropdown: string
+  theme: Theme;
+  bgcolor: string;
+  dropdown: string;
 }
 
 export const paper = ({ theme, bgcolor, dropdown }: PaperProps) => ({
@@ -70,10 +70,10 @@ export const menuItem = (theme: Theme) => ({
 // ----------------------------------------------------------------------
 
 interface BgBlurProps {
-  color?: string,
-  blur?: number,
-  opacity?: number,
-  imgUrl?: string
+  color?: string;
+  blur?: number;
+  opacity?: number;
+  imgUrl?: string;
 }
 
 export function bgBlur(props: BgBlurProps) {
@@ -111,11 +111,11 @@ export function bgBlur(props: BgBlurProps) {
 // ----------------------------------------------------------------------
 
 interface BgGradientProps {
-  direction?: string,
-  startColor?: string,
-  endColor?: string,
-  imgUrl: string,
-  color: string
+  direction?: string;
+  startColor?: string;
+  endColor?: string;
+  imgUrl: string;
+  color: string;
 }
 
 export function bgGradient(props: BgGradientProps) {
@@ -127,8 +127,9 @@ export function bgGradient(props: BgGradientProps) {
 
   if (imgUrl) {
     return {
-      background: `linear-gradient(${direction}, ${startColor || color}, ${endColor || color
-        }), url(${imgUrl})`,
+      background: `linear-gradient(${direction}, ${startColor || color}, ${
+        endColor || color
+      }), url(${imgUrl})`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat',
       backgroundPosition: 'center center',

@@ -13,7 +13,13 @@ interface OwnerState {
 // type ColorValue = 'default' | 'primary' | 'secondary' | 'info' | 'success' | 'warning' | 'error';
 // or try PaletteOptions | 'default'
 
-export const StyledLabel = styled(Box)(({ theme, ownerState }: { theme: Theme, ownerState: OwnerState }) => {
+export const StyledLabel = styled(Box)(({
+  theme,
+  ownerState,
+}: {
+  theme: Theme;
+  ownerState: OwnerState;
+}) => {
   const lightMode = theme.palette.mode === 'light';
 
   const filledVariant = ownerState.variant === 'filled';
