@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
@@ -13,7 +11,7 @@ import { ColorPreview } from 'src/components/color-utils';
 
 // ----------------------------------------------------------------------
 
-export default function ShopProductCard({ product }) {
+export default function ShopProductCard({ product }: any) {
   const renderStatus = (
     <Label
       variant="filled"
@@ -83,7 +81,3 @@ export default function ShopProductCard({ product }) {
     </Card>
   );
 }
-
-ShopProductCard.propTypes = {
-  product: PropTypes.object,
-};

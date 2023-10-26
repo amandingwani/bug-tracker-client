@@ -11,10 +11,10 @@ import { LabelVariant, LabelColor } from './labelSubTypes';
 interface LabelProps {
   children: ReactNode;
   color?: LabelColor;
-  startIcon: ReactNode;
-  endIcon: ReactNode;
-  variant: LabelVariant;
-  sx: React.CSSProperties;
+  startIcon?: ReactNode;
+  endIcon?: ReactNode;
+  variant?: LabelVariant;
+  sx?: React.CSSProperties;
 }
 
 // Don't use anonymous functions inside forwardRef (for React Dev Tool to work properly)

@@ -14,6 +14,7 @@ interface ColorPickerProps {
   onSelectColor: (color: string[] | string) => void;
   selected: string[];
   sx: SxProps<Theme>;
+  [other: string]: any;
 }
 
 const ColorPicker = forwardRef<HTMLDivElement, ColorPickerProps>(

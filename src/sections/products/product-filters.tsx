@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Radio from '@mui/material/Radio';
@@ -47,7 +45,17 @@ export const COLOR_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function ProductFilters({ openFilter, onOpenFilter, onCloseFilter }) {
+interface ProductFiltersProps {
+  openFilter: boolean;
+  onOpenFilter?: React.MouseEventHandler<HTMLButtonElement>;
+  onCloseFilter: any;
+}
+
+export default function ProductFilters({
+  openFilter,
+  onOpenFilter,
+  onCloseFilter,
+}: ProductFiltersProps) {
   const renderGender = (
     <Stack spacing={1}>
       <Typography variant="subtitle2">Gender</Typography>
@@ -77,7 +85,7 @@ export default function ProductFilters({ openFilter, onOpenFilter, onCloseFilter
         name="colors"
         selected={[]}
         colors={COLOR_OPTIONS}
-        onSelectColor={(color) => [].includes(color)}
+        onSelectColor={(color: never) => [].includes(color)}
         sx={{ maxWidth: 38 * 4 }}
       />
     </Stack>
@@ -195,9 +203,3 @@ export default function ProductFilters({ openFilter, onOpenFilter, onCloseFilter
     </>
   );
 }
-
-ProductFilters.propTypes = {
-  openFilter: PropTypes.bool,
-  onOpenFilter: PropTypes.func,
-  onCloseFilter: PropTypes.func,
-};

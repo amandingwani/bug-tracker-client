@@ -1,16 +1,10 @@
-import PropTypes from 'prop-types';
-
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
+import { PostSortProps } from './postTypes';
 
 // ----------------------------------------------------------------------
 
-PostSort.propTypes = {
-  options: PropTypes.array,
-  onSort: PropTypes.func,
-};
-
-export default function PostSort({ options, onSort }) {
+export default function PostSort({ options, onSort }: PostSortProps) {
   return (
     <TextField select size="small" value="latest" onChange={onSort}>
       {options.map((option) => (

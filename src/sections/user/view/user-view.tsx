@@ -27,7 +27,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 export default function UserPage() {
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
   const [selected, setSelected] = useState([]);
 
@@ -37,7 +37,7 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleSort = (event, id) => {
+  const handleSort = (event: any, id) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
       setOrder(isAsc ? 'desc' : 'asc');
@@ -45,18 +45,18 @@ export default function UserPage() {
     }
   };
 
-  const handleSelectAllClick = (event) => {
+  const handleSelectAllClick = (event: any) => {
     if (event.target.checked) {
       const newSelecteds = users.map((n) => n.name);
-      setSelected(newSelecteds);
+      setSelected(newSelecteds as never[]);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
+  const handleClick = (event: any, name: never) => {
     const selectedIndex = selected.indexOf(name);
-    let newSelected = [];
+    let newSelected: any = [];
     if (selectedIndex === -1) {
       newSelected = newSelected.concat(selected, name);
     } else if (selectedIndex === 0) {
@@ -72,16 +72,16 @@ export default function UserPage() {
     setSelected(newSelected);
   };
 
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: any) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const handleFilterByName = (event) => {
+  const handleFilterByName = (event: any) => {
     setPage(0);
     setFilterName(event.target.value);
   };
@@ -133,7 +133,7 @@ export default function UserPage() {
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row) => (
+                  .map((row: any) => (
                     <UserTableRow
                       key={row.id}
                       name={row.name}
@@ -142,8 +142,8 @@ export default function UserPage() {
                       company={row.company}
                       avatarUrl={row.avatarUrl}
                       isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name) !== -1}
-                      handleClick={(event) => handleClick(event, row.name)}
+                      selected={selected.indexOf(row.name as never) !== -1}
+                      handleClick={(event) => handleClick(event, row.name as never)}
                     />
                   ))}
 

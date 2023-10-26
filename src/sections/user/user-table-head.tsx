@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 import Box from '@mui/material/Box';
 import TableRow from '@mui/material/TableRow';
 import Checkbox from '@mui/material/Checkbox';
@@ -11,6 +9,16 @@ import { visuallyHidden } from './utils';
 
 // ----------------------------------------------------------------------
 
+interface UserTableHeadProps {
+  order: 'asc' | 'desc';
+  orderBy: string;
+  rowCount: number;
+  headLabel: Array<any>;
+  numSelected: number;
+  onRequestSort: any;
+  onSelectAllClick: any;
+}
+
 export default function UserTableHead({
   order,
   orderBy,
@@ -19,8 +27,8 @@ export default function UserTableHead({
   numSelected,
   onRequestSort,
   onSelectAllClick,
-}) {
-  const onSort = (property) => (event) => {
+}: UserTableHeadProps) {
+  const onSort = (property: any) => (event: any) => {
     onRequestSort(event, property);
   };
 
@@ -61,13 +69,3 @@ export default function UserTableHead({
     </TableHead>
   );
 }
-
-UserTableHead.propTypes = {
-  order: PropTypes.oneOf(['asc', 'desc']),
-  orderBy: PropTypes.string,
-  rowCount: PropTypes.number,
-  headLabel: PropTypes.array,
-  numSelected: PropTypes.number,
-  onRequestSort: PropTypes.func,
-  onSelectAllClick: PropTypes.func,
-};
