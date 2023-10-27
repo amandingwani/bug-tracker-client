@@ -2,6 +2,7 @@ import { lazy, Suspense, ReactNode } from 'react';
 import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 
 import DashboardLayout from 'src/layouts/dashboard';
+import { ProtectedRoute } from './ProtectedRoute';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -16,11 +17,13 @@ export default function Router(): ReactNode {
   const routes = useRoutes([
     {
       element: (
-        <DashboardLayout>
-          <Suspense>
-            <Outlet />
-          </Suspense>
-        </DashboardLayout>
+        <ProtectedRoute>
+          <DashboardLayout>
+            <Suspense>
+              <Outlet />
+            </Suspense>
+          </DashboardLayout>
+        </ProtectedRoute>
       ),
       children: [
         { element: <IndexPage />, index: true },
@@ -40,6 +43,14 @@ export default function Router(): ReactNode {
     {
       path: '*',
       element: <Navigate to="/404" replace />,
+    },
+    {
+      path: 'test',
+      element: (
+        <DashboardLayout>
+          <p>Test element</p>
+        </DashboardLayout>
+      ),
     },
   ]);
 

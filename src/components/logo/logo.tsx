@@ -11,6 +11,7 @@ import { RouterLink } from 'src/routes/components';
 interface LogoProps {
   disabledLink?: boolean;
   sx?: SxProps<Theme>;
+  [other: string]: any;
 }
 
 const Logo = forwardRef<HTMLDivElement, LogoProps>(
