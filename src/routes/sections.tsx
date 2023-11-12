@@ -44,14 +44,6 @@ export default function Router(): ReactNode {
       path: '*',
       element: <Navigate to="/404" replace />,
     },
-    {
-      path: 'test',
-      element: (
-        <DashboardLayout>
-          <p>Test element</p>
-        </DashboardLayout>
-      ),
-    },
   ]);
 
   return routes;
