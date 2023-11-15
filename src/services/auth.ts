@@ -1,10 +1,10 @@
 import axios from 'src/config/axios';
 
-const loginWithGoogle = (googleToken: string) => {
+const loginWithGoogle = (code: string) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const { data } = await axios.post('/auth/login', {
-                token: googleToken,
+            const { data } = await axios.post('/auth/google', {
+                code: code,
             });
             resolve(data);
         } catch (error) {

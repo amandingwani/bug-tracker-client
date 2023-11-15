@@ -13,6 +13,9 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import { useGoogleLogin } from '@react-oauth/google';
+import authService from 'src/services/auth';
+
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
@@ -32,6 +35,18 @@ export default function LoginView() {
   const handleClick = () => {
     router.push('/dashboard');
   };
+
+  const handleGoogleLoginClick = useGoogleLogin({
+    flow: 'auth-code',
+    onSuccess: async (codeResponse) => {
+      // console.log({ codeResponse });
+      const userData = await authService.loginWithGoogle(codeResponse.code);
+      // console.log(userData);
+    },
+    onError: (err) => console.log(err),
+    // ux_mode: 'redirect',
+    // redirect_uri: 'http://localhost:5173/login',
+  });
 
   const renderForm = (
     <>
@@ -110,33 +125,15 @@ export default function LoginView() {
 
           <Stack direction="row" spacing={2}>
             <Button
+              onClick={() => handleGoogleLoginClick()}
               fullWidth
               size="large"
               color="inherit"
               variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
+              startIcon={<Iconify icon="flat-color-icons:google" color="#DF3E30" />}
+              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16), fontWeight: 'light' }}
             >
-              <Iconify icon="eva:google-fill" color="#DF3E30" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:facebook-fill" color="#1877F2" />
-            </Button>
-
-            <Button
-              fullWidth
-              size="large"
-              color="inherit"
-              variant="outlined"
-              sx={{ borderColor: alpha(theme.palette.grey[500], 0.16) }}
-            >
-              <Iconify icon="eva:twitter-fill" color="#1C9CEA" />
+              Sign in with Google
             </Button>
           </Stack>
 
