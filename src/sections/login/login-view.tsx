@@ -15,6 +15,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { useGoogleLogin } from '@react-oauth/google';
 import authService from 'src/services/auth';
+import { useAppDispatch } from 'src/redux/hooks';
+import { setUser } from 'src/redux/slices/userSlice';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -32,6 +34,8 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const dispatch = useAppDispatch();
+
   const handleClick = () => {
     router.push('/dashboard');
   };
@@ -39,9 +43,18 @@ export default function LoginView() {
   const handleGoogleLoginClick = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async (codeResponse) => {
-      // console.log({ codeResponse });
-      const userData = await authService.loginWithGoogle(codeResponse.code);
-      console.log(userData);
+      const user = await authService.loginWithGoogle(codeResponse.code);
+      console.log(user);
+      dispatch(
+        setUser({
+          id: user.id,
+          google_id_sub: user.google_id_sub,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          picture: user.picture,
+        })
+      );
     },
     onError: (err) => console.log(err),
     // ux_mode: 'redirect',

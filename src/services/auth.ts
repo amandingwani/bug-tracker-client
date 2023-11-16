@@ -1,7 +1,8 @@
 import axios from 'src/config/axios';
+import { UserState } from 'src/redux/types';
 
 const loginWithGoogle = (code: string) => {
-  return new Promise((resolve, reject) => {
+  return new Promise<UserState>((resolve, reject) => {
     axios
       .post('/auth/google', {
         code: code,
