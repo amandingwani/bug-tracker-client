@@ -1,14 +1,12 @@
 import axios from 'src/config/axios';
 
 const getProfile = () => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const data = await axios.get('/user/profile');
-            resolve(data);
-        } catch (error) {
-            reject(error);
-        }
-    })
-}
+  return new Promise((resolve, reject) => {
+    axios
+      .get('/user/profile')
+      .then((data) => resolve(data))
+      .catch((err) => reject(err));
+  });
+};
 
 export default getProfile;

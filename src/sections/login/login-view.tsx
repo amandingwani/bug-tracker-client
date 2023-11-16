@@ -41,7 +41,7 @@ export default function LoginView() {
     onSuccess: async (codeResponse) => {
       // console.log({ codeResponse });
       const userData = await authService.loginWithGoogle(codeResponse.code);
-      // console.log(userData);
+      console.log(userData);
     },
     onError: (err) => console.log(err),
     // ux_mode: 'redirect',
