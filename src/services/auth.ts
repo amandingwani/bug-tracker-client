@@ -1,7 +1,7 @@
 import axios from 'src/config/axios';
 import { UserState } from 'src/redux/types';
 
-const loginWithGoogle = (code: string) => {
+export const loginWithGoogle = (code: string) => {
   return new Promise<UserState>((resolve, reject) => {
     axios
       .post('/auth/google', {
@@ -12,6 +12,10 @@ const loginWithGoogle = (code: string) => {
   });
 };
 
-const authService = { loginWithGoogle };
-
-export default authService;
+export const clearToken = () => {
+  return new Promise((resolve, reject) => {
+    axios.post('/auth/logout')
+      .then((res) => resolve(res.data))
+      .catch((err) => reject(err));
+  })
+}

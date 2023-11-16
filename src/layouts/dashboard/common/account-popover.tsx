@@ -11,6 +11,9 @@ import IconButton from '@mui/material/IconButton';
 
 import { account } from 'src/_mock/account';
 
+import { logout } from 'src/redux/slices/userSlice';
+import { useAppDispatch } from 'src/redux/hooks';
+
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -32,6 +35,8 @@ const MENU_OPTIONS = [
 
 export default function AccountPopover() {
   const [open, setOpen] = useState<null | HTMLElement>(null);
+
+  const dispatch = useAppDispatch();
 
   const handleOpen = (event: MouseEvent<HTMLButtonElement>) => {
     setOpen(event.currentTarget);
@@ -74,12 +79,14 @@ export default function AccountPopover() {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 0,
-            mt: 1,
-            ml: 0.75,
-            width: 200,
+        slotProps={{
+          paper: {
+            sx: {
+              p: 0,
+              mt: 1,
+              ml: 0.75,
+              width: 200,
+            },
           },
         }}
       >
@@ -105,7 +112,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={() => dispatch(logout())}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

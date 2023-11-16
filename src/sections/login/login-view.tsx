@@ -14,7 +14,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useGoogleLogin } from '@react-oauth/google';
-import authService from 'src/services/auth';
+import { loginWithGoogle } from 'src/services/auth';
 import { useAppDispatch } from 'src/redux/hooks';
 import { setUser } from 'src/redux/slices/userSlice';
 
@@ -43,7 +43,7 @@ export default function LoginView() {
   const handleGoogleLoginClick = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async (codeResponse) => {
-      const user = await authService.loginWithGoogle(codeResponse.code);
+      const user = await loginWithGoogle(codeResponse.code);
       console.log(user);
       dispatch(
         setUser({
