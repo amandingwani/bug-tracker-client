@@ -16,7 +16,7 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 export default function Router(): ReactNode {
   const user = useAppSelector(selectUser);
-  const isLoggedIn = user.id !== null;
+  const isLoggedIn = !!user.id;
 
   const routes = useRoutes([
     {

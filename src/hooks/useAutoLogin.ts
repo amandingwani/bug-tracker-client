@@ -4,8 +4,6 @@ import { useAppDispatch } from 'src/redux/hooks'
 import { setUser } from 'src/redux/slices/userSlice';
 import getProfile from 'src/services/profile';
 
-import { incrementByAmount } from 'src/redux/slices/counterSlice';
-
 // ----------------------------------------------------------------------
 
 export function useAutoLogin() {
@@ -27,11 +25,6 @@ export function useAutoLogin() {
       .catch((err) => console.log(err));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  useEffect(() => {
-    setTimeout(() => dispatch(incrementByAmount(3)), 2000)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   return null;
 }

@@ -1,8 +1,8 @@
 export interface UserState {
-    id: number | null
-    google_id_sub: string | null
-    email: string | null
-    firstName: string | null
-    lastName: string | null
-    picture: string | null
+    id?: number
+    google_id_sub?: string
+    email?: string
+    firstName?: string
+    lastName?: string
+    picture?: string
 }

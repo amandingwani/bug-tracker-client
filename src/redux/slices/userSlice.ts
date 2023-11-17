@@ -4,14 +4,7 @@ import type { UserState } from '../types'
 import { clearToken } from 'src/services/auth'
 
 // Define the initial state using that type
-const initialState: UserState = {
-    id: null,
-    google_id_sub: null,
-    email: null,
-    firstName: null,
-    lastName: null,
-    picture: null
-}
+const initialState: UserState = {}
 
 export const userSlice = createSlice({
     name: 'user',
@@ -25,13 +18,8 @@ export const userSlice = createSlice({
                 ...action.payload
             }
         },
-        removeUser: (state) => {
-            state.id = null;
-            state.email = null;
-            state.firstName = null;
-            state.lastName = null;
-            state.google_id_sub = null;
-            state.picture = null;
+        removeUser: () => {
+            return {}
         }
     }
 })
