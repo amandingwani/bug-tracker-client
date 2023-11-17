@@ -14,7 +14,6 @@ import Iconify from 'src/components/iconify';
 import Searchbar from './common/searchbar';
 import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
-import LanguagePopover from './common/language-popover';
 import NotificationsPopover from './common/notifications-popover';
 import React from 'react';
 
@@ -42,7 +41,6 @@ export default function Header({
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
-        <LanguagePopover />
         <NotificationsPopover />
         <AccountPopover />
       </Stack>

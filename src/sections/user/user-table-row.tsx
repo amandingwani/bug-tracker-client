@@ -85,8 +85,10 @@ export default function UserTableRow({
         onClose={handleCloseMenu}
         anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: { width: 140 },
+        slotProps={{
+          paper: {
+            sx: { width: 140 },
+          },
         }}
       >
         <MenuItem onClick={handleCloseMenu}>

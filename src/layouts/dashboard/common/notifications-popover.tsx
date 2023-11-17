@@ -110,11 +110,13 @@ export default function NotificationsPopover() {
         onClose={handleClose}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            mt: 1.5,
-            ml: 0.75,
-            width: 360,
+        slotProps={{
+          paper: {
+            sx: {
+              mt: 1.5,
+              ml: 0.75,
+              width: 360,
+            },
           },
         }}
       >
@@ -186,7 +188,7 @@ interface NotificationType {
   title: string;
   description: string;
   type: string;
-  avatar: any;
+  avatar: string | null;
 }
 
 function NotificationItem({ notification }: { notification: NotificationType }) {
