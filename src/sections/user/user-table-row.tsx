@@ -16,13 +16,13 @@ import Iconify from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 interface UserTableRowProps {
-  avatarUrl: any;
-  company: any;
+  avatarUrl: string;
+  company: string;
   handleClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  isVerified: any;
-  name: any;
-  role: any;
-  selected: any;
+  isVerified: string;
+  name: string;
+  role: string;
+  selected: boolean;
   status: string;
 }
 
@@ -38,7 +38,8 @@ export default function UserTableRow({
 }: UserTableRowProps) {
   const [open, setOpen] = useState(null);
 
-  const handleOpenMenu = (event: any) => {
+  const handleOpenMenu = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    console.log({ event });
     setOpen(event.currentTarget);
   };
 

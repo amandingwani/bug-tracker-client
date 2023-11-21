@@ -16,13 +16,18 @@ import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
 
+import { useAppSelector } from 'src/redux/hooks';
+import { selectUser } from 'src/redux/slices/userSlice';
+
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const user = useAppSelector(selectUser);
+
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi, Welcome back 👋
+        Hi {user.firstName}, Welcome back 👋
       </Typography>
 
       <Grid container spacing={3}>
