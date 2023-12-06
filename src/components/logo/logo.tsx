@@ -42,7 +42,7 @@ const Logo = forwardRef<HTMLAnchorElement, LogoProps>(
           src="/favicon/android-chrome-512x512.png"
           sx={{ width: 40, height: 40 }}
         />
-        <Box component="text" sx={{ ml: 2 }}>
+        <Box sx={{ ml: 2 }}>
           <Typography variant="h4">{'Bug Ninja'}</Typography>
         </Box>
       </Box>
