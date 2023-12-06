@@ -1,7 +1,9 @@
+import React from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
 
@@ -16,7 +18,9 @@ import Logo from 'src/components/logo';
 import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
 import NotificationsPopover from './common/notifications-popover';
-import React from 'react';
+
+import { selectPage } from 'src/redux/slices/pageSlice';
+import { useAppSelector } from 'src/redux/hooks';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +29,8 @@ export default function Header({
 }: {
   onOpenNav: React.MouseEventHandler<HTMLButtonElement>;
 }) {
+  const page = useAppSelector(selectPage);
+
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
@@ -39,6 +45,12 @@ export default function Header({
           <Logo sx={{ mr: 1 }} withText={false} />
         </>
       )}
+
+      <Box sx={{ mr: 1 }}>
+        <Typography variant="h4" color={'text.primary'}>
+          {page.header}
+        </Typography>
+      </Box>
 
       {/* Todo */}
       <Searchbar />
