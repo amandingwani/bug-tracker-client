@@ -12,6 +12,7 @@ import { bgBlur } from 'src/theme/css';
 import Iconify from 'src/components/iconify';
 
 import Searchbar from './common/searchbar';
+import Logo from 'src/components/logo';
 import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
 import NotificationsPopover from './common/notifications-popover';
@@ -31,11 +32,15 @@ export default function Header({
   const renderContent = (
     <>
       {!lgUp && (
-        <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
-          <Iconify icon="eva:menu-2-fill" />
-        </IconButton>
+        <>
+          <IconButton onClick={onOpenNav} sx={{ mr: 1 }}>
+            <Iconify icon="eva:menu-2-fill" />
+          </IconButton>
+          <Logo sx={{ mr: 1 }} withText={false} />
+        </>
       )}
 
+      {/* Todo */}
       <Searchbar />
 
       <Box sx={{ flexGrow: 1 }} />
