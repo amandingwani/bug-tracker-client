@@ -10,7 +10,7 @@ import CardHeader from '@mui/material/CardHeader';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import Iconify from 'src/components/iconify';
-import { AppInnerProps } from './appInnerProps';
+import { AppInnerProps, Tasks } from './appInnerProps';
 
 // ----------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ export default function AnalyticsTasks({ title, subheader, list, ...other }: App
 interface TaskItemProps {
   checked: boolean;
   onChange: any;
-  task: any;
+  task: Tasks;
 }
 
 function TaskItem({ task, checked, onChange }: TaskItemProps) {

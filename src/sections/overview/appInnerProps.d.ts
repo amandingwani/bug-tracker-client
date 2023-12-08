@@ -11,3 +11,8 @@ export interface AppChartProps {
   title: string;
   [other: string]: any;
 }
+
+export interface Tasks {
+  id: string;
+  name: string;
+}
