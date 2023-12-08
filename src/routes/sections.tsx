@@ -8,6 +8,8 @@ import { selectUser } from 'src/redux/slices/userSlice';
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
 export const UserPage = lazy(() => import('src/pages/user'));
+export const ProjectsPage = lazy(() => import('src/pages/projects'));
+export const TicketsPage = lazy(() => import('src/pages/tickets'));
 export const LoginPage = lazy(() => import('src/pages/login'));
 export const ProductsPage = lazy(() => import('src/pages/products'));
 export const Page404 = lazy(() => import('src/pages/page-not-found'));
@@ -31,6 +33,8 @@ export default function Router(): ReactNode {
       ),
       children: [
         { element: <IndexPage />, index: true },
+        { path: 'projects', element: <ProjectsPage /> },
+        { path: 'tickets', element: <TicketsPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
