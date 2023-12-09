@@ -17,6 +17,7 @@ import { useGoogleLogin } from '@react-oauth/google';
 import { loginWithGoogle } from 'src/services/auth';
 import { useAppDispatch } from 'src/redux/hooks';
 import { setUser } from 'src/redux/slices/userSlice';
+import { setWelcomeBackMsg } from 'src/redux/slices/miscSlice';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -43,7 +44,7 @@ export default function LoginView() {
   const handleGoogleLoginClick = useGoogleLogin({
     flow: 'auth-code',
     onSuccess: async (codeResponse) => {
-      const user = await loginWithGoogle(codeResponse.code);
+      const { user, status } = await loginWithGoogle(codeResponse.code);
       console.log(user);
       dispatch(
         setUser({
@@ -55,6 +56,9 @@ export default function LoginView() {
           picture: user.picture,
         })
       );
+      if (status === 201) {
+        dispatch(setWelcomeBackMsg(''));
+      }
     },
     onError: (err) => console.log(err),
     // ux_mode: 'redirect',
