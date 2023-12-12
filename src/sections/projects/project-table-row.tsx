@@ -15,7 +15,7 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-interface UserTableRowProps {
+interface ProjectTableRowProps {
   avatarUrl: string;
   company: string;
   handleClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
@@ -26,7 +26,7 @@ interface UserTableRowProps {
   status: string;
 }
 
-export default function UserTableRow({
+export default function ProjectTableRow({
   selected,
   name,
   avatarUrl,
@@ -35,7 +35,7 @@ export default function UserTableRow({
   isVerified,
   status,
   handleClick,
-}: UserTableRowProps) {
+}: ProjectTableRowProps) {
   const [open, setOpen] = useState(null);
 
   const handleOpenMenu = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {

@@ -1,3 +1,5 @@
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
@@ -34,37 +36,43 @@ export default function ProjectsTableToolbar({
       }}
     >
       {numSelected > 0 ? (
-        <Typography component="div" variant="subtitle1">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <OutlinedInput
-          value={filterName}
-          onChange={onFilterName}
-          placeholder="Search project..."
-          startAdornment={
-            <InputAdornment position="start">
-              <Iconify
-                icon="eva:search-fill"
-                sx={{ color: 'text.disabled', width: 20, height: 20 }}
-              />
-            </InputAdornment>
-          }
-        />
-      )}
+        <>
+          <Typography component="div" variant="subtitle1">
+            {numSelected} selected
+          </Typography>
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <Iconify icon="eva:trash-2-fill" />
-          </IconButton>
-        </Tooltip>
+          <Tooltip title="Delete">
+            <IconButton>
+              <Iconify icon="eva:trash-2-fill" />
+            </IconButton>
+          </Tooltip>
+        </>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
+        <>
+          <Stack direction="row" alignItems="center">
+            <OutlinedInput
+              value={filterName}
+              onChange={onFilterName}
+              placeholder="Search project..."
+              startAdornment={
+                <InputAdornment position="start">
+                  <Iconify
+                    icon="eva:search-fill"
+                    sx={{ color: 'text.disabled', width: 20, height: 20 }}
+                  />
+                </InputAdornment>
+              }
+            />
+            <Tooltip title="Filter list">
+              <IconButton>
+                <Iconify icon="ic:round-filter-list" />
+              </IconButton>
+            </Tooltip>
+          </Stack>
+          <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+            New Project
+          </Button>
+        </>
       )}
     </Toolbar>
   );
