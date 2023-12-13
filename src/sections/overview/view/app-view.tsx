@@ -17,20 +17,19 @@ import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
 
 import { useAppSelector } from 'src/redux/hooks';
-import { selectUser } from 'src/redux/slices/userSlice';
-import { selectMisc } from 'src/redux/slices/miscSlice';
+import { selectUser, selectWelcomeBackMsg } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
 export default function AppView() {
   const user = useAppSelector(selectUser);
-  const misc = useAppSelector(selectMisc);
+  const welcomeBackMsg = useAppSelector(selectWelcomeBackMsg);
 
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
-        Hi {user.firstName}
-        {misc.welcomeBackMsg} 👋
+        Hi {user?.firstName}
+        {welcomeBackMsg} 👋
       </Typography>
 
       <Grid container spacing={3}>

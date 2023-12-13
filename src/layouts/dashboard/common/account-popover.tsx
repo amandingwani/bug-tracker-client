@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import { selectUser, logout } from 'src/redux/slices/userSlice';
+import { selectUser, logout } from 'src/redux/slices/authSlice';
 import { useAppSelector, useAppDispatch } from 'src/redux/hooks';
 
 // ----------------------------------------------------------------------
@@ -60,16 +60,16 @@ export default function AccountPopover() {
         }}
       >
         <Avatar
-          src={user.picture}
+          src={user?.picture}
           imgProps={{ referrerPolicy: 'no-referrer' }}
-          alt={user.firstName + ' ' + user.lastName}
+          alt={user?.firstName + ' ' + user?.lastName}
           sx={{
             width: 36,
             height: 36,
             border: (theme) => `solid 2px ${theme.palette.background.default}`,
           }}
         >
-          {user.firstName?.charAt(0).toUpperCase()}
+          {user?.firstName.charAt(0).toUpperCase()}
         </Avatar>
       </IconButton>
 
@@ -91,9 +91,9 @@ export default function AccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2 }}>
-          <Typography variant="subtitle2">{user.firstName + ' ' + user.lastName}</Typography>
+          <Typography variant="subtitle2">{user?.firstName + ' ' + user?.lastName}</Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-            {user.email}
+            {user?.email}
           </Typography>
         </Box>
 

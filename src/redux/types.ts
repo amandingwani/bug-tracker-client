@@ -1,13 +1,13 @@
 // These types are not the same as their backend counterparts
 
 export interface UserState {
-    id?: number
-    google_id_sub?: string
-    email?: string
-    firstName?: string
+    id: number
+    google_id_sub: string
+    email: string
+    firstName: string
     lastName?: string
     picture?: string
-    createdAt?: Date
+    createdAt: Date
 }
 
 export interface ProjectsState {
