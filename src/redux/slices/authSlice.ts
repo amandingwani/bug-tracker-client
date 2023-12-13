@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { UserState } from '../types'
+import { loadProjects } from './projectsSlice'
 import { clearToken, loginWithGoogle } from 'src/services/auth'
 import getProfile from 'src/services/profile';
 
@@ -38,6 +39,7 @@ export const autoLogin = (): AppThunk => {
             .then((userData) => {
                 console.log({ profile: userData });
                 dispatch(setUser(userData))
+                dispatch(loadProjects());
             })
             .catch((err) => { throw err });
     }
@@ -47,9 +49,8 @@ export const googleLogin = (code: string): AppThunk => {
     return (dispatch) => {
         loginWithGoogle(code)
             .then(({ user, status }) => {
-                dispatch(
-                    setUser(user)
-                );
+                dispatch(setUser(user));
+                dispatch(loadProjects());
                 if (status === 201) {
                     dispatch(hideWelcomeBackMsg());
                 }
