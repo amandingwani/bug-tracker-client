@@ -2,6 +2,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { UserState } from '../types'
 import { clearToken } from 'src/services/auth'
+import getProfile from 'src/services/profile';
 
 // Define the initial state using that type
 const initialState: UserState = {}
@@ -23,6 +24,24 @@ export const userSlice = createSlice({
         }
     }
 })
+
+export const autoLogin = (): AppThunk => {
+    return (dispatch) => {
+        getProfile()
+            .then((userData) => {
+                console.log({ profile: userData });
+                dispatch(setUser({
+                    id: userData.id,
+                    google_id_sub: userData.google_id_sub,
+                    firstName: userData.firstName,
+                    lastName: userData.lastName,
+                    email: userData.email,
+                    picture: userData.picture
+                }))
+            })
+            .catch((err) => { throw err });
+    }
+}
 
 export const logout = (): AppThunk => {
     return (dispatch) => {
