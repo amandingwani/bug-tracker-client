@@ -1,11 +1,13 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit"
 import userReducer from 'src/redux/slices/userSlice'
+import projectsReducer from 'src/redux/slices/projectsSlice'
 import pageReducer from 'src/redux/slices/pageSlice'
 import miscReducer from 'src/redux/slices/miscSlice'
 
 export const store = configureStore({
     reducer: {
         user: userReducer,
+        projects: projectsReducer,
         page: pageReducer,
         misc: miscReducer
     },
