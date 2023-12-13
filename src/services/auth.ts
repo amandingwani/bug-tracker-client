@@ -1,4 +1,5 @@
 import { HttpStatusCode } from 'axios';
+
 import axios from 'src/config/axios';
 import { UserState } from 'src/redux/types';
 

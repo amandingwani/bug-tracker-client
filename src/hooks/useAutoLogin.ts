@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
 import { useAppDispatch } from 'src/redux/hooks'
-import { autoLogin } from 'src/redux/slices/userSlice';
+import { autoLogin } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 

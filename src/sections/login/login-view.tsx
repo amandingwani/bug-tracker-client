@@ -13,12 +13,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { alpha, useTheme } from '@mui/material/styles';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useGoogleLogin } from '@react-oauth/google';
-import { loginWithGoogle } from 'src/services/auth';
-import { useAppDispatch } from 'src/redux/hooks';
-import { setUser } from 'src/redux/slices/userSlice';
-import { setWelcomeBackMsg } from 'src/redux/slices/miscSlice';
-
+import useGoogleLogin from 'src/hooks/useGoogleLogin';
 import { useRouter } from 'src/routes/hooks';
 
 import { bgGradient } from 'src/theme/css';
@@ -35,35 +30,11 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const dispatch = useAppDispatch();
-
   const handleClick = () => {
     router.push('/dashboard');
   };
 
-  const handleGoogleLoginClick = useGoogleLogin({
-    flow: 'auth-code',
-    onSuccess: async (codeResponse) => {
-      const { user, status } = await loginWithGoogle(codeResponse.code);
-      console.log(user);
-      dispatch(
-        setUser({
-          id: user.id,
-          google_id_sub: user.google_id_sub,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          email: user.email,
-          picture: user.picture,
-        })
-      );
-      if (status === 201) {
-        dispatch(setWelcomeBackMsg(''));
-      }
-    },
-    onError: (err) => console.log(err),
-    // ux_mode: 'redirect',
-    // redirect_uri: 'http://localhost:5173/login',
-  });
+  const handleGoogleLoginClick = useGoogleLogin();
 
   const renderForm = (
     <>
