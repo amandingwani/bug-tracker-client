@@ -20,6 +20,7 @@ export interface Project {
     name: string;
     description?: string;
     owner: string;
+    status: ProjectStatus;
     createdAt: Date;
 }
 
@@ -36,6 +37,7 @@ export interface Ticket {
     projectId: number;
 }
 
+export type ProjectStatus = 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELED' | 'TESTING' | 'DEPLOYED'
 export type TicketType = 'BUG' | 'TASK'
 export type TicketPriority = 'URGENT' | 'HIGH' | 'NORMAL' | 'LOW'
 export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'TO_BE_TESTED' | 'CLOSED'
