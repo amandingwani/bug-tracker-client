@@ -1,18 +1,14 @@
 import { useState } from 'react';
 
 import Card from '@mui/material/Card';
-import Stack from '@mui/material/Stack';
 import Table from '@mui/material/Table';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
-import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 
-import { users } from 'src/_mock/user';
+// import { projects } from 'src/_mock/projects';
 
-import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from '../table-no-data';
@@ -22,14 +18,20 @@ import TableEmptyRows from '../table-empty-rows';
 import ProjectsTableToolbar from '../projects-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
+import { selectProjects } from 'src/redux/slices/projectsSlice';
+import { useAppSelector } from 'src/redux/hooks';
+import { Project } from 'src/redux/types';
+
 // ----------------------------------------------------------------------
 
 export default function ProjectsPage() {
+  const projects = useAppSelector(selectProjects);
+
+  const allProjects = [...projects.createdProjects, ...projects.otherProjects];
+
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
-
-  const [selected, setSelected] = useState([]);
 
   const [orderBy, setOrderBy] = useState('name');
 
@@ -37,7 +39,7 @@ export default function ProjectsPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleSort = (event: any, id: string) => {
+  const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
     if (id !== '') {
       setOrder(isAsc ? 'desc' : 'asc');
@@ -45,38 +47,16 @@ export default function ProjectsPage() {
     }
   };
 
-  const handleSelectAllClick = (event: any) => {
-    if (event.target.checked) {
-      const newSelecteds = users.map((n) => n.name);
-      setSelected(newSelecteds as never[]);
-      return;
-    }
-    setSelected([]);
-  };
-
-  const handleClick = (event: any, name: never) => {
-    const selectedIndex = selected.indexOf(name);
-    let newSelected: any = [];
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-    setSelected(newSelected);
-  };
-
-  const handleChangePage = (event: any, newPage: any) => {
+  const handleChangePage = (
+    _event: React.MouseEvent<HTMLButtonElement, MouseEvent> | null,
+    newPage: number
+  ) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: any) => {
+  const handleChangeRowsPerPage: React.ChangeEventHandler<
+    HTMLInputElement | HTMLTextAreaElement
+  > = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
@@ -86,8 +66,8 @@ export default function ProjectsPage() {
     setFilterName(event.target.value);
   };
 
-  const dataFiltered = applyFilter<typeof users>({
-    inputData: users,
+  const dataFiltered = applyFilter({
+    inputData: allProjects,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -96,14 +76,8 @@ export default function ProjectsPage() {
 
   return (
     <Container>
-      {/* <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}></Stack> */}
-
       <Card>
-        <ProjectsTableToolbar
-          numSelected={selected.length}
-          filterName={filterName}
-          onFilterName={handleFilterByName}
-        />
+        <ProjectsTableToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
@@ -111,39 +85,23 @@ export default function ProjectsPage() {
               <ProjectsTableHead
                 order={order}
                 orderBy={orderBy}
-                rowCount={users.length}
-                numSelected={selected.length}
                 onRequestSort={handleSort}
-                onSelectAllClick={handleSelectAllClick}
                 headLabel={[
-                  { id: 'name', label: 'Name' },
-                  { id: 'company', label: 'Company' },
-                  { id: 'role', label: 'Role' },
-                  { id: 'isVerified', label: 'Verified', align: 'center' },
+                  { id: 'name', label: 'Project Name' },
+                  { id: 'owner', label: 'Owner' },
                   { id: 'status', label: 'Status' },
-                  { id: '' },
                 ]}
               />
               <TableBody>
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: any) => (
-                    <ProjectTableRow
-                      key={row.id}
-                      name={row.name}
-                      role={row.role}
-                      status={row.status}
-                      company={row.company}
-                      avatarUrl={row.avatarUrl}
-                      isVerified={row.isVerified}
-                      selected={selected.indexOf(row.name as never) !== -1}
-                      handleClick={(event) => handleClick(event, row.name as never)}
-                    />
+                  .map((row: Project) => (
+                    <ProjectTableRow key={row.id} project={row} />
                   ))}
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, allProjects.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -152,15 +110,17 @@ export default function ProjectsPage() {
           </TableContainer>
         </Scrollbar>
 
-        <TablePagination
-          page={page}
-          component="div"
-          count={users.length}
-          rowsPerPage={rowsPerPage}
-          onPageChange={handleChangePage}
-          rowsPerPageOptions={[5, 10, 25]}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
+        {allProjects.length > 5 && (
+          <TablePagination
+            page={page}
+            component="div"
+            count={allProjects.length}
+            rowsPerPage={rowsPerPage}
+            onPageChange={handleChangePage}
+            rowsPerPageOptions={[5, 10, 25]}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        )}
       </Card>
     </Container>
   );

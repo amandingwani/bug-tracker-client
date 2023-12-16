@@ -1,10 +1,7 @@
 import { useState } from 'react';
 
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -12,34 +9,22 @@ import IconButton from '@mui/material/IconButton';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
+import { Project } from 'src/redux/types';
+import { LabelColor } from 'src/components/label/labelSubTypes';
 
 // ----------------------------------------------------------------------
 
 interface ProjectTableRowProps {
-  avatarUrl: string;
-  company: string;
-  handleClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  isVerified: string;
-  name: string;
-  role: string;
-  selected: boolean;
-  status: string;
+  key: number;
+  project: Project;
 }
 
-export default function ProjectTableRow({
-  selected,
-  name,
-  avatarUrl,
-  company,
-  role,
-  isVerified,
-  status,
-  handleClick,
-}: ProjectTableRowProps) {
-  const [open, setOpen] = useState(null);
+export default function ProjectTableRow(props: ProjectTableRowProps) {
+  const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
 
-  const handleOpenMenu = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    console.log({ event });
+  const project = props.project;
+
+  const handleOpenMenu = (event: React.MouseEvent) => {
     setOpen(event.currentTarget);
   };
 
@@ -47,30 +32,23 @@ export default function ProjectTableRow({
     setOpen(null);
   };
 
+  let statusLabelColor: LabelColor = 'success';
+  if (project.status === 'CANCELED') statusLabelColor = 'error';
+  else if (project.status === 'ON_HOLD') statusLabelColor = 'warning';
+
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
+      <TableRow hover tabIndex={-1}>
+        <TableCell component="th" scope="row">
+          <Typography variant="button" noWrap textTransform={'capitalize'}>
+            {project.name}
+          </Typography>
         </TableCell>
 
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src={avatarUrl} />
-            <Typography variant="subtitle2" noWrap>
-              {name}
-            </Typography>
-          </Stack>
-        </TableCell>
-
-        <TableCell>{company}</TableCell>
-
-        <TableCell>{role}</TableCell>
-
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
+        <TableCell>{project.owner.firstName + ' ' + project.owner.lastName}</TableCell>
 
         <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
+          <Label color={statusLabelColor}>{project.status}</Label>
         </TableCell>
 
         <TableCell align="right">
