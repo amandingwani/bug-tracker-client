@@ -9,7 +9,7 @@ import IconButton from '@mui/material/IconButton';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { Project } from 'src/redux/types';
+import { Project, ProjectStatusMap } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 
 // ----------------------------------------------------------------------
@@ -48,7 +48,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         <TableCell>{project.owner.firstName + ' ' + project.owner.lastName}</TableCell>
 
         <TableCell>
-          <Label color={statusLabelColor}>{project.status}</Label>
+          <Label color={statusLabelColor}>{ProjectStatusMap[project.status]}</Label>
         </TableCell>
 
         <TableCell align="right">
