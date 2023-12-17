@@ -58,13 +58,13 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         </TableCell>
 
         <TableCell>{TicketStatusMap[ticket.status]}</TableCell>
-        <TableCell>{ticket.type}</TableCell>
+        <TableCell>{ticket.type ? ticket.type : '-'}</TableCell>
 
         <TableCell>
-          <Label color={priorityLabelColor}>{ticket.priority}</Label>
+          <Label color={priorityLabelColor}>{ticket.priority ? ticket.priority : '-'}</Label>
         </TableCell>
 
-        <TableCell>{ticket.createdAt}</TableCell>
+        <TableCell>{new Date(ticket.createdAt).toUTCString()}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>

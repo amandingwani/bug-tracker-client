@@ -41,7 +41,7 @@ export interface Ticket {
     type?: TicketType;
     priority?: TicketPriority;
     status: TicketStatus;
-    createdAt: Date;
+    createdAt: string;
     projectId: number;
     project: { name: string }
 }
