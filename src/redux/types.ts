@@ -1,5 +1,10 @@
 // These types are not the same as their backend counterparts
 
+type FullName = {
+    firstName: string,
+    lastName: string
+}
+
 export interface UserState {
     id: number
     google_id_sub: string
@@ -19,8 +24,9 @@ export interface Project {
     id: number;
     name: string;
     description?: string;
-    owner: string;
+    owner: FullName;
     status: ProjectStatus;
+    tickets: Ticket[];
     createdAt: Date;
 }
 
@@ -28,8 +34,8 @@ export interface Ticket {
     id: number;
     title: string;
     description?: string;
-    author: string;
-    asignee?: string;
+    author: FullName;
+    asignee?: FullName;
     type?: TicketType;
     priority?: TicketPriority;
     status: TicketStatus;
@@ -38,6 +44,23 @@ export interface Ticket {
 }
 
 export type ProjectStatus = 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELED' | 'TESTING' | 'DEPLOYED'
+export const ProjectStatusMap = {
+    'OPEN': 'OPEN',
+    'IN_PROGRESS': 'IN PROGRESS',
+    'ON_HOLD': 'ON HOLD',
+    'COMPLETED': 'COMPLETED',
+    'CANCELED': 'CANCELED',
+    'TESTING': 'TESTING',
+    'DEPLOYED': 'DEPLOYED'
+}
+
 export type TicketType = 'BUG' | 'TASK'
 export type TicketPriority = 'URGENT' | 'HIGH' | 'NORMAL' | 'LOW'
+
 export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'TO_BE_TESTED' | 'CLOSED'
+export const TicketStatusMap = {
+    'OPEN': 'OPEN',
+    'IN_PROGRESS': 'IN PROGRESS',
+    'TO_BE_TESTED': 'TO BE TESTED',
+    'CLOSED': 'CLOSED'
+}
