@@ -1,10 +1,8 @@
 import { useState } from 'react';
 
-import Stack from '@mui/material/Stack';
-import Avatar from '@mui/material/Avatar';
 import Popover from '@mui/material/Popover';
 import TableRow from '@mui/material/TableRow';
-import Checkbox from '@mui/material/Checkbox';
+import Stack from '@mui/material/Stack';
 import MenuItem from '@mui/material/MenuItem';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -12,34 +10,22 @@ import IconButton from '@mui/material/IconButton';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
+import { TicketStatusMap, Ticket } from 'src/redux/types';
+import { LabelColor } from 'src/components/label/labelSubTypes';
 
 // ----------------------------------------------------------------------
 
-interface UserTableRowProps {
-  avatarUrl: string;
-  company: string;
-  handleClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
-  isVerified: string;
-  name: string;
-  role: string;
-  selected: boolean;
-  status: string;
+interface ProjectTableRowProps {
+  key: number;
+  ticket: Ticket;
 }
 
-export default function UserTableRow({
-  selected,
-  name,
-  avatarUrl,
-  company,
-  role,
-  isVerified,
-  status,
-  handleClick,
-}: UserTableRowProps) {
-  const [open, setOpen] = useState(null);
+export default function ProjectTableRow(props: ProjectTableRowProps) {
+  const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
 
-  const handleOpenMenu = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    console.log({ event });
+  const ticket = props.ticket;
+
+  const handleOpenMenu = (event: React.MouseEvent) => {
     setOpen(event.currentTarget);
   };
 
@@ -47,31 +33,38 @@ export default function UserTableRow({
     setOpen(null);
   };
 
+  let priorityLabelColor: LabelColor = 'default';
+  if (ticket.priority === 'URGENT') priorityLabelColor = 'error';
+  else if (ticket.priority === 'HIGH') priorityLabelColor = 'warning';
+
   return (
     <>
-      <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
-        <TableCell padding="checkbox">
-          <Checkbox disableRipple checked={selected} onChange={handleClick} />
-        </TableCell>
-
+      <TableRow hover tabIndex={-1}>
         <TableCell component="th" scope="row" padding="none">
           <Stack direction="row" alignItems="center" spacing={2}>
-            <Avatar alt={name} src={avatarUrl} />
             <Typography variant="subtitle2" noWrap>
-              {name}
+              {ticket.id}
+            </Typography>
+            <Typography variant="subtitle2" noWrap>
+              {ticket.title}
             </Typography>
           </Stack>
         </TableCell>
 
-        <TableCell>{company}</TableCell>
+        <TableCell>{ticket.project.name}</TableCell>
+        <TableCell>{ticket.author.firstName + ' ' + ticket.author.lastName}</TableCell>
+        <TableCell>
+          {ticket.asignee ? ticket.asignee.firstName + ' ' + ticket.asignee.lastName : 'Unassigned'}
+        </TableCell>
 
-        <TableCell>{role}</TableCell>
-
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
+        <TableCell>{TicketStatusMap[ticket.status]}</TableCell>
+        <TableCell>{ticket.type}</TableCell>
 
         <TableCell>
-          <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
+          <Label color={priorityLabelColor}>{ticket.priority}</Label>
         </TableCell>
+
+        <TableCell>{ticket.createdAt}</TableCell>
 
         <TableCell align="right">
           <IconButton onClick={handleOpenMenu}>

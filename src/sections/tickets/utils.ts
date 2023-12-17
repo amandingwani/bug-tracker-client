@@ -1,3 +1,5 @@
+import { Ticket } from "src/redux/types";
+
 export const visuallyHidden = {
   border: 0,
   margin: -1,
@@ -35,7 +37,13 @@ export function getComparator(order: 'asc' | 'desc', orderBy: string) {
     : (a: any, b: any) => -descendingComparator(a, b, orderBy);
 }
 
-export function applyFilter({ inputData, comparator, filterName }: any) {
+type ApplyFilterProps = {
+  inputData: any,
+  comparator: ReturnType<typeof getComparator>
+  filterName: string,
+}
+
+export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
   const stabilizedThis = inputData.map((el: any, index: number) => [el, index]);
 
   stabilizedThis.sort((a: any, b: any) => {
@@ -48,9 +56,15 @@ export function applyFilter({ inputData, comparator, filterName }: any) {
 
   if (filterName) {
     inputData = inputData.filter(
-      (user: any) => user.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (project: any) => project.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 
   return inputData;
+}
+
+export function filterTicketsAssignedToMe(tickets: Ticket[], userId: number | undefined) {
+  if (userId) {
+    return tickets.filter((ticket) => ticket.asigneeId === userId);
+  }
 }
