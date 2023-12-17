@@ -35,12 +35,15 @@ export interface Ticket {
     title: string;
     description?: string;
     author: FullName;
+    authorId: number
     asignee?: FullName;
+    asigneeId?: number;
     type?: TicketType;
     priority?: TicketPriority;
     status: TicketStatus;
     createdAt: Date;
     projectId: number;
+    project: { name: string }
 }
 
 export type ProjectStatus = 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELED' | 'TESTING' | 'DEPLOYED'
