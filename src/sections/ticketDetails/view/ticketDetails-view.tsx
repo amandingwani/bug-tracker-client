@@ -17,7 +17,7 @@ export default function TicketDetailsPage({ ticket }: { ticket: Ticket }) {
 
   return (
     <Container maxWidth="xl">
-      <Grid container spacing={3}>
+      <Grid container spacing={3} sx={{ justifyContent: 'space-around' }}>
         <Grid xs={12} sm={6} md={3} sx={{ p: 2 }}>
           <TicketInfoWidget
             title="Type"
