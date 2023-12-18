@@ -16,7 +16,13 @@ import TicketTableRow from '../tickets-table-row';
 import TicketsTableHead from '../tickets-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import TicketsTableToolbar from '../tickets-table-toolbar';
-import { emptyRows, applyFilter, getComparator, filterTicketsAssignedToMe } from '../utils';
+import {
+  emptyRows,
+  applyFilter,
+  getComparator,
+  filterTicketsAssignedToMe,
+  filterTicketsCreatedByMe,
+} from '../utils';
 
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
@@ -25,15 +31,25 @@ import { Ticket } from 'src/redux/types';
 
 // ----------------------------------------------------------------------
 
-export default function ProjectsPage() {
+export default function TicketsPage() {
   const projects = useAppSelector(selectProjects);
   const user = useAppSelector(selectUser);
+
+  const [filterSelected, setFilterSelected] = useState({ assign: true, created: false });
 
   const allProjects = [...projects.createdProjects, ...projects.otherProjects];
 
   const allTickets = allProjects.map((project) => [...project.tickets]).flat();
 
-  const ticketAssignedToMe = filterTicketsAssignedToMe(allTickets, user?.id);
+  const ticketsAssignedToMe = filterTicketsAssignedToMe(allTickets, user?.id);
+  const ticketsCreatedByMe = filterTicketsCreatedByMe(allTickets, user?.id);
+
+  let ticketsToDisplay: Ticket[] | null = [];
+
+  if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
+    ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
+  else if (filterSelected.assign) ticketsToDisplay = ticketsAssignedToMe;
+  else if (filterSelected.created) ticketsToDisplay = ticketsCreatedByMe;
 
   const [page, setPage] = useState(0);
 
@@ -44,6 +60,18 @@ export default function ProjectsPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (event.target.name === 'assign') {
+      if (checked) {
+        ticketsToDisplay = ticketsAssignedToMe;
+      } else {
+        ticketsToDisplay;
+      }
+      setFilterSelected({ ...filterSelected, assign: checked });
+    } else if (event.target.name === 'created')
+      setFilterSelected({ ...filterSelected, created: checked });
+  };
 
   const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -73,7 +101,7 @@ export default function ProjectsPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: ticketAssignedToMe,
+    inputData: ticketsToDisplay,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -83,7 +111,12 @@ export default function ProjectsPage() {
   return (
     <Container>
       <Card>
-        <TicketsTableToolbar filterName={filterName} onFilterName={handleFilterByName} />
+        <TicketsTableToolbar
+          filterName={filterName}
+          onFilterName={handleFilterByName}
+          filterSelected={filterSelected}
+          handleCheckboxClick={handleCheckboxClick}
+        />
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>

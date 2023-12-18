@@ -1,3 +1,4 @@
+import _ from "lodash";
 import { Ticket } from "src/redux/types";
 
 export const visuallyHidden = {
@@ -44,6 +45,8 @@ type ApplyFilterProps = {
 }
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
+  inputData = _.uniqBy(inputData, 'id');
+
   const stabilizedThis = inputData.map((el: any, index: number) => [el, index]);
 
   stabilizedThis.sort((a: any, b: any) => {
@@ -67,4 +70,12 @@ export function filterTicketsAssignedToMe(tickets: Ticket[], userId: number | un
   if (userId) {
     return tickets.filter((ticket) => ticket.asigneeId === userId);
   }
+  return null;
+}
+
+export function filterTicketsCreatedByMe(tickets: Ticket[], userId: number | undefined) {
+  if (userId) {
+    return tickets.filter((ticket) => ticket.authorId === userId);
+  }
+  return null;
 }
