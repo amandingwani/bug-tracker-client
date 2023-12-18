@@ -58,7 +58,16 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           </Typography>
         </TableCell>
 
-        <TableCell>{ticket.project.name}</TableCell>
+        <TableCell>
+          <Typography
+            variant="subtitle2"
+            noWrap
+            component={RouterLink}
+            href={`/projects/${ticket.projectId}`}
+          >
+            {ticket.project.name}
+          </Typography>
+        </TableCell>
         <TableCell>{ticket.author.firstName + ' ' + ticket.author.lastName}</TableCell>
         <TableCell>
           {ticket.asignee ? ticket.asignee.firstName + ' ' + ticket.asignee.lastName : 'Unassigned'}

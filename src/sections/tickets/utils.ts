@@ -39,7 +39,7 @@ export function getComparator(order: 'asc' | 'desc', orderBy: string) {
 }
 
 type ApplyFilterProps = {
-  inputData: any,
+  inputData: Ticket[],
   comparator: ReturnType<typeof getComparator>
   filterName: string,
 }
@@ -47,7 +47,7 @@ type ApplyFilterProps = {
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
   inputData = _.uniqBy(inputData, 'id');
 
-  const stabilizedThis = inputData.map((el: any, index: number) => [el, index]);
+  const stabilizedThis = inputData.map((el: Ticket, index: number) => [el, index]);
 
   stabilizedThis.sort((a: any, b: any) => {
     const order = comparator(a[0], b[0]);
@@ -59,7 +59,7 @@ export function applyFilter({ inputData, comparator, filterName }: ApplyFilterPr
 
   if (filterName) {
     inputData = inputData.filter(
-      (project: any) => project.name.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (ticket: Ticket) => ticket.title.toLowerCase().indexOf(filterName.toLowerCase()) !== -1
     );
   }
 

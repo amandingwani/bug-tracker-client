@@ -9,6 +9,8 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 
+import { RouterLink } from 'src/routes/components';
+
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
@@ -136,7 +138,12 @@ function Details({ ticket }: { ticket: Ticket }) {
         <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
           {'Project:'}
         </Typography>
-        <Typography variant="body2" noWrap>
+        <Typography
+          variant="body2"
+          noWrap
+          component={RouterLink}
+          href={`/projects/${ticket.projectId}`}
+        >
           {project.name}
         </Typography>
       </Stack>

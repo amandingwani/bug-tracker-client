@@ -55,7 +55,7 @@ export default function TicketsPage() {
 
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('title');
 
   const [filterName, setFilterName] = useState('');
 
