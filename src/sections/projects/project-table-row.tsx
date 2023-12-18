@@ -7,6 +7,8 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { RouterLink } from 'src/routes/components';
+
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { Project, ProjectStatusMap } from 'src/redux/types';
@@ -40,7 +42,13 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
     <>
       <TableRow hover tabIndex={-1}>
         <TableCell component="th" scope="row">
-          <Typography variant="button" noWrap textTransform={'capitalize'}>
+          <Typography
+            variant="button"
+            noWrap
+            textTransform={'capitalize'}
+            component={RouterLink}
+            href={`/projects/${project.id}`}
+          >
             {project.name}
           </Typography>
         </TableCell>
