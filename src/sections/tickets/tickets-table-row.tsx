@@ -40,15 +40,15 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
   return (
     <>
       <TableRow hover tabIndex={-1}>
-        <TableCell component="th" scope="row" padding="none">
-          <Stack direction="row" alignItems="center" spacing={2}>
-            <Typography variant="subtitle2" noWrap>
-              {ticket.id}
-            </Typography>
-            <Typography variant="subtitle2" noWrap>
-              {ticket.title}
-            </Typography>
-          </Stack>
+        <TableCell component="th" scope="row">
+          <Typography variant="subtitle2" noWrap>
+            {ticket.id}
+          </Typography>
+        </TableCell>
+        <TableCell>
+          <Typography variant="subtitle2" noWrap>
+            {ticket.title}
+          </Typography>
         </TableCell>
 
         <TableCell>{ticket.project.name}</TableCell>

@@ -21,7 +21,7 @@ import { emptyRows, applyFilter, getComparator, filterTicketsAssignedToMe } from
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppSelector } from 'src/redux/hooks';
-import { Project, Ticket } from 'src/redux/types';
+import { Ticket } from 'src/redux/types';
 
 // ----------------------------------------------------------------------
 
@@ -87,13 +87,13 @@ export default function ProjectsPage() {
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
+            <Table sx={{ minWidth: 800 }} stickyHeader>
               <ProjectsTableHead
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleSort}
                 headLabel={[
-                  { id: 'id', label: 'ID' },
+                  { id: 'id', label: 'ID', align: 'center' },
                   { id: 'title', label: 'Title' },
                   { id: 'project', label: 'Project' },
                   { id: 'author', label: 'Author' },
