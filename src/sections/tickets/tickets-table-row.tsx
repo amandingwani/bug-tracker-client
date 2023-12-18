@@ -8,6 +8,8 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { RouterLink } from 'src/routes/components';
+
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { TicketStatusMap, Ticket } from 'src/redux/types';
@@ -46,7 +48,12 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           </Typography>
         </TableCell>
         <TableCell>
-          <Typography variant="subtitle2" noWrap>
+          <Typography
+            variant="subtitle2"
+            noWrap
+            component={RouterLink}
+            href={`/projects/${ticket.projectId}/tickets/${ticket.id}`}
+          >
             {ticket.title}
           </Typography>
         </TableCell>
