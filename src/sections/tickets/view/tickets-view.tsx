@@ -101,7 +101,8 @@ export default function ProjectsPage() {
                   { id: 'status', label: 'Status' },
                   { id: 'type', label: 'Type' },
                   { id: 'priority', label: 'Priority' },
-                  { id: 'createdAt', label: 'Created At' },
+                  { id: 'createdAt', label: 'Created At', minWidth: 120 },
+                  { id: '' },
                 ]}
               />
               <TableBody>

@@ -90,6 +90,7 @@ export default function ProjectsPage() {
                   { id: 'name', label: 'Project Name' },
                   { id: 'owner', label: 'Owner' },
                   { id: 'status', label: 'Status' },
+                  { id: '' },
                 ]}
               />
               <TableBody>
