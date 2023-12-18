@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 
 // ----------------------------------------------------------------------
 
-export default function ProjectsPage() {
+export default function ProjectDetailsPage() {
   const { projectId } = useParams();
   const id = parseInt(projectId!);
   const projects = useAppSelector(selectProjects);

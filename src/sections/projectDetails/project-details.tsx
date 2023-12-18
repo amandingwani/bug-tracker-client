@@ -9,8 +9,6 @@ import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import CardHeader from '@mui/material/CardHeader';
 
-import { fToNow } from 'src/utils/format-time';
-
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
@@ -43,7 +41,7 @@ interface AppInnerProps {
 }
 
 export default function ProjectDetails({ title, project }: AppInnerProps) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
