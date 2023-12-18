@@ -10,15 +10,15 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-interface ProjectsTableToolbarProps {
+interface TicketsTableToolbarProps {
   filterName: string;
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
 
-export default function ProjectsTableToolbar({
+export default function TicketsTableToolbar({
   filterName,
   onFilterName,
-}: ProjectsTableToolbarProps) {
+}: TicketsTableToolbarProps) {
   return (
     <Toolbar
       sx={{
@@ -32,7 +32,7 @@ export default function ProjectsTableToolbar({
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
-          placeholder="Search project..."
+          placeholder="Search ticket..."
           startAdornment={
             <InputAdornment position="start">
               <Iconify
@@ -49,7 +49,7 @@ export default function ProjectsTableToolbar({
         </Tooltip>
       </Stack>
       <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
-        New Project
+        New Ticket
       </Button>
     </Toolbar>
   );

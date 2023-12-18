@@ -12,10 +12,10 @@ import TablePagination from '@mui/material/TablePagination';
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from '../table-no-data';
-import ProjectTableRow from '../tickets-table-row';
-import ProjectsTableHead from '../tickets-table-head';
+import TicketTableRow from '../tickets-table-row';
+import TicketsTableHead from '../tickets-table-head';
 import TableEmptyRows from '../table-empty-rows';
-import ProjectsTableToolbar from '../tickets-table-toolbar';
+import TicketsTableToolbar from '../tickets-table-toolbar';
 import { emptyRows, applyFilter, getComparator, filterTicketsAssignedToMe } from '../utils';
 
 import { selectProjects } from 'src/redux/slices/projectsSlice';
@@ -83,12 +83,12 @@ export default function ProjectsPage() {
   return (
     <Container>
       <Card>
-        <ProjectsTableToolbar filterName={filterName} onFilterName={handleFilterByName} />
+        <TicketsTableToolbar filterName={filterName} onFilterName={handleFilterByName} />
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
             <Table sx={{ minWidth: 800 }} stickyHeader>
-              <ProjectsTableHead
+              <TicketsTableHead
                 order={order}
                 orderBy={orderBy}
                 onRequestSort={handleSort}
@@ -109,7 +109,7 @@ export default function ProjectsPage() {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: Ticket) => (
-                    <ProjectTableRow key={row.id} ticket={row} />
+                    <TicketTableRow key={row.id} ticket={row} />
                   ))}
 
                 <TableEmptyRows
