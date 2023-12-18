@@ -74,7 +74,7 @@ export default function TicketsTableToolbar({
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
           slotProps={{
             paper: {
-              sx: { width: 140 },
+              sx: { width: 180 },
             },
           }}
         >
