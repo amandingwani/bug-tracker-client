@@ -41,10 +41,10 @@ export default function TicketsPage() {
 
   const allTickets = allProjects.map((project) => [...project.tickets]).flat();
 
-  const ticketsAssignedToMe = filterTicketsAssignedToMe(allTickets, user?.id);
-  const ticketsCreatedByMe = filterTicketsCreatedByMe(allTickets, user?.id);
+  const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
+  const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
 
-  let ticketsToDisplay: Ticket[] | null = [];
+  let ticketsToDisplay: Ticket[] = [];
 
   if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
     ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
@@ -147,7 +147,7 @@ export default function TicketsPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, allProjects.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, ticketsToDisplay.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -156,11 +156,11 @@ export default function TicketsPage() {
           </TableContainer>
         </Scrollbar>
 
-        {allProjects.length > 5 && (
+        {ticketsToDisplay.length > 5 && (
           <TablePagination
             page={page}
             component="div"
-            count={allProjects.length}
+            count={ticketsToDisplay.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}

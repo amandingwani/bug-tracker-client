@@ -25,6 +25,7 @@ export interface Project {
     name: string;
     description?: string;
     owner: FullName;
+    ownerId: number,
     status: ProjectStatus;
     tickets: Ticket[];
     createdAt: Date;

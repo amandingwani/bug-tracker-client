@@ -37,7 +37,7 @@ export default function ProjectsPage() {
         <title> {titleString} | Bug Ninja </title>
       </Helmet>
 
-      <ProjectDetailsView />
+      {project && <ProjectDetailsView project={project} />}
     </>
   );
 }
