@@ -39,8 +39,8 @@ export interface Ticket {
     authorId: number
     asignee?: FullName;
     asigneeId?: number;
-    type?: TicketType;
-    priority?: TicketPriority;
+    type: TicketType;
+    priority: TicketPriority;
     status: TicketStatus;
     createdAt: string;
     projectId: number;
