@@ -13,11 +13,13 @@ import Iconify from 'src/components/iconify';
 interface ProjectsTableToolbarProps {
   filterName: string;
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onNewProjectClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function ProjectsTableToolbar({
   filterName,
   onFilterName,
+  onNewProjectClick,
 }: ProjectsTableToolbarProps) {
   return (
     <Toolbar
@@ -48,7 +50,12 @@ export default function ProjectsTableToolbar({
           </IconButton>
         </Tooltip>
       </Stack>
-      <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+      <Button
+        onClick={onNewProjectClick}
+        variant="contained"
+        color="inherit"
+        startIcon={<Iconify icon="eva:plus-fill" />}
+      >
         New Project
       </Button>
     </Toolbar>

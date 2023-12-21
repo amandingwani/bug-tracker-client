@@ -21,6 +21,7 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { useAppSelector } from 'src/redux/hooks';
 import { Project } from 'src/redux/types';
+import CreateProject from '../create-project';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +39,8 @@ export default function ProjectsPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -66,6 +69,12 @@ export default function ProjectsPage() {
     setFilterName(event.target.value);
   };
 
+  const onNewProjectClick: React.MouseEventHandler<HTMLButtonElement> = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setOpenDrawer(true);
+  };
+
   const dataFiltered = applyFilter({
     inputData: allProjects,
     comparator: getComparator(order, orderBy),
@@ -76,8 +85,14 @@ export default function ProjectsPage() {
 
   return (
     <Container>
+      <CreateProject openDrawer={openDrawer} onCloseDrawer={() => setOpenDrawer(false)} />
+
       <Card>
-        <ProjectsTableToolbar filterName={filterName} onFilterName={handleFilterByName} />
+        <ProjectsTableToolbar
+          filterName={filterName}
+          onFilterName={handleFilterByName}
+          onNewProjectClick={onNewProjectClick}
+        />
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
