@@ -1,4 +1,4 @@
-import { FormEventHandler } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
@@ -25,32 +25,40 @@ import MenuItem from '@mui/material/MenuItem';
 import { useForm, SubmitHandler } from 'react-hook-form';
 
 import Scrollbar from 'src/components/scrollbar';
-import { ProjectStatus, ProjectStatusMap } from 'src/redux/types';
+
+import { useAppDispatch } from 'src/redux/hooks';
+import { createAndLoadProject } from 'src/redux/slices/projectsSlice';
+import { ProjectCreateInput, ProjectStatus, ProjectStatusMap } from 'src/redux/types';
 
 interface CreateProjectProps {
   openDrawer: boolean;
   onCloseDrawer: () => void;
 }
 
-type CreateProjectFormInputs = {
-  name: string;
-  description?: string;
-  status: ProjectStatus;
-};
+// type CreateProjectFormInputs = {
+//   name: string;
+//   description?: string;
+//   status: ProjectStatus;
+// };
 
 export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProjectProps) {
+  const [loading, setLoading] = useState(false);
+
+  const dispatch = useAppDispatch();
+
   const WIDTH = '80%';
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<CreateProjectFormInputs>();
-  const onSubmit: SubmitHandler<CreateProjectFormInputs> = (data) => console.log(data);
+  } = useForm<ProjectCreateInput>();
 
-  // console.log(watch('name'));
-  // console.log(errors);
+  const onSubmit: SubmitHandler<ProjectCreateInput> = (data) => {
+    console.log(data);
+    setLoading(true);
+    dispatch(createAndLoadProject(data, setLoading, onCloseDrawer));
+  };
 
   const { ref: nameInputRef, ...nameInputProps } = register('name', {
     required: 'Please enter a project name',
@@ -247,6 +255,7 @@ export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProje
                 type="submit"
                 variant="contained"
                 color="inherit"
+                loading={loading}
               >
                 Submit
               </LoadingButton>

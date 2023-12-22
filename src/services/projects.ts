@@ -1,5 +1,5 @@
 import axios from 'src/config/axios';
-import { ProjectsState } from 'src/redux/types';
+import { ProjectCreateInput, ProjectsState, Project } from 'src/redux/types';
 
 export const getProjects = () => {
     return new Promise<ProjectsState>((resolve, reject) => {
@@ -9,3 +9,12 @@ export const getProjects = () => {
             .catch((err) => reject(err));
     });
 };
+
+export const createProject = (data: ProjectCreateInput) => {
+    return new Promise<Project>((resolve, reject) => {
+        axios
+            .post('/projects', data)
+            .then((res) => resolve(res.data))
+            .catch((err) => reject(err));
+    });
+}

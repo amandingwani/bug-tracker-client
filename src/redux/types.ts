@@ -68,3 +68,9 @@ export const TicketStatusMap = {
     'TO_BE_TESTED': 'TO BE TESTED',
     'CLOSED': 'CLOSED'
 }
+
+export type ProjectCreateInput = {
+    name: string,
+    description?: string;
+    status: ProjectStatus;
+}
