@@ -33,17 +33,29 @@ import CreateTicket from '../create-ticket';
 
 // ----------------------------------------------------------------------
 
-export default function TicketsPage() {
-  const projects = useAppSelector(selectProjects);
+interface TicketsPageProps {
+  filterSelected?: { assign: boolean; created: boolean };
+  tickets?: Ticket[];
+}
+
+export default function TicketsPage(props: TicketsPageProps) {
   const user = useAppSelector(selectUser);
+  const projects = useAppSelector(selectProjects);
+
+  let allTickets: Ticket[] = [];
+
+  if (props.tickets) {
+    allTickets = props.tickets;
+  } else {
+    const allProjects = [...projects.createdProjects, ...projects.otherProjects];
+    allTickets = allProjects.map((project) => [...project.tickets]).flat();
+  }
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const [filterSelected, setFilterSelected] = useState({ assign: true, created: false });
-
-  const allProjects = [...projects.createdProjects, ...projects.otherProjects];
-
-  const allTickets = allProjects.map((project) => [...project.tickets]).flat();
+  const [filterSelected, setFilterSelected] = useState(
+    props.filterSelected ?? { assign: true, created: false }
+  );
 
   const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
   const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
@@ -141,12 +153,12 @@ export default function TicketsPage() {
                 headLabel={[
                   { id: 'id', label: 'ID', align: 'center' },
                   { id: 'title', label: 'Title' },
-                  { id: 'project', label: 'Project' },
                   { id: 'author', label: 'Author' },
                   { id: 'asignee', label: 'Assignee' },
                   { id: 'status', label: 'Status' },
                   { id: 'type', label: 'Type' },
                   { id: 'priority', label: 'Priority' },
+                  { id: 'project', label: 'Project' },
                   { id: 'createdAt', label: 'Created At', minWidth: 120 },
                   { id: '' },
                 ]}
