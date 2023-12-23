@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
-import type { Project, ProjectCreateInput, ProjectsState } from '../types'
-import { getProjects, createProject } from 'src/services/projects'
+import type { Project, ProjectCreateInput, ProjectsState, Ticket, TicketCreateInput } from '../types'
+import { getProjects, createProject, createTicket } from 'src/services/projects'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -23,6 +23,10 @@ export const projectsSlice = createSlice({
         },
         setCreatedProject: (state, action: PayloadAction<Project>) => {
             state.createdProjects.push(action.payload)
+        },
+        setCreatedTicket: (state, action: PayloadAction<Ticket>) => {
+            state.createdProjects.find(p => p.id === action.payload.projectId)?.tickets.push(action.payload)
+            state.otherProjects.find(p => p.id === action.payload.projectId)?.tickets.push(action.payload)
         },
     }
 })
@@ -47,7 +51,19 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
     }
 }
 
-export const { setProjects, setCreatedProject } = projectsSlice.actions
+export const createAndLoadTicket = (data: TicketCreateInput, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void): AppThunk => {
+    return (dispatch) => {
+        createTicket(data)
+            .then((ticket) => {
+                dispatch(setCreatedTicket(ticket))
+                setLoading(false)
+                closeDrawer();
+            })
+            .catch((err) => { throw err });
+    }
+}
+
+export const { setProjects, setCreatedProject, setCreatedTicket } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
