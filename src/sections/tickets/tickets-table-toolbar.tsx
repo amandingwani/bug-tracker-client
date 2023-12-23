@@ -19,6 +19,7 @@ interface TicketsTableToolbarProps {
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   filterSelected: { assign: boolean; created: boolean };
   handleCheckboxClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  onNewTicketClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function TicketsTableToolbar({
@@ -26,6 +27,7 @@ export default function TicketsTableToolbar({
   onFilterName,
   filterSelected,
   handleCheckboxClick,
+  onNewTicketClick,
 }: TicketsTableToolbarProps) {
   const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
 
@@ -97,7 +99,12 @@ export default function TicketsTableToolbar({
           </Typography>
         </Popover>
       </Stack>
-      <Button variant="contained" color="inherit" startIcon={<Iconify icon="eva:plus-fill" />}>
+      <Button
+        onClick={onNewTicketClick}
+        variant="contained"
+        color="inherit"
+        startIcon={<Iconify icon="eva:plus-fill" />}
+      >
         New Ticket
       </Button>
     </Toolbar>

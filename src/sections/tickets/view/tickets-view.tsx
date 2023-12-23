@@ -29,11 +29,15 @@ import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppSelector } from 'src/redux/hooks';
 import { Ticket } from 'src/redux/types';
 
+import CreateTicket from '../create-ticket';
+
 // ----------------------------------------------------------------------
 
 export default function TicketsPage() {
   const projects = useAppSelector(selectProjects);
   const user = useAppSelector(selectUser);
+
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const [filterSelected, setFilterSelected] = useState({ assign: true, created: false });
 
@@ -100,6 +104,12 @@ export default function TicketsPage() {
     setFilterName(event.target.value);
   };
 
+  const onNewTicketClick: React.MouseEventHandler<HTMLButtonElement> = (
+    e: React.MouseEvent<HTMLButtonElement>
+  ) => {
+    setOpenDrawer(true);
+  };
+
   const dataFiltered = applyFilter({
     inputData: ticketsToDisplay,
     comparator: getComparator(order, orderBy),
@@ -110,12 +120,15 @@ export default function TicketsPage() {
 
   return (
     <Container>
+      <CreateTicket openDrawer={openDrawer} onCloseDrawer={() => setOpenDrawer(false)} />
+
       <Card>
         <TicketsTableToolbar
           filterName={filterName}
           onFilterName={handleFilterByName}
           filterSelected={filterSelected}
           handleCheckboxClick={handleCheckboxClick}
+          onNewTicketClick={onNewTicketClick}
         />
 
         <Scrollbar>

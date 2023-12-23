@@ -1,0 +1,267 @@
+import { useState } from 'react';
+import Box from '@mui/material/Box';
+import Stack from '@mui/material/Stack';
+import Drawer from '@mui/material/Drawer';
+import Button from '@mui/material/Button';
+import Avatar from '@mui/material/Avatar';
+import Typography from '@mui/material/Typography';
+
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Input from '@mui/material/Input';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormLabel from '@mui/material/FormLabel';
+import IconButton from '@mui/material/IconButton';
+import FormControl from '@mui/material/FormControl';
+import Autocomplete from '@mui/material/Autocomplete';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import InputAdornment from '@mui/material/InputAdornment';
+import FormHelperText from '@mui/material/FormHelperText';
+import TextField from '@mui/material/TextField';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+import Scrollbar from 'src/components/scrollbar';
+
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { createAndLoadTicket, selectProjects } from 'src/redux/slices/projectsSlice';
+import {
+  TicketCreateInput,
+  TicketStatusMap,
+  Project,
+  TicketStatus,
+  TicketPriorityArr,
+  TicketTypeArr,
+} from 'src/redux/types';
+
+interface CreateTicketProps {
+  openDrawer: boolean;
+  onCloseDrawer: () => void;
+}
+
+export default function CreateTicket({ openDrawer, onCloseDrawer }: CreateTicketProps) {
+  const [loading, setLoading] = useState(false);
+
+  const projects = useAppSelector(selectProjects);
+  const dispatch = useAppDispatch();
+
+  const allProjects = [...projects.createdProjects, ...projects.otherProjects];
+
+  const WIDTH = '80%';
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TicketCreateInput>();
+
+  const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
+    console.log(data);
+    setLoading(true);
+    dispatch(createAndLoadTicket(data, setLoading, onCloseDrawer));
+  };
+
+  const { ref: titleInputRef, ...titleInputProps } = register('title', {
+    required: 'Please enter a ticket title',
+  });
+
+  const { ref: descriptionInputRef, ...descriptionInputProps } = register('description');
+
+  const { ref: projectIdInputRef, ...projectIdInputProps } = register('projectId', {
+    required: 'Please select a project',
+  });
+
+  const { ref: typeInputRef, ...typeInputProps } = register('type', { required: true });
+  const { ref: priorityInputRef, ...priorityInputProps } = register('priority', { required: true });
+  const { ref: statusInputRef, ...statusInputProps } = register('status', { required: true });
+
+  const renderContent = (
+    <Scrollbar
+      sx={{
+        height: 1,
+        '& .simplebar-content': {
+          height: 1,
+          display: 'flex',
+          flexDirection: 'column',
+        },
+      }}
+    >
+      <Typography variant="h4" align="center">
+        Create Ticket
+      </Typography>
+      <Divider></Divider>
+
+      <Stack spacing={3}>
+        <Box
+          justifyContent="center"
+          alignItems="center"
+          sx={{
+            paddingX: {
+              xs: 1,
+              md: 6,
+            },
+          }}
+        >
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack gap="10px" marginTop="10px">
+              <FormControl>
+                <TextField
+                  id="title"
+                  label="Ticket Title"
+                  variant="outlined"
+                  error={!!errors.title}
+                  helperText={errors.title?.message}
+                  inputRef={titleInputRef}
+                  {...titleInputProps}
+                />
+              </FormControl>
+              <FormControl>
+                <TextField
+                  id="description"
+                  label="Ticket Description"
+                  variant="outlined"
+                  multiline
+                  minRows={3}
+                  error={!!errors.description}
+                  helperText={errors.description?.message}
+                  inputRef={descriptionInputRef}
+                  {...descriptionInputProps}
+                />
+              </FormControl>
+              <FormControl>
+                <Autocomplete
+                  disablePortal
+                  // id="combo-box-demo"
+                  options={allProjects}
+                  getOptionLabel={(p) => p.name}
+                  sx={{ width: 300 }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      id="projectId"
+                      label="Project"
+                      variant="outlined"
+                      error={!!errors.projectId}
+                      helperText={errors.projectId?.message}
+                      inputRef={projectIdInputRef}
+                      {...projectIdInputProps}
+                    />
+                  )}
+                />
+                {/* <TextField
+                  id="projectId"
+                  label="Project"
+                  select
+                  variant="outlined"
+                  error={!!errors.projectId}
+                  helperText={errors.projectId?.message}
+                  inputRef={projectIdInputRef}
+                  {...projectIdInputProps}
+                >
+                  {allProjects.map((p) => (
+                    <MenuItem key={p.id} value={p.id}>
+                      {p.name}
+                    </MenuItem>
+                  ))}
+                </TextField> */}
+              </FormControl>
+              <FormControl>
+                <TextField
+                  id="type"
+                  label="Ticket Type"
+                  select
+                  variant="outlined"
+                  defaultValue={'BUG'}
+                  error={!!errors.type}
+                  helperText={errors.type?.message}
+                  inputRef={typeInputRef}
+                  {...typeInputProps}
+                >
+                  {TicketTypeArr.map((type) => (
+                    <MenuItem key={type} value={type}>
+                      {type}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+              <FormControl>
+                <TextField
+                  id="priority"
+                  label="Ticket priority"
+                  select
+                  variant="outlined"
+                  defaultValue={'NORMAL'}
+                  error={!!errors.priority}
+                  helperText={errors.priority?.message}
+                  inputRef={priorityInputRef}
+                  {...priorityInputProps}
+                >
+                  {TicketPriorityArr.map((prio) => (
+                    <MenuItem key={prio} value={prio}>
+                      {prio}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+              <FormControl>
+                <TextField
+                  id="status"
+                  label="Ticket Status"
+                  select
+                  variant="outlined"
+                  defaultValue={'OPEN'}
+                  error={!!errors.status}
+                  helperText={errors.status?.message}
+                  inputRef={statusInputRef}
+                  {...statusInputProps}
+                >
+                  {Object.keys(TicketStatusMap).map((key) => (
+                    <MenuItem key={key} value={key}>
+                      {TicketStatusMap[key as TicketStatus]}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </FormControl>
+
+              <LoadingButton
+                fullWidth
+                size="large"
+                type="submit"
+                variant="contained"
+                color="inherit"
+                loading={loading}
+              >
+                Submit
+              </LoadingButton>
+            </Stack>
+          </form>
+        </Box>
+      </Stack>
+    </Scrollbar>
+  );
+
+  return (
+    <Box
+      sx={{
+        flexShrink: { lg: 0 },
+        width: { lg: WIDTH },
+      }}
+    >
+      <Drawer
+        anchor="right"
+        open={openDrawer}
+        onClose={onCloseDrawer}
+        PaperProps={{
+          sx: {
+            width: WIDTH,
+          },
+        }}
+      >
+        {renderContent}
+      </Drawer>
+    </Box>
+  );
+}
