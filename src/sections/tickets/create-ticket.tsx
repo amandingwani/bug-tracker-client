@@ -40,14 +40,12 @@ import {
 interface CreateTicketProps {
   openDrawer: boolean;
   onCloseDrawer: () => void;
-  project?: Project;
+  projectId?: number;
 }
 
-export default function CreateTicket({ openDrawer, onCloseDrawer, project }: CreateTicketProps) {
+export default function CreateTicket({ openDrawer, onCloseDrawer, projectId }: CreateTicketProps) {
   const [loading, setLoading] = useState(false);
-  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(
-    project ? project.id : null
-  );
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(projectId ?? null);
 
   const projects = useAppSelector(selectProjects);
   const dispatch = useAppDispatch();

@@ -16,7 +16,11 @@ export default function ProjectDetailsPage({ project }: { project: Project }) {
     <Container>
       <ProjectDetails title="Project Details" project={project} />
 
-      <TicketsView tickets={allTickets} filterSelected={{ assign: true, created: true }} />
+      <TicketsView
+        tickets={allTickets}
+        filterSelected={{ assign: true, created: true }}
+        projectId={project.id}
+      />
     </Container>
   );
 }

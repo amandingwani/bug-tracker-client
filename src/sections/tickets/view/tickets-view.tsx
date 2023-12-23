@@ -27,7 +27,7 @@ import {
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppSelector } from 'src/redux/hooks';
-import { Ticket } from 'src/redux/types';
+import { Project, Ticket } from 'src/redux/types';
 
 import CreateTicket from '../create-ticket';
 
@@ -36,6 +36,7 @@ import CreateTicket from '../create-ticket';
 interface TicketsPageProps {
   filterSelected?: { assign: boolean; created: boolean };
   tickets?: Ticket[];
+  projectId?: number;
 }
 
 export default function TicketsPage(props: TicketsPageProps) {
@@ -132,7 +133,11 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   return (
     <Container>
-      <CreateTicket openDrawer={openDrawer} onCloseDrawer={() => setOpenDrawer(false)} />
+      <CreateTicket
+        openDrawer={openDrawer}
+        onCloseDrawer={() => setOpenDrawer(false)}
+        projectId={props.projectId}
+      />
 
       <Card>
         <TicketsTableToolbar
