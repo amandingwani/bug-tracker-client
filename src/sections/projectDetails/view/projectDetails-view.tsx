@@ -35,7 +35,7 @@ import { faker } from '@faker-js/faker';
 export default function ProjectDetailsPage({ project }: { project: Project }) {
   const user = useAppSelector(selectUser);
 
-  const [filterSelected, setFilterSelected] = useState({ assign: true, created: false });
+  const [filterSelected, setFilterSelected] = useState({ assign: true, created: true });
 
   const allTickets = project.tickets;
 
