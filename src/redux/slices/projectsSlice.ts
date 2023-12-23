@@ -59,7 +59,10 @@ export const createAndLoadTicket = (data: TicketCreateInput, setLoading: React.D
                 setLoading(false)
                 closeDrawer();
             })
-            .catch((err) => { throw err });
+            .catch((err) => {
+                console.log(err);
+                setLoading(false)
+            });
     }
 }
 

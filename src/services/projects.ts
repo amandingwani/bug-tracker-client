@@ -23,7 +23,13 @@ export const createTicket = (data: TicketCreateInput) => {
     return new Promise<Ticket>((resolve, reject) => {
         axios
             .post('/tickets', data)
-            .then((res) => resolve(res.data))
+            .then((res) => {
+                if (res.data.error) {
+                    reject(res.data)
+                } else {
+                    resolve(res.data)
+                }
+            })
             .catch((err) => reject(err));
     });
 }
