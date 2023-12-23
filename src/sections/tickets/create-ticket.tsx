@@ -44,6 +44,7 @@ interface CreateTicketProps {
 
 export default function CreateTicket({ openDrawer, onCloseDrawer }: CreateTicketProps) {
   const [loading, setLoading] = useState(false);
+  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(null);
 
   const projects = useAppSelector(selectProjects);
   const dispatch = useAppDispatch();
@@ -59,6 +60,7 @@ export default function CreateTicket({ openDrawer, onCloseDrawer }: CreateTicket
   } = useForm<TicketCreateInput>();
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
+    data.projectId = selectedProjectId!;
     console.log(data);
     setLoading(true);
     dispatch(createAndLoadTicket(data, setLoading, onCloseDrawer));
@@ -138,6 +140,8 @@ export default function CreateTicket({ openDrawer, onCloseDrawer }: CreateTicket
                   options={allProjects}
                   getOptionLabel={(p) => p.name}
                   sx={{ width: 300 }}
+                  value={allProjects.find((p) => p.id === selectedProjectId) ?? null}
+                  onChange={(e, data) => setSelectedProjectId(data?.id ?? null)}
                   renderInput={(params) => (
                     <TextField
                       {...params}
