@@ -58,7 +58,6 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           </Typography>
         </TableCell>
 
-        <TableCell>{ticket.project.name}</TableCell>
         <TableCell>{ticket.author.firstName + ' ' + ticket.author.lastName}</TableCell>
         <TableCell>
           {ticket.asignee ? ticket.asignee.firstName + ' ' + ticket.asignee.lastName : 'Unassigned'}
@@ -70,6 +69,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         <TableCell>
           <Label color={priorityLabelColor}>{ticket.priority}</Label>
         </TableCell>
+        <TableCell>{ticket.project.name}</TableCell>
 
         <TableCell>{new Date(ticket.createdAt).toLocaleString()}</TableCell>
 

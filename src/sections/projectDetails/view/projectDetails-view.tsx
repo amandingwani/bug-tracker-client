@@ -128,12 +128,12 @@ export default function ProjectDetailsPage({ project }: { project: Project }) {
                 headLabel={[
                   { id: 'id', label: 'ID', align: 'center' },
                   { id: 'title', label: 'Title' },
-                  { id: 'project', label: 'Project' },
                   { id: 'author', label: 'Author' },
                   { id: 'asignee', label: 'Assignee' },
                   { id: 'status', label: 'Status' },
                   { id: 'type', label: 'Type' },
                   { id: 'priority', label: 'Priority' },
+                  { id: 'project', label: 'Project' },
                   { id: 'createdAt', label: 'Created At', minWidth: 120 },
                   { id: '' },
                 ]}
