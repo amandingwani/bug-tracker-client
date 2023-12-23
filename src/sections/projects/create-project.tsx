@@ -35,12 +35,6 @@ interface CreateProjectProps {
   onCloseDrawer: () => void;
 }
 
-// type CreateProjectFormInputs = {
-//   name: string;
-//   description?: string;
-//   status: ProjectStatus;
-// };
-
 export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProjectProps) {
   const [loading, setLoading] = useState(false);
 
@@ -135,7 +129,7 @@ export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProje
                 >
                   {Object.keys(ProjectStatusMap).map((key) => (
                     <MenuItem key={key} value={key}>
-                      {ProjectStatusMap[key]}
+                      {ProjectStatusMap[key as ProjectStatus]}
                     </MenuItem>
                   ))}
                 </TextField>
