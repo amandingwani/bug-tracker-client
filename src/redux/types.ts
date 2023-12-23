@@ -58,8 +58,11 @@ export const ProjectStatusMap = {
     'DEPLOYED': 'DEPLOYED'
 }
 
-export type TicketType = 'BUG' | 'TASK'
-export type TicketPriority = 'URGENT' | 'HIGH' | 'NORMAL' | 'LOW'
+export const TicketTypeArr = ['BUG', 'TASK'] as const
+export type TicketType = typeof TicketTypeArr[number]
+
+export const TicketPriorityArr = ['URGENT', 'HIGH', 'NORMAL', 'LOW'] as const
+export type TicketPriority = typeof TicketPriorityArr[number]
 
 export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'TO_BE_TESTED' | 'CLOSED'
 export const TicketStatusMap = {
@@ -71,6 +74,15 @@ export const TicketStatusMap = {
 
 export type ProjectCreateInput = {
     name: string,
-    description?: string;
+    description: string;
     status: ProjectStatus;
+}
+
+export type TicketCreateInput = {
+    title: string;
+    description: string;
+    type: TicketType;
+    priority: TicketPriority;
+    status: TicketStatus;
+    projectId: number;
 }
