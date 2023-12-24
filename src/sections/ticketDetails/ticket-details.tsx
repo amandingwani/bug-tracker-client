@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ReactEventHandler, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
@@ -16,9 +16,12 @@ import Scrollbar from 'src/components/scrollbar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
 import { Ticket } from 'src/redux/types';
 import Label from 'src/components/label';
 import { LabelColor } from 'src/components/label/labelSubTypes';
+
+import CreateOrEditTicket from '../tickets/createOrEditTicket';
 
 // ----------------------------------------------------------------------
 
@@ -37,20 +40,44 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-interface AppInnerProps {
+interface Props {
   title: string;
   ticket: Ticket;
 }
 
-export default function ProjectDetails({ title, ticket }: AppInnerProps) {
+export default function TicketDetails({ title, ticket }: Props) {
   const [expanded, setExpanded] = useState(true);
+
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
 
+  const handleEdit: React.MouseEventHandler<HTMLButtonElement> = () => {
+    setOpenDrawer(true);
+  };
+
+  const onCloseDrawer = () => {
+    setOpenDrawer(false);
+  };
+
   return (
     <Card>
+      <CreateOrEditTicket
+        openDrawer={openDrawer}
+        onCloseDrawer={onCloseDrawer}
+        selectedTicket={{
+          id: ticket.id,
+          title: ticket.title,
+          description: ticket.description ?? '',
+          type: ticket.type,
+          status: ticket.status,
+          priority: ticket.priority,
+          projectId: ticket.projectId,
+        }}
+      />
+
       <CardHeader
         title={title}
         action={
@@ -65,13 +92,31 @@ export default function ProjectDetails({ title, ticket }: AppInnerProps) {
         }
         // sx={expanded ? {} : { paddingBottom: 3 }}
         sx={{ pb: 3 }}
-      ></CardHeader>
+      />
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <CardContent>
           <Scrollbar>
             <Details ticket={ticket} />
           </Scrollbar>
         </CardContent>
+        <CardActions>
+          <Button
+            onClick={handleEdit}
+            variant="outlined"
+            color="primary"
+            startIcon={<Iconify icon="eva:edit-fill" />}
+          >
+            Edit
+          </Button>
+          <Button
+            // onClick={onNewTicketClick}
+            variant="outlined"
+            color="error"
+            startIcon={<Iconify icon="eva:trash-2-outline" />}
+          >
+            Delete
+          </Button>
+        </CardActions>
       </Collapse>
 
       <Divider sx={{ borderStyle: 'dashed' }} />
