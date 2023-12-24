@@ -7,6 +7,10 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import Iconify from 'src/components/iconify';
+import Popover from '@mui/material/Popover';
+import Typography from '@mui/material/Typography';
+import Checkbox from '@mui/material/Checkbox';
+import { useState } from 'react';
 
 // ----------------------------------------------------------------------
 
@@ -14,13 +18,27 @@ interface ProjectsTableToolbarProps {
   filterName: string;
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onNewProjectClick: React.MouseEventHandler<HTMLButtonElement>;
+  filterSelected: { other: boolean; created: boolean };
+  handleCheckboxClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
 }
 
 export default function ProjectsTableToolbar({
   filterName,
   onFilterName,
   onNewProjectClick,
+  filterSelected,
+  handleCheckboxClick,
 }: ProjectsTableToolbarProps) {
+  const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
+
+  const handleOpenMenu = (event: React.MouseEvent) => {
+    setOpen(event.currentTarget);
+  };
+
+  const handleCloseMenu = () => {
+    setOpen(null);
+  };
+
   return (
     <Toolbar
       sx={{
@@ -45,10 +63,37 @@ export default function ProjectsTableToolbar({
           }
         />
         <Tooltip title="Filter list">
-          <IconButton>
+          <IconButton onClick={handleOpenMenu}>
             <Iconify icon="ic:round-filter-list" />
           </IconButton>
         </Tooltip>
+
+        <Popover
+          open={!!open}
+          anchorEl={open}
+          onClose={handleCloseMenu}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+          slotProps={{
+            paper: {
+              sx: { width: 230 },
+            },
+          }}
+        >
+          <Typography>
+            <Checkbox checked={filterSelected.other} name="other" onChange={handleCheckboxClick} />
+            Created by other users
+          </Typography>
+
+          <Typography>
+            <Checkbox
+              checked={filterSelected.created}
+              name="created"
+              onChange={handleCheckboxClick}
+            />
+            Created by me
+          </Typography>
+        </Popover>
       </Stack>
       <Button
         onClick={onNewProjectClick}

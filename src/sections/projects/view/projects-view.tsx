@@ -28,8 +28,6 @@ import CreateOrEditProject from '../createOrEditProject';
 export default function ProjectsPage() {
   const projects = useAppSelector(selectProjects);
 
-  const allProjects = [...projects.createdProjects, ...projects.otherProjects];
-
   const [page, setPage] = useState(0);
 
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -43,6 +41,22 @@ export default function ProjectsPage() {
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [selectedProject, setSelectedProject] = useState<ProjectUpdate | null>(null);
+
+  const [filterSelected, setFilterSelected] = useState({ other: true, created: true });
+
+  let projectsToDisplay: Project[] = [];
+
+  if (filterSelected.other && filterSelected.created)
+    projectsToDisplay = [...projects.createdProjects, ...projects.otherProjects];
+  else if (filterSelected.other) projectsToDisplay = projects.otherProjects;
+  else if (filterSelected.created) projectsToDisplay = projects.createdProjects;
+
+  const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+    if (event.target.name === 'other') {
+      setFilterSelected({ ...filterSelected, other: checked });
+    } else if (event.target.name === 'created')
+      setFilterSelected({ ...filterSelected, created: checked });
+  };
 
   const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -83,7 +97,7 @@ export default function ProjectsPage() {
   };
 
   const dataFiltered = applyFilter({
-    inputData: allProjects,
+    inputData: projectsToDisplay,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -103,6 +117,8 @@ export default function ProjectsPage() {
           filterName={filterName}
           onFilterName={handleFilterByName}
           onNewProjectClick={onNewProjectClick}
+          filterSelected={filterSelected}
+          handleCheckboxClick={handleCheckboxClick}
         />
 
         <Scrollbar>
@@ -133,7 +149,7 @@ export default function ProjectsPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, allProjects.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, projectsToDisplay.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -142,11 +158,11 @@ export default function ProjectsPage() {
           </TableContainer>
         </Scrollbar>
 
-        {allProjects.length > 5 && (
+        {projectsToDisplay.length > 5 && (
           <TablePagination
             page={page}
             component="div"
-            count={allProjects.length}
+            count={projectsToDisplay.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}

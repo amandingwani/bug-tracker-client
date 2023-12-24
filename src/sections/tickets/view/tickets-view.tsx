@@ -80,11 +80,6 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     if (event.target.name === 'assign') {
-      if (checked) {
-        ticketsToDisplay = ticketsAssignedToMe;
-      } else {
-        ticketsToDisplay;
-      }
       setFilterSelected({ ...filterSelected, assign: checked });
     } else if (event.target.name === 'created')
       setFilterSelected({ ...filterSelected, created: checked });
