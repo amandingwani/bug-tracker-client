@@ -10,7 +10,7 @@ import { RouterLink } from 'src/routes/components';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
-import { TicketStatusMap, Ticket } from 'src/redux/types';
+import { TicketStatusMap, Ticket, TicketUpdate } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 
 // ----------------------------------------------------------------------
@@ -18,6 +18,8 @@ import { LabelColor } from 'src/components/label/labelSubTypes';
 interface ProjectTableRowProps {
   key: number;
   ticket: Ticket;
+  setOpenDrawer: (value: React.SetStateAction<boolean>) => void;
+  setSelectedTicket: (value: React.SetStateAction<TicketUpdate | null>) => void;
 }
 
 export default function ProjectTableRow(props: ProjectTableRowProps) {
@@ -88,7 +90,13 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         </TableCell>
       </TableRow>
 
-      <ItemPopoverMenu open={open} handleCloseMenu={handleCloseMenu} />
+      <ItemPopoverMenu
+        open={open}
+        handleCloseMenu={handleCloseMenu}
+        ticket={ticket}
+        setOpenDrawer={props.setOpenDrawer}
+        setSelectedTicket={props.setSelectedTicket}
+      />
     </>
   );
 }

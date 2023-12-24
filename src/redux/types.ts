@@ -90,3 +90,7 @@ export type TicketCreateInput = {
     status: TicketStatus;
     projectId: number;
 }
+
+export interface TicketUpdate extends TicketCreateInput {
+    id: number
+}

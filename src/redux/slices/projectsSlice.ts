@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
-import type { Project, ProjectCreateInput, ProjectsState, ProjectUpdate, Ticket, TicketCreateInput } from '../types'
-import { getProjects, createProject, createTicket, updateProject as updateProjectApi } from 'src/services/projects'
+import type { Project, ProjectCreateInput, ProjectsState, ProjectUpdate, Ticket, TicketCreateInput, TicketUpdate } from '../types'
+import { getProjects, createProject, createTicket, updateProject as updateProjectApi, updateTicket as updateTicketApi } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 
 // Define the initial state using that type
@@ -38,6 +38,21 @@ export const projectsSlice = createSlice({
             state.createdProjects.find(p => p.id === action.payload.projectId)?.tickets.push(action.payload)
             state.otherProjects.find(p => p.id === action.payload.projectId)?.tickets.push(action.payload)
         },
+        updateTicket: (state, action: PayloadAction<Ticket>) => {
+            let project = state.createdProjects.find(p => p.id === action.payload.projectId);
+            if (!project) {
+                project = state.otherProjects.find(p => p.id === action.payload.projectId)
+            }
+            const ticket = project?.tickets.find(t => t.id === action.payload.id)
+            if (ticket) {
+                ticket.title = action.payload.title;
+                ticket.description = action.payload.description;
+                ticket.type = action.payload.type;
+                ticket.priority = action.payload.priority;
+                ticket.status = action.payload.status;
+                ticket.projectId = action.payload.projectId;
+            }
+        },
     }
 })
 
@@ -66,13 +81,20 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
     }
 }
 
-export const createAndLoadTicket = (data: TicketCreateInput, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void): AppThunk => {
+export const createAndLoadTicket = (data: TicketCreateInput, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
     return (dispatch) => {
         createTicket(data)
             .then((ticket) => {
                 dispatch(setCreatedTicket(ticket))
                 setLoading(false)
                 closeDrawer();
+                reset({
+                    title: '',
+                    description: '',
+                    status: 'OPEN',
+                    type: 'BUG',
+                    priority: 'NORMAL'
+                })
             })
             .catch((err) => {
                 console.log(err);
@@ -98,7 +120,27 @@ export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Disp
     }
 }
 
-export const { setProjects, setCreatedProject, setCreatedTicket, updateProject } = projectsSlice.actions
+export const updateAndLoadTicket = (data: TicketUpdate, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
+    return (dispatch) => {
+        updateTicketApi(data)
+            .then((ticket) => {
+                dispatch(updateTicket(ticket))
+                setLoading(false)
+                closeDrawer();
+                reset({
+                    title: '',
+                    description: '',
+                    status: 'OPEN',
+                    type: 'BUG',
+                    priority: 'NORMAL'
+                })
+            })
+            .catch((err) => { throw err });
+    }
+}
+
+
+export const { setProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects

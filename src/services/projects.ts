@@ -1,5 +1,5 @@
 import axios from 'src/config/axios';
-import { ProjectCreateInput, ProjectsState, Project, TicketCreateInput, Ticket, ProjectUpdate } from 'src/redux/types';
+import { ProjectCreateInput, ProjectsState, Project, TicketCreateInput, Ticket, ProjectUpdate, TicketUpdate } from 'src/redux/types';
 
 export const getProjects = () => {
     return new Promise<ProjectsState>((resolve, reject) => {
@@ -39,6 +39,15 @@ export const createTicket = (data: TicketCreateInput) => {
                     resolve(res.data)
                 }
             })
+            .catch((err) => reject(err));
+    });
+}
+
+export const updateTicket = (data: TicketUpdate) => {
+    return new Promise<Ticket>((resolve, reject) => {
+        axios
+            .put('/tickets', data)
+            .then((res) => resolve(res.data))
             .catch((err) => reject(err));
     });
 }

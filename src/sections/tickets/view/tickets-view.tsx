@@ -27,9 +27,9 @@ import {
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppSelector } from 'src/redux/hooks';
-import { Ticket } from 'src/redux/types';
+import { Ticket, TicketUpdate } from 'src/redux/types';
 
-import CreateTicket from '../create-ticket';
+import CreateOrEditTicket from '../createOrEditTicket';
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +54,8 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
+  const [selectedTicket, setSelectedTicket] = useState<TicketUpdate | null>(null);
+
   const [filterSelected, setFilterSelected] = useState(
     props.filterSelected ?? { assign: true, created: false }
   );
@@ -77,6 +79,11 @@ export default function TicketsPage(props: TicketsPageProps) {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const onCloseDrawer = () => {
+    setOpenDrawer(false);
+    setSelectedTicket(null);
+  };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
     if (event.target.name === 'assign') {
@@ -128,10 +135,11 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   return (
     <Container>
-      <CreateTicket
+      <CreateOrEditTicket
         openDrawer={openDrawer}
-        onCloseDrawer={() => setOpenDrawer(false)}
+        onCloseDrawer={onCloseDrawer}
         projectId={props.projectId}
+        selectedTicket={selectedTicket}
       />
 
       <Card>
@@ -167,7 +175,12 @@ export default function TicketsPage(props: TicketsPageProps) {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: Ticket) => (
-                    <TicketTableRow key={row.id} ticket={row} />
+                    <TicketTableRow
+                      key={row.id}
+                      ticket={row}
+                      setOpenDrawer={setOpenDrawer}
+                      setSelectedTicket={setSelectedTicket}
+                    />
                   ))}
 
                 <TableEmptyRows

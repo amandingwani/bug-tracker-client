@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
@@ -22,28 +22,38 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import Scrollbar from 'src/components/scrollbar';
 
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { createAndLoadTicket, selectProjects } from 'src/redux/slices/projectsSlice';
+import {
+  createAndLoadTicket,
+  selectProjects,
+  updateAndLoadTicket,
+} from 'src/redux/slices/projectsSlice';
 import {
   TicketCreateInput,
   TicketStatusMap,
-  Project,
   TicketStatus,
   TicketPriorityArr,
   TicketTypeArr,
+  TicketUpdate,
 } from 'src/redux/types';
 
 interface CreateTicketProps {
   openDrawer: boolean;
   onCloseDrawer: () => void;
   projectId?: number;
+  selectedTicket: TicketUpdate | null;
 }
 
-export default function CreateTicket({ openDrawer, onCloseDrawer, projectId }: CreateTicketProps) {
+export default function CreateOrEditTicket({
+  openDrawer,
+  onCloseDrawer,
+  selectedTicket,
+  projectId,
+}: CreateTicketProps) {
   const [loading, setLoading] = useState(false);
   const [selectedProjectId, setSelectedProjectId] = useState<number | null>(projectId ?? null);
 
@@ -58,13 +68,22 @@ export default function CreateTicket({ openDrawer, onCloseDrawer, projectId }: C
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    reset,
+    control,
   } = useForm<TicketCreateInput>();
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
     data.projectId = selectedProjectId!;
     console.log(data);
     setLoading(true);
-    dispatch(createAndLoadTicket(data, setLoading, onCloseDrawer));
+    if (!selectedTicket) {
+      dispatch(createAndLoadTicket(data, setLoading, onCloseDrawer, reset));
+    } else {
+      dispatch(
+        updateAndLoadTicket({ id: selectedTicket.id, ...data }, setLoading, onCloseDrawer, reset)
+      );
+    }
   };
 
   const { ref: titleInputRef, ...titleInputProps } = register('title', {
@@ -77,9 +96,18 @@ export default function CreateTicket({ openDrawer, onCloseDrawer, projectId }: C
     required: 'Please select a project',
   });
 
-  const { ref: typeInputRef, ...typeInputProps } = register('type', { required: true });
-  const { ref: priorityInputRef, ...priorityInputProps } = register('priority', { required: true });
-  const { ref: statusInputRef, ...statusInputProps } = register('status', { required: true });
+  // const { ref: typeInputRef, ...typeInputProps } = register('type', { required: true });
+  // const { ref: priorityInputRef, ...priorityInputProps } = register('priority', { required: true });
+  // const { ref: statusInputRef, ...statusInputProps } = register('status', { required: true });
+
+  useEffect(() => {
+    setValue('title', selectedTicket?.title ?? '');
+    setValue('description', selectedTicket?.description ?? '');
+    setValue('status', selectedTicket?.status ?? 'OPEN');
+    setValue('type', selectedTicket?.type ?? 'BUG');
+    setValue('priority', selectedTicket?.priority ?? 'NORMAL');
+    setSelectedProjectId(projectId ? projectId : selectedTicket?.projectId ?? null);
+  }, [selectedTicket]);
 
   const renderContent = (
     <Scrollbar
@@ -93,7 +121,7 @@ export default function CreateTicket({ openDrawer, onCloseDrawer, projectId }: C
       }}
     >
       <Typography variant="h4" align="center">
-        Create Ticket
+        {!selectedTicket ? 'Create' : 'Edit'} Ticket
       </Typography>
       <Divider></Divider>
 
@@ -174,61 +202,76 @@ export default function CreateTicket({ openDrawer, onCloseDrawer, projectId }: C
                 </TextField> */}
               </FormControl>
               <FormControl>
-                <TextField
-                  id="type"
-                  label="Ticket Type"
-                  select
-                  variant="outlined"
-                  defaultValue={'BUG'}
-                  error={!!errors.type}
-                  helperText={errors.type?.message}
-                  inputRef={typeInputRef}
-                  {...typeInputProps}
-                >
-                  {TicketTypeArr.map((type) => (
-                    <MenuItem key={type} value={type}>
-                      {type}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Controller
+                  control={control}
+                  name="type"
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="type-field"
+                      label="Ticket Type"
+                      select
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!errors.type}
+                      helperText={errors.type?.message}
+                    >
+                      {TicketTypeArr.map((type) => (
+                        <MenuItem key={type} value={type}>
+                          {type}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </FormControl>
               <FormControl>
-                <TextField
-                  id="priority"
-                  label="Ticket priority"
-                  select
-                  variant="outlined"
-                  defaultValue={'NORMAL'}
-                  error={!!errors.priority}
-                  helperText={errors.priority?.message}
-                  inputRef={priorityInputRef}
-                  {...priorityInputProps}
-                >
-                  {TicketPriorityArr.map((prio) => (
-                    <MenuItem key={prio} value={prio}>
-                      {prio}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Controller
+                  control={control}
+                  name="priority"
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="priority-field"
+                      label="Ticket priority"
+                      select
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!errors.type}
+                      helperText={errors.type?.message}
+                    >
+                      {TicketPriorityArr.map((prio) => (
+                        <MenuItem key={prio} value={prio}>
+                          {prio}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </FormControl>
               <FormControl>
-                <TextField
-                  id="status"
-                  label="Ticket Status"
-                  select
-                  variant="outlined"
-                  defaultValue={'OPEN'}
-                  error={!!errors.status}
-                  helperText={errors.status?.message}
-                  inputRef={statusInputRef}
-                  {...statusInputProps}
-                >
-                  {Object.keys(TicketStatusMap).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {TicketStatusMap[key as TicketStatus]}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Controller
+                  control={control}
+                  name="status"
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="priority-field"
+                      label="Ticket Status"
+                      select
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!errors.type}
+                      helperText={errors.type?.message}
+                    >
+                      {Object.keys(TicketStatusMap).map((key) => (
+                        <MenuItem key={key} value={key}>
+                          {TicketStatusMap[key as TicketStatus]}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </FormControl>
 
               <LoadingButton

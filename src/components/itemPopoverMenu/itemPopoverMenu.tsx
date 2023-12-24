@@ -1,7 +1,7 @@
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import Iconify from 'src/components/iconify';
-import { Project, ProjectUpdate, Ticket } from 'src/redux/types';
+import { Project, ProjectUpdate, Ticket, TicketUpdate } from 'src/redux/types';
 
 interface Props {
   open: (EventTarget & Element) | null;
@@ -10,6 +10,7 @@ interface Props {
   ticket?: Ticket;
   setOpenDrawer?: (value: React.SetStateAction<boolean>) => void;
   setSelectedProject?: (value: React.SetStateAction<ProjectUpdate | null>) => void;
+  setSelectedTicket?: (value: React.SetStateAction<TicketUpdate | null>) => void;
 }
 
 const ItemPopoverMenu = ({
@@ -19,6 +20,7 @@ const ItemPopoverMenu = ({
   ticket,
   setOpenDrawer,
   setSelectedProject,
+  setSelectedTicket,
 }: Props) => {
   let handleEdit: React.MouseEventHandler<HTMLLIElement> = handleCloseMenu;
   if (project && setOpenDrawer && setSelectedProject) {
@@ -28,6 +30,20 @@ const ItemPopoverMenu = ({
         name: project.name,
         description: project.description ?? '',
         status: project.status,
+      });
+      handleCloseMenu();
+      setOpenDrawer(true);
+    };
+  } else if (ticket && setOpenDrawer && setSelectedTicket) {
+    handleEdit = () => {
+      setSelectedTicket({
+        id: ticket.id,
+        title: ticket.title,
+        description: ticket.description ?? '',
+        status: ticket.status,
+        type: ticket.type,
+        priority: ticket.priority,
+        projectId: ticket.projectId,
       });
       handleCloseMenu();
       setOpenDrawer(true);
