@@ -22,7 +22,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
 import Scrollbar from 'src/components/scrollbar';
 
@@ -54,13 +54,8 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
     formState: { errors },
     setValue,
     reset,
+    control,
   } = useForm<ProjectCreateInput>();
-
-  useEffect(() => {
-    setValue('name', selectedProject?.name ?? '');
-    setValue('description', selectedProject?.description ?? '');
-    setValue('status', selectedProject?.status ?? 'OPEN');
-  }, [selectedProject]);
 
   const onSubmit: SubmitHandler<ProjectCreateInput> = (data) => {
     console.log(data);
@@ -80,9 +75,15 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
 
   const { ref: descriptionInputRef, ...descriptionInputProps } = register('description');
 
-  const { ref: statusInputRef, ...statusInputProps } = register('status', {
-    required: 'Please select a project status',
-  });
+  // const { ref: statusInputRef, ...statusInputProps } = register('status', {
+  //   required: 'Please select a project status',
+  // });
+
+  useEffect(() => {
+    setValue('name', selectedProject?.name ?? '');
+    setValue('description', selectedProject?.description ?? '');
+    setValue('status', selectedProject?.status ?? 'OPEN');
+  }, [selectedProject]);
 
   const renderContent = (
     <Scrollbar
@@ -138,23 +139,30 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
                 />
               </FormControl>
               <FormControl>
-                <TextField
-                  id="status"
-                  label="Project Status"
-                  select
-                  variant="outlined"
-                  defaultValue={'OPEN'}
-                  error={!!errors.status}
-                  helperText={errors.status?.message}
-                  inputRef={statusInputRef}
-                  {...statusInputProps}
-                >
-                  {Object.keys(ProjectStatusMap).map((key) => (
-                    <MenuItem key={key} value={key}>
-                      {ProjectStatusMap[key as ProjectStatus]}
-                    </MenuItem>
-                  ))}
-                </TextField>
+                <Controller
+                  control={control}
+                  name="status"
+                  render={({ field: { onChange, value } }) => (
+                    <TextField
+                      id="status-textfield"
+                      label="Project Status"
+                      select
+                      variant="outlined"
+                      value={value}
+                      onChange={onChange}
+                      error={!!errors.status}
+                      helperText={errors.status?.message}
+                      // inputRef={statusInputRef}
+                      // {...statusInputProps}
+                    >
+                      {Object.keys(ProjectStatusMap).map((key) => (
+                        <MenuItem key={key} value={key}>
+                          {ProjectStatusMap[key as ProjectStatus]}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
               </FormControl>
               <LoadingButton
                 fullWidth
