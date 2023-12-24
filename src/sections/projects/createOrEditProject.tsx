@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
@@ -27,15 +27,21 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import Scrollbar from 'src/components/scrollbar';
 
 import { useAppDispatch } from 'src/redux/hooks';
-import { createAndLoadProject } from 'src/redux/slices/projectsSlice';
-import { ProjectCreateInput, ProjectStatus, ProjectStatusMap } from 'src/redux/types';
+import { createAndLoadProject, updateAndLoadProject } from 'src/redux/slices/projectsSlice';
+import {
+  ProjectCreateInput,
+  ProjectStatus,
+  ProjectStatusMap,
+  ProjectUpdate,
+} from 'src/redux/types';
 
-interface CreateProjectProps {
+interface Props {
   openDrawer: boolean;
   onCloseDrawer: () => void;
+  selectedProject: ProjectUpdate | null;
 }
 
-export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProjectProps) {
+export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selectedProject }: Props) {
   const [loading, setLoading] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -46,12 +52,26 @@ export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProje
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    reset,
   } = useForm<ProjectCreateInput>();
+
+  useEffect(() => {
+    setValue('name', selectedProject?.name ?? '');
+    setValue('description', selectedProject?.description ?? '');
+    setValue('status', selectedProject?.status ?? 'OPEN');
+  }, [selectedProject]);
 
   const onSubmit: SubmitHandler<ProjectCreateInput> = (data) => {
     console.log(data);
     setLoading(true);
-    dispatch(createAndLoadProject(data, setLoading, onCloseDrawer));
+    if (!selectedProject) {
+      dispatch(createAndLoadProject(data, setLoading, onCloseDrawer, reset));
+    } else {
+      dispatch(
+        updateAndLoadProject({ id: selectedProject.id, ...data }, setLoading, onCloseDrawer, reset)
+      );
+    }
   };
 
   const { ref: nameInputRef, ...nameInputProps } = register('name', {
@@ -60,7 +80,9 @@ export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProje
 
   const { ref: descriptionInputRef, ...descriptionInputProps } = register('description');
 
-  const { ref: statusInputRef, ...statusInputProps } = register('status');
+  const { ref: statusInputRef, ...statusInputProps } = register('status', {
+    required: 'Please select a project status',
+  });
 
   const renderContent = (
     <Scrollbar
@@ -74,7 +96,7 @@ export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProje
       }}
     >
       <Typography variant="h4" align="center">
-        Create Project
+        {!selectedProject ? 'Create' : 'Edit'} Project
       </Typography>
       <Divider></Divider>
 
@@ -134,115 +156,6 @@ export default function CreateProject({ openDrawer, onCloseDrawer }: CreateProje
                   ))}
                 </TextField>
               </FormControl>
-              {/* <FormControl>
-                <FormLabel required>{t('products.fields.description')}</FormLabel>
-                <OutlinedInput
-                  id="description"
-                  {...register('description', {
-                    required: t('errors.required.field', { field: 'Description' }),
-                  })}
-                  multiline
-                  minRows={5}
-                  maxRows={5}
-                />
-                {errors.description && (
-                  <FormHelperText error>{errors.description.message}</FormHelperText>
-                )}
-              </FormControl>
-              <FormControl>
-                <FormLabel required>{t('products.fields.price')}</FormLabel>
-                <OutlinedInput
-                  id="price"
-                  {...register('price', {
-                    required: t('errors.required.field', { field: 'Price' }),
-                  })}
-                  type="number"
-                  style={{
-                    width: '150px',
-                    height: '40px',
-                  }}
-                  startAdornment={<InputAdornment position="start">$</InputAdornment>}
-                />
-                {errors.price && <FormHelperText error>{errors.price.message}</FormHelperText>}
-              </FormControl>
-              <FormControl>
-                <Controller
-                  control={control}
-                  name="category"
-                  rules={{
-                    required: t('errors.required.field', { field: 'Category' }),
-                  }}
-                  render={({ field }) => (
-                    <Autocomplete
-                      disablePortal
-                      {...autocompleteProps}
-                      {...field}
-                      onChange={(_, value) => {
-                        field.onChange(value);
-                      }}
-                      getOptionLabel={(item) => {
-                        return item.title ? item.title : '';
-                      }}
-                      isOptionEqualToValue={(option, value) =>
-                        value === undefined ||
-                        option?.id?.toString() === (value?.id ?? value)?.toString()
-                      }
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Category"
-                          variant="outlined"
-                          error={!!errors.category?.message}
-                          required
-                        />
-                      )}
-                    />
-                  )}
-                />
-                {errors.category && (
-                  <FormHelperText error>{errors.category.message}</FormHelperText>
-                )}
-              </FormControl>
-              <FormControl>
-                <FormLabel sx={{ marginTop: '10px' }} required>
-                  {t('products.fields.isActive')}
-                </FormLabel>
-                <Controller
-                  control={control}
-                  {...register('isActive')}
-                  defaultValue={false}
-                  render={({ field }) => (
-                    <RadioGroup
-                      id="isActive"
-                      {...field}
-                      onChange={(event) => {
-                        const value = event.target.value === 'true';
-
-                        setValue('isActive', value, {
-                          shouldValidate: true,
-                        });
-
-                        return value;
-                      }}
-                      row
-                    >
-                      <FormControlLabel
-                        value={true}
-                        control={<Radio />}
-                        label={t('status.enable')}
-                      />
-                      <FormControlLabel
-                        value={false}
-                        control={<Radio />}
-                        label={t('status.disable')}
-                      />
-                    </RadioGroup>
-                  )}
-                />
-                {errors.isActive && (
-                  <FormHelperText error>{errors.isActive.message}</FormHelperText>
-                )}
-              </FormControl> */}
               <LoadingButton
                 fullWidth
                 size="large"

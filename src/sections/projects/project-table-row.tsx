@@ -9,7 +9,7 @@ import { RouterLink } from 'src/routes/components';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { Project, ProjectStatusMap } from 'src/redux/types';
+import { Project, ProjectStatusMap, ProjectUpdate } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 
@@ -18,6 +18,8 @@ import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 interface ProjectTableRowProps {
   key: number;
   project: Project;
+  setOpenDrawer: (value: React.SetStateAction<boolean>) => void;
+  setSelectedProject: (value: React.SetStateAction<ProjectUpdate | null>) => void;
 }
 
 export default function ProjectTableRow(props: ProjectTableRowProps) {
@@ -65,7 +67,13 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         </TableCell>
       </TableRow>
 
-      <ItemPopoverMenu open={open} handleCloseMenu={handleCloseMenu} />
+      <ItemPopoverMenu
+        open={open}
+        handleCloseMenu={handleCloseMenu}
+        project={project}
+        setOpenDrawer={props.setOpenDrawer}
+        setSelectedProject={props.setSelectedProject}
+      />
     </>
   );
 }

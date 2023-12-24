@@ -20,8 +20,8 @@ import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { useAppSelector } from 'src/redux/hooks';
-import { Project } from 'src/redux/types';
-import CreateProject from '../create-project';
+import { Project, ProjectCreateInput, ProjectUpdate } from 'src/redux/types';
+import CreateOrEditProject from '../createOrEditProject';
 
 // ----------------------------------------------------------------------
 
@@ -41,6 +41,8 @@ export default function ProjectsPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const [selectedProject, setSelectedProject] = useState<ProjectUpdate | null>(null);
 
   const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -75,6 +77,11 @@ export default function ProjectsPage() {
     setOpenDrawer(true);
   };
 
+  const onCloseDrawer = () => {
+    setOpenDrawer(false);
+    setSelectedProject(null);
+  };
+
   const dataFiltered = applyFilter({
     inputData: allProjects,
     comparator: getComparator(order, orderBy),
@@ -85,7 +92,11 @@ export default function ProjectsPage() {
 
   return (
     <Container>
-      <CreateProject openDrawer={openDrawer} onCloseDrawer={() => setOpenDrawer(false)} />
+      <CreateOrEditProject
+        openDrawer={openDrawer}
+        onCloseDrawer={onCloseDrawer}
+        selectedProject={selectedProject}
+      />
 
       <Card>
         <ProjectsTableToolbar
@@ -96,7 +107,7 @@ export default function ProjectsPage() {
 
         <Scrollbar>
           <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }}>
+            <Table sx={{ minWidth: 600 }}>
               <ProjectsTableHead
                 order={order}
                 orderBy={orderBy}
@@ -112,7 +123,12 @@ export default function ProjectsPage() {
                 {dataFiltered
                   .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                   .map((row: Project) => (
-                    <ProjectTableRow key={row.id} project={row} />
+                    <ProjectTableRow
+                      key={row.id}
+                      project={row}
+                      setOpenDrawer={setOpenDrawer}
+                      setSelectedProject={setSelectedProject}
+                    />
                   ))}
 
                 <TableEmptyRows

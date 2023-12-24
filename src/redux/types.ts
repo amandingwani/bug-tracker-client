@@ -72,10 +72,14 @@ export const TicketStatusMap = {
     'CLOSED': 'CLOSED'
 }
 
-export type ProjectCreateInput = {
+export interface ProjectCreateInput {
     name: string,
     description: string;
     status: ProjectStatus;
+}
+
+export interface ProjectUpdate extends ProjectCreateInput {
+    id: number
 }
 
 export type TicketCreateInput = {
