@@ -27,7 +27,7 @@ import {
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppSelector } from 'src/redux/hooks';
-import { Project, Ticket } from 'src/redux/types';
+import { Ticket } from 'src/redux/types';
 
 import CreateTicket from '../create-ticket';
 
