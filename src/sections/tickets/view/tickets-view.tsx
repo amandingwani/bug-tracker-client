@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -24,11 +24,12 @@ import {
   filterTicketsCreatedByMe,
 } from '../utils';
 
-import { selectProjects } from 'src/redux/slices/projectsSlice';
+import { selectProjects, deleteTicket } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
-import { useAppSelector } from 'src/redux/hooks';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Ticket, TicketUpdate } from 'src/redux/types';
 
+import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../createOrEditTicket';
 
 // ----------------------------------------------------------------------
@@ -40,17 +41,9 @@ interface TicketsPageProps {
 }
 
 export default function TicketsPage(props: TicketsPageProps) {
+  const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const projects = useAppSelector(selectProjects);
-
-  let allTickets: Ticket[] = [];
-
-  if (props.tickets) {
-    allTickets = props.tickets;
-  } else {
-    const allProjects = [...projects.createdProjects, ...projects.otherProjects];
-    allTickets = allProjects.map((project) => [...project.tickets]).flat();
-  }
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -59,16 +52,6 @@ export default function TicketsPage(props: TicketsPageProps) {
   const [filterSelected, setFilterSelected] = useState(
     props.filterSelected ?? { assign: true, created: false }
   );
-
-  const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
-  const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
-
-  let ticketsToDisplay: Ticket[] = [];
-
-  if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
-    ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
-  else if (filterSelected.assign) ticketsToDisplay = ticketsAssignedToMe;
-  else if (filterSelected.created) ticketsToDisplay = ticketsCreatedByMe;
 
   const [page, setPage] = useState(0);
 
@@ -79,6 +62,32 @@ export default function TicketsPage(props: TicketsPageProps) {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [openAlert, setOpenAlert] = useState(false);
+
+  useEffect(() => {
+    if (projects.status === 'succeeded') {
+      handleAlertClose();
+    }
+    return () => {
+      console.log('Tickets-view unmounting');
+    };
+  }, [projects.status]);
+
+  const handlePermanentDelete = async () => {
+    if (selectedTicket) {
+      dispatch(deleteTicket(selectedTicket.id));
+    }
+  };
+
+  const handleAlertClickOpen = () => {
+    setOpenAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setOpenAlert(false);
+    setSelectedTicket(null);
+  };
 
   const onCloseDrawer = () => {
     setOpenDrawer(false);
@@ -124,6 +133,25 @@ export default function TicketsPage(props: TicketsPageProps) {
   ) => {
     setOpenDrawer(true);
   };
+
+  let allTickets: Ticket[] = [];
+
+  if (props.tickets) {
+    allTickets = props.tickets;
+  } else {
+    const allProjects = [...projects.createdProjects, ...projects.otherProjects];
+    allTickets = allProjects.map((project) => [...project.tickets]).flat();
+  }
+
+  const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
+  const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
+
+  let ticketsToDisplay: Ticket[] = [];
+
+  if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
+    ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
+  else if (filterSelected.assign) ticketsToDisplay = ticketsAssignedToMe;
+  else if (filterSelected.created) ticketsToDisplay = ticketsCreatedByMe;
 
   const dataFiltered = applyFilter({
     inputData: ticketsToDisplay,
@@ -180,6 +208,7 @@ export default function TicketsPage(props: TicketsPageProps) {
                       ticket={row}
                       setOpenDrawer={setOpenDrawer}
                       setSelectedTicket={setSelectedTicket}
+                      handleAlertClickOpen={handleAlertClickOpen}
                     />
                   ))}
 
@@ -206,6 +235,15 @@ export default function TicketsPage(props: TicketsPageProps) {
           />
         )}
       </Card>
+
+      <AlertDialog
+        loading={projects.status === 'loading'}
+        open={openAlert}
+        handleClose={handleAlertClose}
+        handleAction={handlePermanentDelete}
+        title="Delete ticket ?"
+        message="Ticket will be permanently deleted."
+      />
     </Container>
   );
 }

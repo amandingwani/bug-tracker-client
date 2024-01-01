@@ -11,6 +11,7 @@ interface Props {
   setOpenDrawer?: (value: React.SetStateAction<boolean>) => void;
   setSelectedProject?: (value: React.SetStateAction<ProjectUpdate | null>) => void;
   setSelectedTicket?: (value: React.SetStateAction<TicketUpdate | null>) => void;
+  handleAlertClickOpen: () => void;
 }
 
 const ItemPopoverMenu = ({
@@ -21,8 +22,10 @@ const ItemPopoverMenu = ({
   setOpenDrawer,
   setSelectedProject,
   setSelectedTicket,
+  handleAlertClickOpen,
 }: Props) => {
   let handleEdit: React.MouseEventHandler<HTMLLIElement> = handleCloseMenu;
+  let handleDelete: React.MouseEventHandler<HTMLLIElement> = handleCloseMenu;
   if (project && setOpenDrawer && setSelectedProject) {
     handleEdit = () => {
       setSelectedProject({
@@ -33,6 +36,16 @@ const ItemPopoverMenu = ({
       });
       handleCloseMenu();
       setOpenDrawer(true);
+    };
+    handleDelete = () => {
+      setSelectedProject({
+        id: project.id,
+        name: project.name,
+        description: project.description ?? '',
+        status: project.status,
+      });
+      handleCloseMenu();
+      handleAlertClickOpen();
     };
   } else if (ticket && setOpenDrawer && setSelectedTicket) {
     handleEdit = () => {
@@ -47,6 +60,19 @@ const ItemPopoverMenu = ({
       });
       handleCloseMenu();
       setOpenDrawer(true);
+    };
+    handleDelete = () => {
+      setSelectedTicket({
+        id: ticket.id,
+        title: ticket.title,
+        description: ticket.description ?? '',
+        status: ticket.status,
+        type: ticket.type,
+        priority: ticket.priority,
+        projectId: ticket.projectId,
+      });
+      handleCloseMenu();
+      handleAlertClickOpen();
     };
   }
 
@@ -68,7 +94,7 @@ const ItemPopoverMenu = ({
         Edit
       </MenuItem>
 
-      <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+      <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
         <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
         Delete
       </MenuItem>

@@ -154,7 +154,7 @@ export default function TicketDetails({ title, ticket }: Props) {
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}
         title="Delete ticket ?"
-        message="Ticket will be permanently deleted"
+        message="Ticket will be permanently deleted."
       />
 
       <Divider sx={{ borderStyle: 'dashed' }} />
