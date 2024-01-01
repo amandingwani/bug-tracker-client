@@ -17,7 +17,9 @@ export interface UserState {
 
 export interface ProjectsState {
     createdProjects: Project[],
-    otherProjects: Project[]
+    otherProjects: Project[],
+    status: 'idle' | 'loading' | 'succeeded' | 'failed',
+    error?: string
 }
 
 export interface Project {
