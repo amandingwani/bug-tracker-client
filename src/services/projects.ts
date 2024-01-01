@@ -51,3 +51,22 @@ export const updateTicket = (data: TicketUpdate) => {
             .catch((err) => reject(err));
     });
 }
+
+export const deleteTicket = (ticketId: number) => {
+    return new Promise<Ticket>((resolve, reject) => {
+        axios
+            .delete('/tickets', { data: { id: ticketId } })
+            .then((res) => {
+                console.log({ res })
+                if (res.data.error) {
+                    reject(res.data.error)
+                } else {
+                    resolve(res.data)
+                }
+            })
+            .catch((err) => {
+                console.log({ 'errCaught': err })
+                reject(err)
+            });
+    });
+}
