@@ -71,10 +71,9 @@ export default function CreateOrEditTicket({
     setValue,
     reset,
     control,
-    getValues,
   } = useForm<TicketCreateInput>();
 
-  console.log(getValues());
+  // console.log(getValues());
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
     data.projectId = selectedProjectId!;

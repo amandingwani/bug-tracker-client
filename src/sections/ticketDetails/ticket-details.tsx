@@ -1,7 +1,6 @@
-import { ReactEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -17,11 +16,13 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import { Ticket } from 'src/redux/types';
-import Label from 'src/components/label';
-import { LabelColor } from 'src/components/label/labelSubTypes';
 
+import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../tickets/createOrEditTicket';
+
+import { Ticket } from 'src/redux/types';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { deleteTicket, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -46,9 +47,33 @@ interface Props {
 }
 
 export default function TicketDetails({ title, ticket }: Props) {
+  const dispatch = useAppDispatch();
+
+  const status = useAppSelector(selectStatus);
+  const error = useAppSelector(selectError);
+
   const [expanded, setExpanded] = useState(true);
 
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const [openAlert, setOpenAlert] = useState(false);
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      handleAlertClose();
+    }
+    return () => {
+      console.log('TicketDetails unmounting');
+    };
+  }, [status]);
+
+  const handleAlertClickOpen = () => {
+    setOpenAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setOpenAlert(false);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -56,6 +81,10 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   const handleEdit: React.MouseEventHandler<HTMLButtonElement> = () => {
     setOpenDrawer(true);
+  };
+
+  const handlePermanentDelete = async () => {
+    dispatch(deleteTicket(ticket.id));
   };
 
   const onCloseDrawer = () => {
@@ -109,7 +138,7 @@ export default function TicketDetails({ title, ticket }: Props) {
             Edit
           </Button>
           <Button
-            // onClick={onNewTicketClick}
+            onClick={handleAlertClickOpen}
             variant="outlined"
             color="error"
             startIcon={<Iconify icon="eva:trash-2-outline" />}
@@ -118,6 +147,15 @@ export default function TicketDetails({ title, ticket }: Props) {
           </Button>
         </CardActions>
       </Collapse>
+
+      <AlertDialog
+        loading={status === 'loading'}
+        open={openAlert}
+        handleClose={handleAlertClose}
+        handleAction={handlePermanentDelete}
+        title="Delete ticket ?"
+        message="Ticket will be permanently deleted"
+      />
 
       <Divider sx={{ borderStyle: 'dashed' }} />
     </Card>
