@@ -1,14 +1,26 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { Project, ProjectCreateInput, ProjectsState, ProjectUpdate, Ticket, TicketCreateInput, TicketUpdate } from '../types'
-import { getProjects, createProject, createTicket, updateProject as updateProjectApi, updateTicket as updateTicketApi } from 'src/services/projects'
+import {
+    getProjects,
+    createProject,
+    createTicket,
+    updateProject as updateProjectApi,
+    updateTicket as updateTicketApi,
+    deleteTicket as deleteTicketApi,
+} from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
     createdProjects: [],
-    otherProjects: []
+    otherProjects: [],
+    status: 'idle'
 }
+
+export const deleteTicket = createAsyncThunk('projects/deleteTicket', async (ticketId: number) => {
+    return await deleteTicketApi(ticketId)
+})
 
 export const projectsSlice = createSlice({
     name: 'projects',
@@ -53,6 +65,26 @@ export const projectsSlice = createSlice({
                 ticket.projectId = action.payload.projectId;
             }
         },
+    },
+    extraReducers(builder) {
+        builder
+            .addCase(deleteTicket.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(deleteTicket.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.error = undefined
+                // Delete the ticket from the state
+                let project = state.createdProjects.find(p => p.id === action.payload.projectId);
+                if (!project)
+                    project = state.otherProjects.find(p => p.id === action.payload.projectId)
+                if (project)
+                    project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
+            })
+            .addCase(deleteTicket.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
     }
 })
 
@@ -139,10 +171,11 @@ export const updateAndLoadTicket = (data: TicketUpdate, setLoading: React.Dispat
     }
 }
 
-
 export const { setProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
+export const selectStatus = (state: RootState) => state.projects.status
+export const selectError = (state: RootState) => state.projects.error
 
 export default projectsSlice.reducer
