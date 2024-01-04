@@ -4,6 +4,11 @@
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
+## Environment Variables
+
+- VITE_GOOGLE_OAUTH_CLIENT_ID
+- VITE_BUG_TRACKER_API_URL
+
 ## Git Commit Types:
 
 - feat: A new feature or enhancement added to the codebase.
@@ -14,14 +19,7 @@
 - test: Addition or modification of test cases.
 - chore: Other changes not directly affecting the code (e.g., build scripts, dependencies).
 
-# React + TypeScript + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## React + TypeScript + Vite
 
 ## Expanding the ESLint configuration
 

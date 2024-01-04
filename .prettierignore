@@ -1,6 +1,7 @@
 build/*
 dist/*
 public/*
+node_modules/*
 **/out/*
 **/.next/*
 **/node_modules/*
