@@ -1,7 +1,5 @@
-import { ReactEventHandler, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -15,10 +13,14 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import { Project, ProjectStatusMap } from 'src/redux/types';
 import Label from 'src/components/label';
 import { LabelColor } from 'src/components/label/labelSubTypes';
+import AlertDialog from 'src/components/alertDialog/alertDialog';
 import CreateOrEditProject from '../projects/createOrEditProject';
+
+import { Project, ProjectStatusMap } from 'src/redux/types';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { deleteProject, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -43,9 +45,33 @@ interface AppInnerProps {
 }
 
 export default function ProjectDetails({ title, project }: AppInnerProps) {
+  const dispatch = useAppDispatch();
+
+  const status = useAppSelector(selectStatus);
+  const error = useAppSelector(selectError);
+
   const [expanded, setExpanded] = useState(true);
 
   const [openDrawer, setOpenDrawer] = useState(false);
+
+  const [openAlert, setOpenAlert] = useState(false);
+
+  useEffect(() => {
+    if (status === 'succeeded') {
+      handleAlertClose();
+    }
+    return () => {
+      console.log('ProjectDetails unmounting');
+    };
+  }, [status]);
+
+  const handleAlertClickOpen = () => {
+    setOpenAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setOpenAlert(false);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -53,6 +79,10 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const handleEdit: React.MouseEventHandler<HTMLButtonElement> = () => {
     setOpenDrawer(true);
+  };
+
+  const handlePermanentDelete = async () => {
+    dispatch(deleteProject(project.id));
   };
 
   const onCloseDrawer = () => {
@@ -103,7 +133,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
             Edit
           </Button>
           <Button
-            // onClick={onNewTicketClick}
+            onClick={handleAlertClickOpen}
             variant="outlined"
             color="error"
             startIcon={<Iconify icon="eva:trash-2-outline" />}
@@ -112,6 +142,15 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
           </Button>
         </CardActions>
       </Collapse>
+
+      <AlertDialog
+        loading={status === 'loading'}
+        open={openAlert}
+        handleClose={handleAlertClose}
+        handleAction={handlePermanentDelete}
+        title="Delete project ?"
+        message="The project and all tickets under it will be permanently deleted"
+      />
 
       <Divider sx={{ borderStyle: 'dashed' }} />
     </Card>

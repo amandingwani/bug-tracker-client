@@ -6,6 +6,7 @@ import {
     createProject,
     createTicket,
     updateProject as updateProjectApi,
+    deleteProject as deleteProjectApi,
     updateTicket as updateTicketApi,
     deleteTicket as deleteTicketApi,
 } from 'src/services/projects'
@@ -17,6 +18,10 @@ const initialState: ProjectsState = {
     otherProjects: [],
     status: 'idle'
 }
+
+export const deleteProject = createAsyncThunk('projects/deleteProject', async (projectId: number) => {
+    return await deleteProjectApi(projectId)
+})
 
 export const deleteTicket = createAsyncThunk('projects/deleteTicket', async (ticketId: number) => {
     return await deleteTicketApi(ticketId)
@@ -82,6 +87,19 @@ export const projectsSlice = createSlice({
                     project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
             })
             .addCase(deleteTicket.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(deleteProject.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(deleteProject.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.error = undefined
+                // Delete the project from the state
+                state.createdProjects = state.createdProjects.filter(p => p.id !== action.payload.id);
+            })
+            .addCase(deleteProject.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

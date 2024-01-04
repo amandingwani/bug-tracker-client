@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -18,14 +18,18 @@ import TableEmptyRows from '../table-empty-rows';
 import ProjectsTableToolbar from '../projects-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import { selectProjects } from 'src/redux/slices/projectsSlice';
-import { useAppSelector } from 'src/redux/hooks';
-import { Project, ProjectCreateInput, ProjectUpdate } from 'src/redux/types';
+import { selectProjects, deleteProject } from 'src/redux/slices/projectsSlice';
+import { useAppSelector, useAppDispatch } from 'src/redux/hooks';
+import { Project, ProjectUpdate } from 'src/redux/types';
+
+import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditProject from '../createOrEditProject';
 
 // ----------------------------------------------------------------------
 
 export default function ProjectsPage() {
+  const dispatch = useAppDispatch();
+
   const projects = useAppSelector(selectProjects);
 
   const [page, setPage] = useState(0);
@@ -43,6 +47,32 @@ export default function ProjectsPage() {
   const [selectedProject, setSelectedProject] = useState<ProjectUpdate | null>(null);
 
   const [filterSelected, setFilterSelected] = useState({ other: true, created: true });
+
+  const [openAlert, setOpenAlert] = useState(false);
+
+  useEffect(() => {
+    if (projects.status === 'succeeded') {
+      handleAlertClose();
+    }
+    return () => {
+      console.log('Projects-view unmounting');
+    };
+  }, [projects.status]);
+
+  const handlePermanentDelete = async () => {
+    if (selectedProject) {
+      dispatch(deleteProject(selectedProject.id));
+    }
+  };
+
+  const handleAlertClickOpen = () => {
+    setOpenAlert(true);
+  };
+
+  const handleAlertClose = () => {
+    setOpenAlert(false);
+    setSelectedProject(null);
+  };
 
   let projectsToDisplay: Project[] = [];
 
@@ -144,6 +174,7 @@ export default function ProjectsPage() {
                       project={row}
                       setOpenDrawer={setOpenDrawer}
                       setSelectedProject={setSelectedProject}
+                      handleAlertClickOpen={handleAlertClickOpen}
                     />
                   ))}
 
@@ -170,6 +201,15 @@ export default function ProjectsPage() {
           />
         )}
       </Card>
+
+      <AlertDialog
+        loading={projects.status === 'loading'}
+        open={openAlert}
+        handleClose={handleAlertClose}
+        handleAction={handlePermanentDelete}
+        title="Delete project ?"
+        message="The project and all tickets under it will be permanently deleted"
+      />
     </Container>
   );
 }

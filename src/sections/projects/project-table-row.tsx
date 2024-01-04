@@ -20,6 +20,7 @@ interface ProjectTableRowProps {
   project: Project;
   setOpenDrawer: (value: React.SetStateAction<boolean>) => void;
   setSelectedProject: (value: React.SetStateAction<ProjectUpdate | null>) => void;
+  handleAlertClickOpen: () => void;
 }
 
 export default function ProjectTableRow(props: ProjectTableRowProps) {
@@ -73,6 +74,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         project={project}
         setOpenDrawer={props.setOpenDrawer}
         setSelectedProject={props.setSelectedProject}
+        handleAlertClickOpen={props.handleAlertClickOpen}
       />
     </>
   );

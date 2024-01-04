@@ -28,6 +28,25 @@ export const updateProject = (data: ProjectUpdate) => {
     });
 }
 
+export const deleteProject = (projectId: number) => {
+    return new Promise<Project>((resolve, reject) => {
+        axios
+            .delete('/projects', { data: { id: projectId } })
+            .then((res) => {
+                console.log({ res })
+                if (res.data.error) {
+                    reject(res.data.error)
+                } else {
+                    resolve(res.data)
+                }
+            })
+            .catch((err) => {
+                console.log({ 'errCaught': err })
+                reject(err)
+            });
+    });
+}
+
 export const createTicket = (data: TicketCreateInput) => {
     return new Promise<Ticket>((resolve, reject) => {
         axios
