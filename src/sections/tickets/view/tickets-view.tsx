@@ -162,7 +162,7 @@ export default function TicketsPage(props: TicketsPageProps) {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Container>
+    <Card>
       <CreateOrEditTicket
         openDrawer={openDrawer}
         onCloseDrawer={onCloseDrawer}
@@ -244,6 +244,6 @@ export default function TicketsPage(props: TicketsPageProps) {
         title="Delete ticket ?"
         message="Ticket will be permanently deleted."
       />
-    </Container>
+    </Card>
   );
 }

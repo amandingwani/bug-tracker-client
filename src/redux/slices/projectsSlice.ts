@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
-import type { Project, ProjectCreateInput, ProjectsState, ProjectUpdate, Ticket, TicketCreateInput, TicketUpdate } from '../types'
+import type { AddContributor, Project, ProjectCreateInput, ProjectsState, ProjectUpdate, Ticket, TicketCreateInput, TicketUpdate } from '../types'
 import {
     getProjects,
     createProject,
@@ -9,6 +9,8 @@ import {
     deleteProject as deleteProjectApi,
     updateTicket as updateTicketApi,
     deleteTicket as deleteTicketApi,
+    addContributor as addContributorApi,
+    removeContributor as removeContributorApi
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 
@@ -25,6 +27,14 @@ export const deleteProject = createAsyncThunk('projects/deleteProject', async (p
 
 export const deleteTicket = createAsyncThunk('projects/deleteTicket', async (ticketId: number) => {
     return await deleteTicketApi(ticketId)
+})
+
+export const addContributor = createAsyncThunk('projects/addContributor', async (data: AddContributor) => {
+    return await addContributorApi(data)
+})
+
+export const removeContributor = createAsyncThunk('projects/removeContributor', async (data: AddContributor) => {
+    return await removeContributorApi(data)
 })
 
 export const projectsSlice = createSlice({
@@ -100,6 +110,36 @@ export const projectsSlice = createSlice({
                 state.createdProjects = state.createdProjects.filter(p => p.id !== action.payload.id);
             })
             .addCase(deleteProject.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(addContributor.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(addContributor.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.error = undefined
+                // Update the contributors array
+                const project = state.createdProjects.find(p => p.id === action.payload.id);
+                if (project)
+                    project.contributors = action.payload.contributors;
+            })
+            .addCase(addContributor.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+            .addCase(removeContributor.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(removeContributor.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                state.error = undefined
+                // Update the contributors array
+                const project = state.createdProjects.find(p => p.id === action.payload.id);
+                if (project)
+                    project.contributors = action.payload.contributors;
+            })
+            .addCase(removeContributor.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

@@ -1,5 +1,5 @@
 import axios from 'src/config/axios';
-import { ProjectCreateInput, ProjectsState, Project, TicketCreateInput, Ticket, ProjectUpdate, TicketUpdate } from 'src/redux/types';
+import { ProjectCreateInput, ProjectsState, Project, TicketCreateInput, Ticket, ProjectUpdate, TicketUpdate, AddContributor } from 'src/redux/types';
 
 export const getProjects = () => {
     return new Promise<ProjectsState>((resolve, reject) => {
@@ -87,5 +87,23 @@ export const deleteTicket = (ticketId: number) => {
                 console.log({ 'errCaught': err })
                 reject(err)
             });
+    });
+}
+
+export const addContributor = (data: AddContributor) => {
+    return new Promise<Project>((resolve, reject) => {
+        axios
+            .put('/projects/addContributor', data)
+            .then((res) => resolve(res.data))
+            .catch((err) => reject(err));
+    });
+}
+
+export const removeContributor = (data: AddContributor) => {
+    return new Promise<Project>((resolve, reject) => {
+        axios
+            .put('/projects/removeContributor', data)
+            .then((res) => resolve(res.data))
+            .catch((err) => reject(err));
     });
 }

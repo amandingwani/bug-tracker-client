@@ -6,6 +6,7 @@ import ProjectDetails from '../project-details';
 import { Project } from 'src/redux/types';
 
 import { TicketsView } from 'src/sections/tickets/view';
+import { UsersView } from 'src/sections/users/view';
 
 // ----------------------------------------------------------------------
 
@@ -15,6 +16,8 @@ export default function ProjectDetailsPage({ project }: { project: Project }) {
   return (
     <Container>
       <ProjectDetails title="Project Details" project={project} />
+
+      <UsersView project={project} />
 
       <TicketsView
         tickets={allTickets}

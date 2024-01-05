@@ -5,6 +5,14 @@ type FullName = {
     lastName: string
 }
 
+export type Contributor = {
+    id: number,
+    firstName: string,
+    lastName?: string,
+    email: string,
+    registered: boolean
+}
+
 export interface UserState {
     id: number
     google_id_sub: string
@@ -31,6 +39,7 @@ export interface Project {
     status: ProjectStatus;
     tickets: Ticket[];
     createdAt: Date;
+    contributors: Contributor[];
 }
 
 export interface Ticket {
@@ -95,4 +104,13 @@ export type TicketCreateInput = {
 
 export interface TicketUpdate extends TicketCreateInput {
     id: number
+}
+
+export interface AddContributor {
+    id: number,
+    email: string
+}
+
+export type Email = {
+    email: string
 }
