@@ -18,6 +18,7 @@ import UsersTableToolbar from '../users-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import { removeContributor, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
+import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Contributor } from 'src/redux/types';
 
@@ -33,6 +34,7 @@ interface Props {
 export default function UsersTable(props: Props) {
   const dispatch = useAppDispatch();
 
+  const user = useAppSelector(selectUser);
   const status = useAppSelector(selectStatus);
   const error = useAppSelector(selectError);
 
@@ -51,6 +53,16 @@ export default function UsersTable(props: Props) {
   const [selectedUser, setSelectedUser] = useState<Contributor | null>(null);
 
   const [openAlert, setOpenAlert] = useState(false);
+
+  let users: Contributor[] = [];
+  if (user)
+    users = props.project.contributors.concat({
+      id: user.id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      registered: true,
+      email: user.email,
+    });
 
   useEffect(() => {
     if (status === 'succeeded') {
@@ -112,7 +124,7 @@ export default function UsersTable(props: Props) {
   };
 
   const dataFiltered = applyFilter({
-    inputData: props.project.contributors,
+    inputData: users,
     comparator: getComparator(order, orderBy),
     filterName,
   });
@@ -151,6 +163,7 @@ export default function UsersTable(props: Props) {
                     <UsersTableRow
                       key={row.id}
                       user={row}
+                      actionAllowed={user!.id === props.project.ownerId && user!.id !== row.id}
                       setOpenDrawer={setOpenDrawer}
                       setSelectedUser={setSelectedUser}
                       handleAlertClickOpen={handleAlertClickOpen}
@@ -159,7 +172,7 @@ export default function UsersTable(props: Props) {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, props.project.contributors.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}

@@ -16,6 +16,7 @@ import { LabelColor } from 'src/components/label/labelSubTypes';
 interface UsersTableRowProps {
   key: number;
   user: Contributor;
+  actionAllowed: boolean;
   setOpenDrawer: (value: React.SetStateAction<boolean>) => void;
   setSelectedUser: (value: React.SetStateAction<Contributor | null>) => void;
   handleAlertClickOpen: () => void;
@@ -56,11 +57,13 @@ export default function UsersTableRow(props: UsersTableRowProps) {
           <Label color={statusLabelColor}>{user.registered ? 'Active' : 'Pending'}</Label>
         </TableCell>
 
-        <TableCell align="right">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </TableCell>
+        {props.actionAllowed && (
+          <TableCell align="right">
+            <IconButton onClick={handleOpenMenu}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          </TableCell>
+        )}
       </TableRow>
 
       <Popover
