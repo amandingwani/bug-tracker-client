@@ -39,12 +39,15 @@ import {
   TicketPriorityArr,
   TicketTypeArr,
   TicketUpdate,
+  Contributor,
+  Project,
 } from 'src/redux/types';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 interface CreateTicketProps {
   openDrawer: boolean;
   onCloseDrawer: () => void;
-  projectId?: number;
+  project?: Project;
   selectedTicket: TicketUpdate | null;
 }
 
@@ -52,15 +55,44 @@ export default function CreateOrEditTicket({
   openDrawer,
   onCloseDrawer,
   selectedTicket,
-  projectId,
+  project,
 }: CreateTicketProps) {
   const [loading, setLoading] = useState(false);
-  const [selectedProjectId, setSelectedProjectId] = useState<number | null>(projectId ?? null);
+  // // pre selected project when creating or editing a ticket under a project
+  // // or when you select a new project ?
+  // const [selectedProject, setSelectedProject] = useState<Project | null>(project ?? null);
 
   const projects = useAppSelector(selectProjects);
+  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   const allProjects = [...projects.createdProjects, ...projects.otherProjects];
+
+  let contributorsOfAProject: Contributor[] = [];
+  if (selectedTicket) {
+    contributorsOfAProject = selectedTicket.project.contributors;
+  } else if (project) {
+    contributorsOfAProject = project.contributors;
+  }
+
+  const unassignedUser = {
+    id: -1,
+    firstName: 'Unassigned',
+    email: 'Unassigned',
+    registered: false,
+  };
+
+  const allUsersOfAProject: Contributor[] = [
+    {
+      id: user!.id,
+      firstName: user!.firstName,
+      lastName: user!.lastName,
+      email: user!.email,
+      registered: true,
+    },
+    ...contributorsOfAProject,
+    unassignedUser,
+  ];
 
   const WIDTH = '80%';
 
@@ -69,14 +101,22 @@ export default function CreateOrEditTicket({
     handleSubmit,
     formState: { errors },
     setValue,
+    getValues,
     reset,
     control,
-  } = useForm<TicketCreateInput>();
+  } = useForm<TicketCreateInput>({
+    defaultValues: {
+      status: 'OPEN',
+      type: 'BUG',
+      priority: 'NORMAL',
+      assignee: selectedTicket?.assignee ? selectedTicket.assignee : unassignedUser,
+      project: allProjects[0],
+    },
+  });
 
-  // console.log(getValues());
+  console.log(getValues());
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
-    data.projectId = selectedProjectId!;
     console.log(data);
     setLoading(true);
     if (!selectedTicket) {
@@ -94,24 +134,17 @@ export default function CreateOrEditTicket({
 
   const { ref: descriptionInputRef, ...descriptionInputProps } = register('description');
 
-  const { ref: projectIdInputRef, ...projectIdInputProps } = register('projectId', {
-    required: 'Please select a project',
-  });
-
-  // const { ref: typeInputRef, ...typeInputProps } = register('type', { required: true });
-  // const { ref: priorityInputRef, ...priorityInputProps } = register('priority', { required: true });
-  // const { ref: statusInputRef, ...statusInputProps } = register('status', { required: true });
-
-  useEffect(() => {
-    setValue('title', selectedTicket?.title ?? '');
-    setValue('description', selectedTicket?.description ?? '');
-    setValue('status', selectedTicket?.status ?? 'OPEN');
-    setValue('type', selectedTicket?.type ?? 'BUG');
-    setValue('priority', selectedTicket?.priority ?? 'NORMAL');
-    if (projectId) setValue('projectId', projectId);
-    else if (selectedTicket) setValue('projectId', selectedTicket.projectId);
-    setSelectedProjectId(projectId ? projectId : selectedTicket?.projectId ?? null);
-  }, [selectedTicket]);
+  // useEffect(() => {
+  //   setValue('title', selectedTicket?.title ?? '');
+  //   setValue('description', selectedTicket?.description ?? '');
+  //   setValue('status', selectedTicket?.status ?? 'OPEN');
+  //   setValue('type', selectedTicket?.type ?? 'BUG');
+  //   setValue('priority', selectedTicket?.priority ?? 'NORMAL');
+  //   setValue('assignee', selectedTicket?.assignee ?? null);
+  //   if (project) setValue('project', project);
+  //   else if (selectedTicket) setValue('project', selectedTicket.project);
+  //   // setSelectedProjectId(projectId ? projectId : selectedTicket?.projectId ?? null);
+  // }, [selectedTicket]);
 
   const renderContent = (
     <Scrollbar
@@ -167,43 +200,30 @@ export default function CreateOrEditTicket({
                 />
               </FormControl>
               <FormControl>
-                <Autocomplete
-                  disablePortal
-                  // id="combo-box-demo"
-                  options={allProjects}
-                  getOptionLabel={(p) => p.name}
-                  sx={{ width: 300 }}
-                  value={allProjects.find((p) => p.id === selectedProjectId) ?? null}
-                  onChange={(e, data) => setSelectedProjectId(data?.id ?? null)}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      id="projectId"
-                      label="Project"
-                      variant="outlined"
-                      error={!!errors.projectId}
-                      helperText={errors.projectId?.message}
-                      inputRef={projectIdInputRef}
-                      {...projectIdInputProps}
+                <Controller
+                  control={control}
+                  name="project"
+                  rules={{ required: 'Please select a project' }}
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...field}
+                      options={allProjects}
+                      getOptionLabel={(p) => p.name}
+                      isOptionEqualToValue={(option, value) => option.id === value.id}
+                      onChange={(_, data) => field.onChange(data)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          id="project-field"
+                          label="Select Project"
+                          variant="outlined"
+                          error={!!errors.project}
+                          helperText={errors.project?.message}
+                        />
+                      )}
                     />
                   )}
                 />
-                {/* <TextField
-                  id="projectId"
-                  label="Project"
-                  select
-                  variant="outlined"
-                  error={!!errors.projectId}
-                  helperText={errors.projectId?.message}
-                  inputRef={projectIdInputRef}
-                  {...projectIdInputProps}
-                >
-                  {allProjects.map((p) => (
-                    <MenuItem key={p.id} value={p.id}>
-                      {p.name}
-                    </MenuItem>
-                  ))}
-                </TextField> */}
               </FormControl>
               <FormControl>
                 <Controller
@@ -274,6 +294,33 @@ export default function CreateOrEditTicket({
                         </MenuItem>
                       ))}
                     </TextField>
+                  )}
+                />
+              </FormControl>
+              <FormControl>
+                <Controller
+                  control={control}
+                  name="assignee"
+                  render={({ field }) => (
+                    <Autocomplete
+                      {...field}
+                      options={allUsersOfAProject}
+                      getOptionLabel={(c) =>
+                        c.lastName ? c.firstName + ' ' + c.lastName : c.firstName
+                      }
+                      isOptionEqualToValue={(option, value) => option.id === value.id}
+                      onChange={(_, data) => field.onChange(data)}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          id="assignee-field"
+                          label="Select Assignee"
+                          variant="outlined"
+                          error={!!errors.assignee}
+                          helperText={errors.assignee?.message}
+                        />
+                      )}
+                    />
                   )}
                 />
               </FormControl>

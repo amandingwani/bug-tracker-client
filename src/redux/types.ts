@@ -8,14 +8,6 @@ export type Contributor = {
     registered: boolean
 }
 
-// export type ProjectInfoForTicket = {
-//     id: number,
-//     name: string,
-//     owner: Contributor;
-//     tickets: Ticket[];  
-//     contributors: Contributor[];
-// }
-
 export interface UserState {
     id: number
     google_id_sub: string
