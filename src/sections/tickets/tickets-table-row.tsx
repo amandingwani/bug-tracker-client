@@ -53,7 +53,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
             variant="subtitle2"
             noWrap
             component={RouterLink}
-            href={`/projects/${ticket.projectId}/tickets/${ticket.id}`}
+            href={`/projects/${ticket.project.id}/tickets/${ticket.id}`}
           >
             {ticket.title}
           </Typography>
@@ -61,7 +61,9 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
 
         <TableCell>{ticket.author.firstName + ' ' + ticket.author.lastName}</TableCell>
         <TableCell>
-          {ticket.asignee ? ticket.asignee.firstName + ' ' + ticket.asignee.lastName : 'Unassigned'}
+          {ticket.assignee
+            ? ticket.assignee.firstName + ' ' + ticket.assignee.lastName
+            : 'Unassigned'}
         </TableCell>
 
         <TableCell>{TicketStatusMap[ticket.status]}</TableCell>
@@ -76,7 +78,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
             variant="subtitle2"
             noWrap
             component={RouterLink}
-            href={`/projects/${ticket.projectId}`}
+            href={`/projects/${ticket.project.id}`}
           >
             {ticket.project.name}
           </Typography>

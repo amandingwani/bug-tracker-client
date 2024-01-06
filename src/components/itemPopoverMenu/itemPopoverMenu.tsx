@@ -56,7 +56,8 @@ const ItemPopoverMenu = ({
         status: ticket.status,
         type: ticket.type,
         priority: ticket.priority,
-        projectId: ticket.projectId,
+        project: ticket.project,
+        assignee: ticket.assignee ?? null,
       });
       handleCloseMenu();
       setOpenDrawer(true);
@@ -69,7 +70,8 @@ const ItemPopoverMenu = ({
         status: ticket.status,
         type: ticket.type,
         priority: ticket.priority,
-        projectId: ticket.projectId,
+        project: ticket.project,
+        assignee: ticket.assignee ?? null,
       });
       handleCloseMenu();
       handleAlertClickOpen();

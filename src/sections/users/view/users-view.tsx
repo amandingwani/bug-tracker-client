@@ -163,7 +163,7 @@ export default function UsersTable(props: Props) {
                     <UsersTableRow
                       key={row.id}
                       user={row}
-                      actionAllowed={user!.id === props.project.ownerId && user!.id !== row.id}
+                      actionAllowed={user!.id === props.project.owner.id && user!.id !== row.id}
                       setOpenDrawer={setOpenDrawer}
                       setSelectedUser={setSelectedUser}
                       handleAlertClickOpen={handleAlertClickOpen}

@@ -103,7 +103,8 @@ export default function TicketDetails({ title, ticket }: Props) {
           type: ticket.type,
           status: ticket.status,
           priority: ticket.priority,
-          projectId: ticket.projectId,
+          project: ticket.project,
+          assignee: ticket.assignee ?? null,
         }}
       />
 
@@ -165,7 +166,7 @@ export default function TicketDetails({ title, ticket }: Props) {
 // ----------------------------------------------------------------------
 
 function Details({ ticket }: { ticket: Ticket }) {
-  const { id, title, description, author, asignee, createdAt, project } = ticket;
+  const { id, title, description, author, assignee, createdAt, project } = ticket;
 
   return (
     <Stack direction="column" alignItems="left" spacing={2}>
@@ -198,7 +199,7 @@ function Details({ ticket }: { ticket: Ticket }) {
           {'Assignee:'}
         </Typography>
         <Typography variant="body2" noWrap>
-          {asignee?.firstName + ' ' + asignee?.lastName}
+          {assignee?.firstName + ' ' + assignee?.lastName}
         </Typography>
       </Stack>
       <Stack direction="row" spacing={2} pl={1}>
@@ -225,7 +226,7 @@ function Details({ ticket }: { ticket: Ticket }) {
           variant="body2"
           noWrap
           component={RouterLink}
-          href={`/projects/${ticket.projectId}`}
+          href={`/projects/${ticket.project.id}`}
         >
           {project.name}
         </Typography>

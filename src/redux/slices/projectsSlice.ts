@@ -57,18 +57,20 @@ export const projectsSlice = createSlice({
             if (!project) {
                 project = state.otherProjects.find(p => p.id === action.payload.id)
             }
-            project!.name = action.payload.name;
-            project!.description = action.payload.description;
-            project!.status = action.payload.status;
+            if (project) {
+                project.name = action.payload.name;
+                project.description = action.payload.description;
+                project.status = action.payload.status;
+            }
         },
         setCreatedTicket: (state, action: PayloadAction<Ticket>) => {
-            state.createdProjects.find(p => p.id === action.payload.projectId)?.tickets.push(action.payload)
-            state.otherProjects.find(p => p.id === action.payload.projectId)?.tickets.push(action.payload)
+            state.createdProjects.find(p => p.id === action.payload.project.id)?.tickets.push(action.payload)
+            state.otherProjects.find(p => p.id === action.payload.project.id)?.tickets.push(action.payload)
         },
         updateTicket: (state, action: PayloadAction<Ticket>) => {
-            let project = state.createdProjects.find(p => p.id === action.payload.projectId);
+            let project = state.createdProjects.find(p => p.id === action.payload.project.id);
             if (!project) {
-                project = state.otherProjects.find(p => p.id === action.payload.projectId)
+                project = state.otherProjects.find(p => p.id === action.payload.project.id)
             }
             const ticket = project?.tickets.find(t => t.id === action.payload.id)
             if (ticket) {
@@ -77,7 +79,8 @@ export const projectsSlice = createSlice({
                 ticket.type = action.payload.type;
                 ticket.priority = action.payload.priority;
                 ticket.status = action.payload.status;
-                ticket.projectId = action.payload.projectId;
+                ticket.project = action.payload.project;
+                ticket.assignee = action.payload.assignee;
             }
         },
     },
@@ -90,9 +93,9 @@ export const projectsSlice = createSlice({
                 state.status = 'succeeded'
                 state.error = undefined
                 // Delete the ticket from the state
-                let project = state.createdProjects.find(p => p.id === action.payload.projectId);
+                let project = state.createdProjects.find(p => p.id === action.payload.project.id);
                 if (!project)
-                    project = state.otherProjects.find(p => p.id === action.payload.projectId)
+                    project = state.otherProjects.find(p => p.id === action.payload.project.id)
                 if (project)
                     project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
             })
@@ -183,7 +186,8 @@ export const createAndLoadTicket = (data: TicketCreateInput, setLoading: React.D
                     description: '',
                     status: 'OPEN',
                     type: 'BUG',
-                    priority: 'NORMAL'
+                    priority: 'NORMAL',
+                    assignee: undefined,
                 })
             })
             .catch((err) => {
@@ -222,7 +226,8 @@ export const updateAndLoadTicket = (data: TicketUpdate, setLoading: React.Dispat
                     description: '',
                     status: 'OPEN',
                     type: 'BUG',
-                    priority: 'NORMAL'
+                    priority: 'NORMAL',
+                    assignee: undefined,
                 })
             })
             .catch((err) => { throw err });
@@ -235,5 +240,9 @@ export const { setProjects, setCreatedProject, setCreatedTicket, updateProject, 
 export const selectProjects = (state: RootState) => state.projects
 export const selectStatus = (state: RootState) => state.projects.status
 export const selectError = (state: RootState) => state.projects.error
+export const selectProject = (state: RootState, projectId: number) => {
+    const allProjects = [...state.projects.createdProjects, ...state.projects.otherProjects]
+    return allProjects.find(p => p.id === projectId)
+}
 
 export default projectsSlice.reducer

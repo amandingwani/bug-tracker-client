@@ -34,8 +34,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export default function ProjectDetailsPage({ project }: { project: Project }) {
-  const [expanded, setExpanded] = useState(true);
-  const allTickets = project.tickets;
+  const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -70,11 +69,7 @@ export default function ProjectDetailsPage({ project }: { project: Project }) {
         </Collapse>
       </Card>
 
-      <TicketsView
-        tickets={allTickets}
-        filterSelected={{ assign: true, created: true }}
-        projectId={project.id}
-      />
+      <TicketsView filterSelected={{ assign: true, created: true }} project={project} />
     </Container>
   );
 }

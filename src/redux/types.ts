@@ -1,10 +1,5 @@
 // These types are not the same as their backend counterparts
 
-type FullName = {
-    firstName: string,
-    lastName: string
-}
-
 export type Contributor = {
     id: number,
     firstName: string,
@@ -12,6 +7,14 @@ export type Contributor = {
     email: string,
     registered: boolean
 }
+
+// export type ProjectInfoForTicket = {
+//     id: number,
+//     name: string,
+//     owner: Contributor;
+//     tickets: Ticket[];  
+//     contributors: Contributor[];
+// }
 
 export interface UserState {
     id: number
@@ -34,8 +37,7 @@ export interface Project {
     id: number;
     name: string;
     description?: string;
-    owner: FullName;
-    ownerId: number,
+    owner: Contributor;
     status: ProjectStatus;
     tickets: Ticket[];
     createdAt: Date;
@@ -46,16 +48,15 @@ export interface Ticket {
     id: number;
     title: string;
     description?: string;
-    author: FullName;
-    authorId: number
-    asignee?: FullName;
-    asigneeId?: number;
+    author: Contributor;
+
+    assignee?: Contributor;
+
     type: TicketType;
     priority: TicketPriority;
     status: TicketStatus;
     createdAt: string;
-    projectId: number;
-    project: { name: string }
+    project: Project
 }
 
 export type ProjectStatus = 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELED' | 'TESTING' | 'DEPLOYED'
@@ -95,11 +96,12 @@ export interface ProjectUpdate extends ProjectCreateInput {
 
 export type TicketCreateInput = {
     title: string;
-    description: string;
+    description?: string;
     type: TicketType;
     priority: TicketPriority;
     status: TicketStatus;
-    projectId: number;
+    project: Project,
+    assignee: Contributor | null;
 }
 
 export interface TicketUpdate extends TicketCreateInput {

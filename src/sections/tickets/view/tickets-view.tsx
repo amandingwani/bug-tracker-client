@@ -27,7 +27,7 @@ import {
 import { selectProjects, deleteTicket } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { Ticket, TicketUpdate } from 'src/redux/types';
+import { Project, Ticket, TicketUpdate } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../createOrEditTicket';
@@ -36,8 +36,7 @@ import CreateOrEditTicket from '../createOrEditTicket';
 
 interface TicketsPageProps {
   filterSelected?: { assign: boolean; created: boolean };
-  tickets?: Ticket[];
-  projectId?: number;
+  project?: Project;
 }
 
 export default function TicketsPage(props: TicketsPageProps) {
@@ -136,8 +135,8 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   let allTickets: Ticket[] = [];
 
-  if (props.tickets) {
-    allTickets = props.tickets;
+  if (props.project?.tickets) {
+    allTickets = props.project.tickets;
   } else {
     const allProjects = [...projects.createdProjects, ...projects.otherProjects];
     allTickets = allProjects.map((project) => [...project.tickets]).flat();
@@ -166,7 +165,7 @@ export default function TicketsPage(props: TicketsPageProps) {
       <CreateOrEditTicket
         openDrawer={openDrawer}
         onCloseDrawer={onCloseDrawer}
-        projectId={props.projectId}
+        project={props.project}
         selectedTicket={selectedTicket}
       />
 
@@ -190,7 +189,7 @@ export default function TicketsPage(props: TicketsPageProps) {
                   { id: 'id', label: 'ID', align: 'center' },
                   { id: 'title', label: 'Title' },
                   { id: 'author', label: 'Author' },
-                  { id: 'asignee', label: 'Assignee' },
+                  { id: 'assignee', label: 'Assignee' },
                   { id: 'status', label: 'Status' },
                   { id: 'type', label: 'Type' },
                   { id: 'priority', label: 'Priority' },

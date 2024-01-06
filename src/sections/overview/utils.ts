@@ -50,7 +50,7 @@ export function getDashboardData(projects: ProjectsState, userId: number): Dashb
         if (p.status === 'OPEN' || p.status === 'IN_PROGRESS' || p.status === 'TESTING' || p.status === 'DEPLOYED')
             data.activeProjects += 1;
         p.tickets.forEach(t => {
-            if (t.asigneeId === userId) {
+            if (t.assignee?.id === userId) {
                 if (t.type === 'TASK')
                     data.ticketTypeCount.TASK += 1;
                 else

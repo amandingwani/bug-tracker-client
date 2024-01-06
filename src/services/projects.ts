@@ -1,5 +1,5 @@
 import axios from 'src/config/axios';
-import { ProjectCreateInput, ProjectsState, Project, TicketCreateInput, Ticket, ProjectUpdate, TicketUpdate, AddContributor } from 'src/redux/types';
+import { ProjectCreateInput, ProjectsState, Project, Ticket, ProjectUpdate, TicketUpdate, AddContributor, TicketPriority, TicketStatus, TicketType } from 'src/redux/types';
 
 export const getProjects = () => {
     return new Promise<ProjectsState>((resolve, reject) => {
@@ -47,7 +47,17 @@ export const deleteProject = (projectId: number) => {
     });
 }
 
-export const createTicket = (data: TicketCreateInput) => {
+export type CreateTicketApiData = {
+    title: string;
+    description?: string;
+    type: TicketType;
+    priority: TicketPriority;
+    status: TicketStatus;
+    projectId: number;
+    assigneeId?: number;
+}
+
+export const createTicket = (data: CreateTicketApiData) => {
     return new Promise<Ticket>((resolve, reject) => {
         axios
             .post('/tickets', data)

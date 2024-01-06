@@ -68,14 +68,14 @@ export function applyFilter({ inputData, comparator, filterName }: ApplyFilterPr
 
 export function filterTicketsAssignedToMe(tickets: Ticket[], userId: number | undefined) {
   if (userId) {
-    return tickets.filter((ticket) => ticket.asigneeId === userId);
+    return tickets.filter((ticket) => ticket.assignee?.id === userId);
   }
   return [];
 }
 
 export function filterTicketsCreatedByMe(tickets: Ticket[], userId: number | undefined) {
   if (userId) {
-    return tickets.filter((ticket) => ticket.authorId === userId);
+    return tickets.filter((ticket) => ticket.author.id === userId);
   }
   return [];
 }
