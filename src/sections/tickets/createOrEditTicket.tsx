@@ -75,6 +75,9 @@ export default function CreateOrEditTicket({
     contributorsOfAProject = project.contributors;
   }
 
+  // console.log({ selectedTicket });
+  // console.log({ contributorsOfAProject });
+
   const unassignedUser = {
     id: -1,
     firstName: 'Unassigned',
@@ -113,8 +116,6 @@ export default function CreateOrEditTicket({
       project: allProjects[0],
     },
   });
-
-  console.log(getValues());
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
     setLoading(true);
@@ -162,17 +163,17 @@ export default function CreateOrEditTicket({
 
   const { ref: descriptionInputRef, ...descriptionInputProps } = register('description');
 
-  // useEffect(() => {
-  //   setValue('title', selectedTicket?.title ?? '');
-  //   setValue('description', selectedTicket?.description ?? '');
-  //   setValue('status', selectedTicket?.status ?? 'OPEN');
-  //   setValue('type', selectedTicket?.type ?? 'BUG');
-  //   setValue('priority', selectedTicket?.priority ?? 'NORMAL');
-  //   setValue('assignee', selectedTicket?.assignee ?? null);
-  //   if (project) setValue('project', project);
-  //   else if (selectedTicket) setValue('project', selectedTicket.project);
-  //   // setSelectedProjectId(projectId ? projectId : selectedTicket?.projectId ?? null);
-  // }, [selectedTicket]);
+  useEffect(() => {
+    setValue('title', selectedTicket?.title ?? '');
+    setValue('description', selectedTicket?.description ?? '');
+    setValue('status', selectedTicket?.status ?? 'OPEN');
+    setValue('type', selectedTicket?.type ?? 'BUG');
+    setValue('priority', selectedTicket?.priority ?? 'NORMAL');
+    setValue('assignee', selectedTicket?.assignee ?? unassignedUser);
+    if (project) setValue('project', project);
+    else if (selectedTicket) setValue('project', selectedTicket.project);
+    // setSelectedProjectId(projectId ? projectId : selectedTicket?.projectId ?? null);
+  }, [selectedTicket]);
 
   const renderContent = (
     <Scrollbar

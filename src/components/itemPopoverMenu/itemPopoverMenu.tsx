@@ -57,7 +57,12 @@ const ItemPopoverMenu = ({
         type: ticket.type,
         priority: ticket.priority,
         project: ticket.project,
-        assignee: ticket.assignee ?? null,
+        assignee: ticket.assignee ?? {
+          id: -1,
+          firstName: 'Unassigned',
+          email: 'Unassigned',
+          registered: false,
+        },
       });
       handleCloseMenu();
       setOpenDrawer(true);
@@ -71,7 +76,12 @@ const ItemPopoverMenu = ({
         type: ticket.type,
         priority: ticket.priority,
         project: ticket.project,
-        assignee: ticket.assignee ?? null,
+        assignee: ticket.assignee ?? {
+          id: -1,
+          firstName: 'Unassigned',
+          email: 'Unassigned',
+          registered: false,
+        },
       });
       handleCloseMenu();
       handleAlertClickOpen();
