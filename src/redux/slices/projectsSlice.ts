@@ -10,7 +10,9 @@ import {
     updateTicket as updateTicketApi,
     deleteTicket as deleteTicketApi,
     addContributor as addContributorApi,
-    removeContributor as removeContributorApi
+    removeContributor as removeContributorApi,
+    CreateTicketApiData,
+    UpdateTicketApiData
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 
@@ -174,21 +176,14 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
     }
 }
 
-export const createAndLoadTicket = (data: TicketCreateInput, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
+export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
     return (dispatch) => {
         createTicket(data)
             .then((ticket) => {
                 dispatch(setCreatedTicket(ticket))
                 setLoading(false)
                 closeDrawer();
-                reset({
-                    title: '',
-                    description: '',
-                    status: 'OPEN',
-                    type: 'BUG',
-                    priority: 'NORMAL',
-                    assignee: undefined,
-                })
+                reset();
             })
             .catch((err) => {
                 console.log(err);
@@ -214,21 +209,14 @@ export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Disp
     }
 }
 
-export const updateAndLoadTicket = (data: TicketUpdate, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
+export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
     return (dispatch) => {
         updateTicketApi(data)
             .then((ticket) => {
                 dispatch(updateTicket(ticket))
                 setLoading(false)
                 closeDrawer();
-                reset({
-                    title: '',
-                    description: '',
-                    status: 'OPEN',
-                    type: 'BUG',
-                    priority: 'NORMAL',
-                    assignee: undefined,
-                })
+                reset();
             })
             .catch((err) => { throw err });
     }

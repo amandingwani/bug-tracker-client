@@ -47,7 +47,7 @@ export const deleteProject = (projectId: number) => {
     });
 }
 
-export type CreateTicketApiData = {
+export interface CreateTicketApiData {
     title: string;
     description?: string;
     type: TicketType;
@@ -72,7 +72,11 @@ export const createTicket = (data: CreateTicketApiData) => {
     });
 }
 
-export const updateTicket = (data: TicketUpdate) => {
+export interface UpdateTicketApiData extends CreateTicketApiData {
+    id: number
+}
+
+export const updateTicket = (data: UpdateTicketApiData) => {
     return new Promise<Ticket>((resolve, reject) => {
         axios
             .put('/tickets', data)

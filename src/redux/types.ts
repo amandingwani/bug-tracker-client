@@ -93,7 +93,7 @@ export type TicketCreateInput = {
     priority: TicketPriority;
     status: TicketStatus;
     project: Project,
-    assignee: Contributor | null;
+    assignee: Contributor;
 }
 
 export interface TicketUpdate extends TicketCreateInput {

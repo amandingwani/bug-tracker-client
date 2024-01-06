@@ -117,13 +117,41 @@ export default function CreateOrEditTicket({
   console.log(getValues());
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
-    console.log(data);
     setLoading(true);
     if (!selectedTicket) {
-      dispatch(createAndLoadTicket(data, setLoading, onCloseDrawer, reset));
+      dispatch(
+        createAndLoadTicket(
+          {
+            title: data.title,
+            description: data.description,
+            priority: data.priority,
+            status: data.status,
+            type: data.type,
+            projectId: data.project.id,
+            assigneeId: data.assignee.id === -1 ? undefined : data.assignee.id,
+          },
+          setLoading,
+          onCloseDrawer,
+          reset
+        )
+      );
     } else {
       dispatch(
-        updateAndLoadTicket({ id: selectedTicket.id, ...data }, setLoading, onCloseDrawer, reset)
+        updateAndLoadTicket(
+          {
+            id: selectedTicket.id,
+            title: data.title,
+            description: data.description,
+            priority: data.priority,
+            status: data.status,
+            type: data.type,
+            projectId: data.project.id,
+            assigneeId: data.assignee.id === -1 ? undefined : data.assignee.id,
+          },
+          setLoading,
+          onCloseDrawer,
+          reset
+        )
       );
     }
   };
