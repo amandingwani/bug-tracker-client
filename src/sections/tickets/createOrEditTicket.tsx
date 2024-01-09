@@ -38,9 +38,9 @@ import {
   TicketStatus,
   TicketPriorityArr,
   TicketTypeArr,
-  TicketUpdate,
   Contributor,
   Project,
+  Ticket,
 } from 'src/redux/types';
 import { unassignedUser } from 'src/redux/constants';
 
@@ -48,7 +48,7 @@ interface CreateTicketProps {
   openDrawer: boolean;
   onCloseDrawer: () => void;
   project?: Project;
-  selectedTicket: TicketUpdate | null;
+  selectedTicket?: Ticket;
 }
 
 export default function CreateOrEditTicket({
@@ -86,6 +86,8 @@ export default function CreateOrEditTicket({
   if (projectOwner) {
     allUsersOfAProject.push(projectOwner);
   }
+
+  console.log({ projectOwner, contributorsOfAProject, selectedTicket });
 
   const WIDTH = '80%';
 

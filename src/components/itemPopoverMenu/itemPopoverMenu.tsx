@@ -1,7 +1,7 @@
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import Iconify from 'src/components/iconify';
-import { Project, ProjectUpdate, Ticket, TicketUpdate } from 'src/redux/types';
+import { Project, ProjectUpdate, Ticket } from 'src/redux/types';
 
 interface Props {
   open: (EventTarget & Element) | null;
@@ -10,7 +10,7 @@ interface Props {
   ticket?: Ticket;
   setOpenDrawer?: (value: React.SetStateAction<boolean>) => void;
   setSelectedProject?: (value: React.SetStateAction<ProjectUpdate | null>) => void;
-  setSelectedTicket?: (value: React.SetStateAction<TicketUpdate | null>) => void;
+  setSelectedTicket?: (value: React.SetStateAction<Ticket | undefined>) => void;
   handleAlertClickOpen: () => void;
 }
 
@@ -49,40 +49,12 @@ const ItemPopoverMenu = ({
     };
   } else if (ticket && setOpenDrawer && setSelectedTicket) {
     handleEdit = () => {
-      setSelectedTicket({
-        id: ticket.id,
-        title: ticket.title,
-        description: ticket.description ?? '',
-        status: ticket.status,
-        type: ticket.type,
-        priority: ticket.priority,
-        project: ticket.project,
-        assignee: ticket.assignee ?? {
-          id: -1,
-          firstName: 'Unassigned',
-          email: 'Unassigned',
-          registered: false,
-        },
-      });
+      setSelectedTicket(ticket);
       handleCloseMenu();
       setOpenDrawer(true);
     };
     handleDelete = () => {
-      setSelectedTicket({
-        id: ticket.id,
-        title: ticket.title,
-        description: ticket.description ?? '',
-        status: ticket.status,
-        type: ticket.type,
-        priority: ticket.priority,
-        project: ticket.project,
-        assignee: ticket.assignee ?? {
-          id: -1,
-          firstName: 'Unassigned',
-          email: 'Unassigned',
-          registered: false,
-        },
-      });
+      setSelectedTicket(ticket);
       handleCloseMenu();
       handleAlertClickOpen();
     };

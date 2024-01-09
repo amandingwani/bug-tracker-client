@@ -19,7 +19,7 @@ interface ProjectTableRowProps {
   key: number;
   ticket: Ticket;
   setOpenDrawer: (value: React.SetStateAction<boolean>) => void;
-  setSelectedTicket: (value: React.SetStateAction<TicketUpdate | null>) => void;
+  setSelectedTicket: (value: React.SetStateAction<Ticket | undefined>) => void;
   handleAlertClickOpen: () => void;
 }
 

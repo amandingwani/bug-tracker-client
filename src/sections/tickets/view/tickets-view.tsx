@@ -27,7 +27,7 @@ import {
 import { selectProjects, deleteTicket } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { Project, Ticket, TicketUpdate } from 'src/redux/types';
+import { Project, Ticket } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../createOrEditTicket';
@@ -46,7 +46,7 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
-  const [selectedTicket, setSelectedTicket] = useState<TicketUpdate | null>(null);
+  const [selectedTicket, setSelectedTicket] = useState<Ticket | undefined>(undefined);
 
   const [filterSelected, setFilterSelected] = useState(
     props.filterSelected ?? { assign: true, created: false }
@@ -85,12 +85,12 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const handleAlertClose = () => {
     setOpenAlert(false);
-    setSelectedTicket(null);
+    setSelectedTicket(undefined);
   };
 
   const onCloseDrawer = () => {
     setOpenDrawer(false);
-    setSelectedTicket(null);
+    setSelectedTicket(undefined);
   };
 
   const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
