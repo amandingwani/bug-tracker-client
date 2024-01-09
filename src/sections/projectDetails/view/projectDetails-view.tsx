@@ -33,7 +33,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function ProjectDetailsPage({ project }: { project: Project }) {
+export default function ProjectDetailsPage({ project }: { project?: Project }) {
   const [expanded, setExpanded] = useState(false);
 
   const handleExpandClick = () => {
@@ -44,30 +44,32 @@ export default function ProjectDetailsPage({ project }: { project: Project }) {
     <Container>
       <ProjectDetails title="Project Details" project={project} />
 
-      <Card>
-        <CardHeader
-          title={'Users'}
-          action={
-            <ExpandMore
-              expand={expanded}
-              onClick={handleExpandClick}
-              aria-expanded={expanded}
-              aria-label="Expand"
-            >
-              <Iconify icon="ooui:expand" />
-            </ExpandMore>
-          }
-          // sx={expanded ? {} : { paddingBottom: 3 }}
-          sx={{ pb: 3 }}
-        />
-        <Collapse in={expanded} timeout="auto" unmountOnExit>
-          <CardContent>
-            <Scrollbar>
-              <UsersView project={project} />
-            </Scrollbar>
-          </CardContent>
-        </Collapse>
-      </Card>
+      {project && (
+        <Card>
+          <CardHeader
+            title={'Users'}
+            action={
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="Expand"
+              >
+                <Iconify icon="ooui:expand" />
+              </ExpandMore>
+            }
+            // sx={expanded ? {} : { paddingBottom: 3 }}
+            sx={{ pb: 3 }}
+          />
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Scrollbar>
+                <UsersView project={project} />
+              </Scrollbar>
+            </CardContent>
+          </Collapse>
+        </Card>
+      )}
 
       <TicketsView filterSelected={{ assign: true, created: true }} project={project} />
     </Container>

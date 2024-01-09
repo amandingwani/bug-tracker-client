@@ -24,7 +24,7 @@ import {
   filterTicketsCreatedByMe,
 } from '../utils';
 
-import { selectProjects, deleteTicket } from 'src/redux/slices/projectsSlice';
+import { selectProjects, deleteTicket, setReqStatus } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Ticket } from 'src/redux/types';
@@ -67,6 +67,7 @@ export default function TicketsPage(props: TicketsPageProps) {
   useEffect(() => {
     if (projects.reqStatus.name === 'deleteTicket' && projects.reqStatus.status === 'succeeded') {
       handleAlertClose();
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
     }
     return () => {
       console.log('Tickets-view unmounting');

@@ -10,7 +10,7 @@ import { fShortenNumber } from 'src/utils/format-number';
 
 interface AppWidgetSummaryProps {
   title: string;
-  value: string | undefined;
+  value?: string;
   sx?: SxProps<Theme>;
   icon: string | React.ReactNode;
   color?: string;

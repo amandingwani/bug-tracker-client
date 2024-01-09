@@ -38,7 +38,7 @@ export default function TicketDetailsPage() {
         <title> Ticket | Bug Ninja </title>
       </Helmet>
 
-      {ticket && <TicketDetailsView ticket={ticket} />}
+      <TicketDetailsView ticket={ticket} />
     </>
   );
 }

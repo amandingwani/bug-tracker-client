@@ -17,7 +17,12 @@ import TableEmptyRows from '../table-empty-rows';
 import UsersTableToolbar from '../users-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import { removeContributor, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
+import {
+  removeContributor,
+  selectReqStatus,
+  selectError,
+  setReqStatus,
+} from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Contributor } from 'src/redux/types';
@@ -67,6 +72,7 @@ export default function UsersTable(props: Props) {
   useEffect(() => {
     if (reqStatus.name === 'removeContributor' && reqStatus.status === 'succeeded') {
       handleAlertClose();
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
     }
   }, [reqStatus]);
 
@@ -195,7 +201,7 @@ export default function UsersTable(props: Props) {
       </Card>
 
       <AlertDialog
-        loading={status === 'loading'}
+        loading={reqStatus.status === 'loading'}
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handleRemoveContributor}

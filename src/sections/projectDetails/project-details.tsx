@@ -18,9 +18,16 @@ import { LabelColor } from 'src/components/label/labelSubTypes';
 import AlertDialog from 'src/components/alertDialog/alertDialog';
 import CreateOrEditProject from '../projects/createOrEditProject';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { Project, ProjectStatusMap } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { deleteProject, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
+import {
+  deleteProject,
+  selectReqStatus,
+  selectError,
+  setReqStatus,
+} from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -41,11 +48,13 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface AppInnerProps {
   title: string;
-  project: Project;
+  project?: Project;
 }
 
 export default function ProjectDetails({ title, project }: AppInnerProps) {
   const dispatch = useAppDispatch();
+
+  const router = useRouter();
 
   const reqStatus = useAppSelector(selectReqStatus);
   const error = useAppSelector(selectError);
@@ -58,7 +67,8 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   useEffect(() => {
     if (reqStatus.name === 'deleteProject' && reqStatus.status === 'succeeded') {
-      handleAlertClose();
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
+      router.back();
     }
     return () => {
       console.log('ProjectDetails unmounting');
@@ -82,7 +92,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
   };
 
   const handlePermanentDelete = async () => {
-    dispatch(deleteProject(project.id));
+    if (project) dispatch(deleteProject(project.id));
   };
 
   const onCloseDrawer = () => {
@@ -91,60 +101,64 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   return (
     <Card>
-      <CreateOrEditProject
-        openDrawer={openDrawer}
-        onCloseDrawer={onCloseDrawer}
-        selectedProject={{
-          id: project.id,
-          description: project.description ?? '',
-          name: project.name,
-          status: project.status,
-        }}
-      />
+      {project && (
+        <>
+          <CreateOrEditProject
+            openDrawer={openDrawer}
+            onCloseDrawer={onCloseDrawer}
+            selectedProject={{
+              id: project.id,
+              description: project.description ?? '',
+              name: project.name,
+              status: project.status,
+            }}
+          />
 
-      <CardHeader
-        title={title}
-        action={
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="Expand"
-          >
-            <Iconify icon="ooui:expand" />
-          </ExpandMore>
-        }
-        // sx={expanded ? {} : { paddingBottom: 3 }}
-        sx={{ pb: 3 }}
-      />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Scrollbar>
-            <Details project={project} />
-          </Scrollbar>
-        </CardContent>
-        <CardActions>
-          <Button
-            onClick={handleEdit}
-            variant="outlined"
-            color="primary"
-            startIcon={<Iconify icon="eva:edit-fill" />}
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={handleAlertClickOpen}
-            variant="outlined"
-            color="error"
-            startIcon={<Iconify icon="eva:trash-2-outline" />}
-          >
-            Delete
-          </Button>
-        </CardActions>
-      </Collapse>
+          <CardHeader
+            title={title}
+            action={
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="Expand"
+              >
+                <Iconify icon="ooui:expand" />
+              </ExpandMore>
+            }
+            // sx={expanded ? {} : { paddingBottom: 3 }}
+            sx={{ pb: 3 }}
+          />
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Scrollbar>
+                <Details project={project} />
+              </Scrollbar>
+            </CardContent>
+            <CardActions>
+              <Button
+                onClick={handleEdit}
+                variant="outlined"
+                color="primary"
+                startIcon={<Iconify icon="eva:edit-fill" />}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={handleAlertClickOpen}
+                variant="outlined"
+                color="error"
+                startIcon={<Iconify icon="eva:trash-2-outline" />}
+              >
+                Delete
+              </Button>
+            </CardActions>
+          </Collapse>
+        </>
+      )}
 
       <AlertDialog
-        loading={status === 'loading'}
+        loading={reqStatus.status === 'loading'}
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}

@@ -24,7 +24,12 @@ import { useRouter } from 'src/routes/hooks';
 
 import { Ticket } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { deleteTicket, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
+import {
+  deleteTicket,
+  selectReqStatus,
+  selectError,
+  setReqStatus,
+} from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -45,7 +50,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 interface Props {
   title: string;
-  ticket: Ticket;
+  ticket?: Ticket;
 }
 
 export default function TicketDetails({ title, ticket }: Props) {
@@ -63,8 +68,11 @@ export default function TicketDetails({ title, ticket }: Props) {
   const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
+    console.log({ reqStatus });
     if (reqStatus.name === 'deleteTicket' && reqStatus.status === 'succeeded') {
-      handleAlertClose();
+      // handleAlertClose();
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
+      router.back();
     }
     return () => {
       console.log('TicketDetails unmounting');
@@ -88,7 +96,7 @@ export default function TicketDetails({ title, ticket }: Props) {
   };
 
   const handlePermanentDelete = async () => {
-    dispatch(deleteTicket(ticket.id));
+    if (ticket) dispatch(deleteTicket(ticket.id));
   };
 
   const onCloseDrawer = () => {
@@ -97,55 +105,60 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   return (
     <Card>
+      <p>hello</p>
       <CreateOrEditTicket
         openDrawer={openDrawer}
         onCloseDrawer={onCloseDrawer}
         selectedTicket={ticket}
       />
 
-      <CardHeader
-        title={title}
-        action={
-          <ExpandMore
-            expand={expanded}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="Expand"
-          >
-            <Iconify icon="ooui:expand" />
-          </ExpandMore>
-        }
-        // sx={expanded ? {} : { paddingBottom: 3 }}
-        sx={{ pb: 3 }}
-      />
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
-        <CardContent>
-          <Scrollbar>
-            <Details ticket={ticket} />
-          </Scrollbar>
-        </CardContent>
-        <CardActions>
-          <Button
-            onClick={handleEdit}
-            variant="outlined"
-            color="primary"
-            startIcon={<Iconify icon="eva:edit-fill" />}
-          >
-            Edit
-          </Button>
-          <Button
-            onClick={handleAlertClickOpen}
-            variant="outlined"
-            color="error"
-            startIcon={<Iconify icon="eva:trash-2-outline" />}
-          >
-            Delete
-          </Button>
-        </CardActions>
-      </Collapse>
+      {ticket && (
+        <>
+          <CardHeader
+            title={title}
+            action={
+              <ExpandMore
+                expand={expanded}
+                onClick={handleExpandClick}
+                aria-expanded={expanded}
+                aria-label="Expand"
+              >
+                <Iconify icon="ooui:expand" />
+              </ExpandMore>
+            }
+            // sx={expanded ? {} : { paddingBottom: 3 }}
+            sx={{ pb: 3 }}
+          />
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Scrollbar>
+                <Details ticket={ticket} />
+              </Scrollbar>
+            </CardContent>
+            <CardActions>
+              <Button
+                onClick={handleEdit}
+                variant="outlined"
+                color="primary"
+                startIcon={<Iconify icon="eva:edit-fill" />}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={handleAlertClickOpen}
+                variant="outlined"
+                color="error"
+                startIcon={<Iconify icon="eva:trash-2-outline" />}
+              >
+                Delete
+              </Button>
+            </CardActions>
+          </Collapse>
+        </>
+      )}
 
       <AlertDialog
-        loading={status === 'loading'}
+        loading={reqStatus.status === 'loading'}
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}

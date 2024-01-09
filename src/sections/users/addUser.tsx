@@ -13,7 +13,12 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import Scrollbar from 'src/components/scrollbar';
 
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { addContributor, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
+import {
+  addContributor,
+  selectReqStatus,
+  selectError,
+  setReqStatus,
+} from 'src/redux/slices/projectsSlice';
 import { AddContributor, Contributor, Email } from 'src/redux/types';
 
 interface Props {
@@ -46,6 +51,7 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
       reset({
         email: '',
       });
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
     }
   }, [reqStatus]);
 

@@ -18,7 +18,7 @@ import TableEmptyRows from '../table-empty-rows';
 import ProjectsTableToolbar from '../projects-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import { selectProjects, deleteProject } from 'src/redux/slices/projectsSlice';
+import { selectProjects, deleteProject, setReqStatus } from 'src/redux/slices/projectsSlice';
 import { useAppSelector, useAppDispatch } from 'src/redux/hooks';
 import { Project, ProjectUpdate } from 'src/redux/types';
 
@@ -53,6 +53,7 @@ export default function ProjectsPage() {
   useEffect(() => {
     if (projects.reqStatus.name === 'deleteProject' && projects.reqStatus.status === 'succeeded') {
       handleAlertClose();
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
     }
     return () => {
       console.log('Projects-view unmounting');
