@@ -65,13 +65,13 @@ export default function TicketsPage(props: TicketsPageProps) {
   const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
-    if (projects.status === 'succeeded') {
+    if (projects.reqStatus.name === 'deleteTicket' && projects.reqStatus.status === 'succeeded') {
       handleAlertClose();
     }
     return () => {
       console.log('Tickets-view unmounting');
     };
-  }, [projects.status]);
+  }, [projects.reqStatus]);
 
   const handlePermanentDelete = async () => {
     if (selectedTicket) {
@@ -236,7 +236,7 @@ export default function TicketsPage(props: TicketsPageProps) {
       </Card>
 
       <AlertDialog
-        loading={projects.status === 'loading'}
+        loading={projects.reqStatus.status === 'loading'}
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}

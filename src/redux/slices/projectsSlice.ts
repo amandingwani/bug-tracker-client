@@ -20,7 +20,10 @@ import { UseFormReset } from 'react-hook-form'
 const initialState: ProjectsState = {
     createdProjects: [],
     otherProjects: [],
-    status: 'idle'
+    reqStatus: {
+        name: '',
+        status: "idle"
+    }
 }
 
 export const deleteProject = createAsyncThunk('projects/deleteProject', async (projectId: number) => {
@@ -89,10 +92,16 @@ export const projectsSlice = createSlice({
     extraReducers(builder) {
         builder
             .addCase(deleteTicket.pending, (state, action) => {
-                state.status = 'loading'
+                state.reqStatus = {
+                    name: 'deleteTicket',
+                    status: 'loading'
+                }
             })
             .addCase(deleteTicket.fulfilled, (state, action) => {
-                state.status = 'succeeded'
+                state.reqStatus = {
+                    name: 'deleteTicket',
+                    status: 'succeeded'
+                }
                 state.error = undefined
                 // Delete the ticket from the state
                 let project = state.createdProjects.find(p => p.id === action.payload.project.id);
@@ -102,27 +111,45 @@ export const projectsSlice = createSlice({
                     project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
             })
             .addCase(deleteTicket.rejected, (state, action) => {
-                state.status = 'failed'
+                state.reqStatus = {
+                    name: 'deleteTicket',
+                    status: 'failed'
+                }
                 state.error = action.error.message
             })
             .addCase(deleteProject.pending, (state, action) => {
-                state.status = 'loading'
+                state.reqStatus = {
+                    name: 'deleteProject',
+                    status: 'loading'
+                }
             })
             .addCase(deleteProject.fulfilled, (state, action) => {
-                state.status = 'succeeded'
+                state.reqStatus = {
+                    name: 'deleteProject',
+                    status: 'succeeded'
+                }
                 state.error = undefined
                 // Delete the project from the state
                 state.createdProjects = state.createdProjects.filter(p => p.id !== action.payload.id);
             })
             .addCase(deleteProject.rejected, (state, action) => {
-                state.status = 'failed'
+                state.reqStatus = {
+                    name: 'deleteProject',
+                    status: 'failed'
+                }
                 state.error = action.error.message
             })
             .addCase(addContributor.pending, (state, action) => {
-                state.status = 'loading'
+                state.reqStatus = {
+                    name: 'addContributor',
+                    status: 'loading'
+                }
             })
             .addCase(addContributor.fulfilled, (state, action) => {
-                state.status = 'succeeded'
+                state.reqStatus = {
+                    name: 'addContributor',
+                    status: 'succeeded'
+                }
                 state.error = undefined
                 // Update the contributors array
                 const project = state.createdProjects.find(p => p.id === action.payload.id);
@@ -130,14 +157,23 @@ export const projectsSlice = createSlice({
                     project.contributors = action.payload.contributors;
             })
             .addCase(addContributor.rejected, (state, action) => {
-                state.status = 'failed'
+                state.reqStatus = {
+                    name: 'addContributor',
+                    status: 'failed'
+                }
                 state.error = action.error.message
             })
             .addCase(removeContributor.pending, (state, action) => {
-                state.status = 'loading'
+                state.reqStatus = {
+                    name: 'removeContributor',
+                    status: 'loading'
+                }
             })
             .addCase(removeContributor.fulfilled, (state, action) => {
-                state.status = 'succeeded'
+                state.reqStatus = {
+                    name: 'removeContributor',
+                    status: 'succeeded'
+                }
                 state.error = undefined
                 // Update the contributors array
                 const project = state.createdProjects.find(p => p.id === action.payload.id);
@@ -145,7 +181,10 @@ export const projectsSlice = createSlice({
                     project.contributors = action.payload.contributors;
             })
             .addCase(removeContributor.rejected, (state, action) => {
-                state.status = 'failed'
+                state.reqStatus = {
+                    name: 'removeContributor',
+                    status: 'failed'
+                }
                 state.error = action.error.message
             })
     }
@@ -226,7 +265,7 @@ export const { setProjects, setCreatedProject, setCreatedTicket, updateProject, 
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
-export const selectStatus = (state: RootState) => state.projects.status
+export const selectReqStatus = (state: RootState) => state.projects.reqStatus
 export const selectError = (state: RootState) => state.projects.error
 export const selectProject = (state: RootState, projectId: number) => {
     const allProjects = [...state.projects.createdProjects, ...state.projects.otherProjects]

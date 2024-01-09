@@ -51,13 +51,13 @@ export default function ProjectsPage() {
   const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
-    if (projects.status === 'succeeded') {
+    if (projects.reqStatus.name === 'deleteProject' && projects.reqStatus.status === 'succeeded') {
       handleAlertClose();
     }
     return () => {
       console.log('Projects-view unmounting');
     };
-  }, [projects.status]);
+  }, [projects.reqStatus]);
 
   const handlePermanentDelete = async () => {
     if (selectedProject) {
@@ -203,7 +203,7 @@ export default function ProjectsPage() {
       </Card>
 
       <AlertDialog
-        loading={projects.status === 'loading'}
+        loading={projects.reqStatus.status === 'loading'}
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}

@@ -17,7 +17,7 @@ import TableEmptyRows from '../table-empty-rows';
 import UsersTableToolbar from '../users-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import { removeContributor, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
+import { removeContributor, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Contributor } from 'src/redux/types';
@@ -35,7 +35,7 @@ export default function UsersTable(props: Props) {
   const dispatch = useAppDispatch();
 
   const user = useAppSelector(selectUser);
-  const status = useAppSelector(selectStatus);
+  const reqStatus = useAppSelector(selectReqStatus);
   const error = useAppSelector(selectError);
 
   const [page, setPage] = useState(0);
@@ -65,10 +65,10 @@ export default function UsersTable(props: Props) {
     });
 
   useEffect(() => {
-    if (status === 'succeeded') {
+    if (reqStatus.name === 'removeContributor' && reqStatus.status === 'succeeded') {
       handleAlertClose();
     }
-  }, [status]);
+  }, [reqStatus]);
 
   const handleRemoveContributor = async () => {
     if (selectedUser) {

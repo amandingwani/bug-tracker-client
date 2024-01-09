@@ -13,7 +13,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import Scrollbar from 'src/components/scrollbar';
 
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { addContributor, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
+import { addContributor, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
 import { AddContributor, Contributor, Email } from 'src/redux/types';
 
 interface Props {
@@ -27,7 +27,7 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
 
   const dispatch = useAppDispatch();
 
-  const status = useAppSelector(selectStatus);
+  const reqStatus = useAppSelector(selectReqStatus);
   const error = useAppSelector(selectError);
 
   const WIDTH = '80%';
@@ -40,14 +40,14 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
   } = useForm<Email>();
 
   useEffect(() => {
-    if (status === 'succeeded') {
+    if (reqStatus.name === 'addContributor' && reqStatus.status === 'succeeded') {
       setLoading(false);
       onCloseDrawer();
       reset({
         email: '',
       });
     }
-  }, [status]);
+  }, [reqStatus]);
 
   const onSubmit: SubmitHandler<Email> = (data) => {
     setLoading(true);

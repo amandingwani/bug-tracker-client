@@ -20,9 +20,11 @@ import CardActions from '@mui/material/CardActions';
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../tickets/createOrEditTicket';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { Ticket } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { deleteTicket, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
+import { deleteTicket, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -49,7 +51,9 @@ interface Props {
 export default function TicketDetails({ title, ticket }: Props) {
   const dispatch = useAppDispatch();
 
-  const status = useAppSelector(selectStatus);
+  const router = useRouter();
+
+  const reqStatus = useAppSelector(selectReqStatus);
   const error = useAppSelector(selectError);
 
   const [expanded, setExpanded] = useState(true);
@@ -59,13 +63,13 @@ export default function TicketDetails({ title, ticket }: Props) {
   const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
-    if (status === 'succeeded') {
+    if (reqStatus.name === 'deleteTicket' && reqStatus.status === 'succeeded') {
       handleAlertClose();
     }
     return () => {
       console.log('TicketDetails unmounting');
     };
-  }, [status]);
+  }, [reqStatus]);
 
   const handleAlertClickOpen = () => {
     setOpenAlert(true);

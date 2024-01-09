@@ -20,7 +20,7 @@ import CreateOrEditProject from '../projects/createOrEditProject';
 
 import { Project, ProjectStatusMap } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import { deleteProject, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
+import { deleteProject, selectReqStatus, selectError } from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -47,7 +47,7 @@ interface AppInnerProps {
 export default function ProjectDetails({ title, project }: AppInnerProps) {
   const dispatch = useAppDispatch();
 
-  const status = useAppSelector(selectStatus);
+  const reqStatus = useAppSelector(selectReqStatus);
   const error = useAppSelector(selectError);
 
   const [expanded, setExpanded] = useState(true);
@@ -57,13 +57,13 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
   const [openAlert, setOpenAlert] = useState(false);
 
   useEffect(() => {
-    if (status === 'succeeded') {
+    if (reqStatus.name === 'deleteProject' && reqStatus.status === 'succeeded') {
       handleAlertClose();
     }
     return () => {
       console.log('ProjectDetails unmounting');
     };
-  }, [status]);
+  }, [reqStatus]);
 
   const handleAlertClickOpen = () => {
     setOpenAlert(true);
