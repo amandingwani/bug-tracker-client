@@ -87,8 +87,6 @@ export default function CreateOrEditTicket({
     allUsersOfAProject.push(projectOwner);
   }
 
-  console.log({ projectOwner, contributorsOfAProject, selectedTicket });
-
   const WIDTH = '80%';
 
   const {
