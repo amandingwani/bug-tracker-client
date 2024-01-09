@@ -21,6 +21,7 @@ import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../tickets/createOrEditTicket';
 
 import { Ticket } from 'src/redux/types';
+import { unassignedUser } from 'src/redux/constants';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { deleteTicket, selectStatus, selectError } from 'src/redux/slices/projectsSlice';
 
@@ -104,7 +105,7 @@ export default function TicketDetails({ title, ticket }: Props) {
           status: ticket.status,
           priority: ticket.priority,
           project: ticket.project,
-          assignee: ticket.assignee ?? null,
+          assignee: ticket.assignee ?? unassignedUser,
         }}
       />
 

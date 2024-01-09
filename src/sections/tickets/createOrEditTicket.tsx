@@ -42,7 +42,7 @@ import {
   Contributor,
   Project,
 } from 'src/redux/types';
-import { selectUser } from 'src/redux/slices/authSlice';
+import { unassignedUser } from 'src/redux/constants';
 
 interface CreateTicketProps {
   openDrawer: boolean;
@@ -63,39 +63,29 @@ export default function CreateOrEditTicket({
   // const [selectedProject, setSelectedProject] = useState<Project | null>(project ?? null);
 
   const projects = useAppSelector(selectProjects);
-  const user = useAppSelector(selectUser);
   const dispatch = useAppDispatch();
 
   const allProjects = [...projects.createdProjects, ...projects.otherProjects];
 
+  let projectOwner: Contributor | undefined = undefined;
+
   let contributorsOfAProject: Contributor[] = [];
   if (selectedTicket) {
     contributorsOfAProject = selectedTicket.project.contributors;
+    projectOwner = selectedTicket.project.owner;
   } else if (project) {
     contributorsOfAProject = project.contributors;
+    projectOwner = project.owner;
   }
 
   // console.log({ selectedTicket });
   // console.log({ contributorsOfAProject });
 
-  const unassignedUser = {
-    id: -1,
-    firstName: 'Unassigned',
-    email: 'Unassigned',
-    registered: false,
-  };
+  const allUsersOfAProject: Contributor[] = [unassignedUser, ...contributorsOfAProject];
 
-  const allUsersOfAProject: Contributor[] = [
-    {
-      id: user!.id,
-      firstName: user!.firstName,
-      lastName: user!.lastName,
-      email: user!.email,
-      registered: true,
-    },
-    ...contributorsOfAProject,
-    unassignedUser,
-  ];
+  if (projectOwner) {
+    allUsersOfAProject.push(projectOwner);
+  }
 
   const WIDTH = '80%';
 
