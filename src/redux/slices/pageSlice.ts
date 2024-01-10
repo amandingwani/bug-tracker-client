@@ -14,6 +14,7 @@ export const pageSlice = createSlice({
     initialState,
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
+        resetHeader: () => initialState,
         // Use the PayloadAction type to declare the contents of `action.payload`
         updateHeader: (state, action: PayloadAction<string>) => {
             state.header = action.payload
@@ -21,7 +22,7 @@ export const pageSlice = createSlice({
     }
 })
 
-export const { updateHeader } = pageSlice.actions
+export const { resetHeader, updateHeader } = pageSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of

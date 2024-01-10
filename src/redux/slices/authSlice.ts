@@ -1,9 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { UserState } from '../types'
-import { loadProjects } from './projectsSlice'
+import { loadProjects, resetProjects } from './projectsSlice'
 import { clearToken, loginWithGoogle } from 'src/services/auth'
 import getProfile from 'src/services/profile';
+import { resetHeader } from './pageSlice'
 
 type AuthState = {
     user: UserState | null,
@@ -24,9 +25,7 @@ export const authSlice = createSlice({
         setUser: (state, action: PayloadAction<UserState>) => {
             state.user = action.payload
         },
-        removeUser: (state) => {
-            state.user = null
-        },
+        resetAuth: () => initialState,
         hideWelcomeBackMsg: (state) => {
             state.welcomeBackMsg = ''
         },
@@ -63,12 +62,16 @@ export const logout = (): AppThunk => {
     return (dispatch) => {
         // clear the token cookie
         clearToken()
-            .then(() => dispatch(removeUser()))
+            .then(() => {
+                dispatch(resetAuth())
+                dispatch(resetProjects())
+                dispatch(resetHeader())
+            })
             .catch((err) => { throw err });
     }
 }
 
-export const { setUser, removeUser, hideWelcomeBackMsg } = authSlice.actions
+export const { setUser, resetAuth, hideWelcomeBackMsg } = authSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectUser = (state: RootState) => state.auth.user

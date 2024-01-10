@@ -57,6 +57,7 @@ export const projectsSlice = createSlice({
         setReqStatus: (state, action: PayloadAction<ProjectsState["reqStatus"]>) => {
             state.reqStatus = action.payload;
         },
+        resetProjects: () => initialState,
         setCreatedProject: (state, action: PayloadAction<Project>) => {
             state.createdProjects.push(action.payload)
         },
@@ -264,7 +265,7 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
     }
 }
 
-export const { setProjects, setReqStatus, setCreatedProject, setCreatedTicket, updateProject, updateTicket } = projectsSlice.actions
+export const { setProjects, setReqStatus, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
