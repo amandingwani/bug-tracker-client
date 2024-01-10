@@ -54,9 +54,9 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 
-  const [orderBy, setOrderBy] = useState('title');
+  const [orderBy, setOrderBy] = useState('createdAt');
 
   const [filterName, setFilterName] = useState('');
 
@@ -160,8 +160,6 @@ export default function TicketsPage(props: TicketsPageProps) {
   });
 
   const notFound = !dataFiltered.length && !!filterName;
-
-  console.log({ ticketsToDisplay, dataFiltered });
 
   return (
     <Card>
