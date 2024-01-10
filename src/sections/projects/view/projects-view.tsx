@@ -181,7 +181,7 @@ export default function ProjectsPage() {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, projectsToDisplay.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -190,11 +190,11 @@ export default function ProjectsPage() {
           </TableContainer>
         </Scrollbar>
 
-        {projectsToDisplay.length > 5 && (
+        {dataFiltered.length > 5 && (
           <TablePagination
             page={page}
             component="div"
-            count={projectsToDisplay.length}
+            count={dataFiltered.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}

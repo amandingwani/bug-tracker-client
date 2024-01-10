@@ -161,6 +161,8 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  console.log({ ticketsToDisplay, dataFiltered });
+
   return (
     <Card>
       <CreateOrEditTicket
@@ -214,7 +216,7 @@ export default function TicketsPage(props: TicketsPageProps) {
 
                 <TableEmptyRows
                   height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, ticketsToDisplay.length)}
+                  emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
                 />
 
                 {notFound && <TableNoData query={filterName} />}
@@ -223,11 +225,11 @@ export default function TicketsPage(props: TicketsPageProps) {
           </TableContainer>
         </Scrollbar>
 
-        {ticketsToDisplay.length > 5 && (
+        {dataFiltered.length > 5 && (
           <TablePagination
             page={page}
             component="div"
-            count={ticketsToDisplay.length}
+            count={dataFiltered.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
             rowsPerPageOptions={[5, 10, 25]}
