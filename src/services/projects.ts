@@ -1,5 +1,5 @@
 import axios from 'src/config/axios';
-import { ProjectCreateInput, ProjectsState, Project, Ticket, ProjectUpdate, TicketUpdate, AddContributor, TicketPriority, TicketStatus, TicketType } from 'src/redux/types';
+import { ProjectCreateInput, ProjectsState, Project, Ticket, ProjectUpdate, AddContributor, TicketPriority, TicketStatus, TicketType } from 'src/redux/types';
 
 export const getProjects = () => {
     return new Promise<ProjectsState>((resolve, reject) => {

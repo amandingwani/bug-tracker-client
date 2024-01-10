@@ -27,7 +27,10 @@ import {
   selectReqStatus,
   selectError,
   setReqStatus,
+  removeContributor,
+  removeOtherProject,
 } from 'src/redux/slices/projectsSlice';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -56,6 +59,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const router = useRouter();
 
+  const user = useAppSelector(selectUser);
   const reqStatus = useAppSelector(selectReqStatus);
   const error = useAppSelector(selectError);
 
@@ -65,9 +69,16 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const [openAlert, setOpenAlert] = useState(false);
 
+  const isOwner = user?.id === project?.owner.id;
+
   useEffect(() => {
     if (reqStatus.name === 'deleteProject' && reqStatus.status === 'succeeded') {
       dispatch(setReqStatus({ name: '', status: 'idle' }));
+      router.back();
+    } else if (reqStatus.name === 'removeContributor' && reqStatus.status === 'succeeded') {
+      dispatch(setReqStatus({ name: '', status: 'idle' }));
+      // delete the project from state
+      if (project) dispatch(removeOtherProject({ projectId: project.id }));
       router.back();
     }
     return () => {
@@ -93,6 +104,12 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const handlePermanentDelete = async () => {
     if (project) dispatch(deleteProject(project.id));
+  };
+
+  const handleLeaveProject = async () => {
+    if (project && user) {
+      dispatch(removeContributor({ id: project.id, email: user.email }));
+    }
   };
 
   const onCloseDrawer = () => {
@@ -135,36 +152,62 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
                 <Details project={project} />
               </Scrollbar>
             </CardContent>
-            <CardActions>
-              <Button
-                onClick={handleEdit}
-                variant="outlined"
-                color="primary"
-                startIcon={<Iconify icon="eva:edit-fill" />}
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={handleAlertClickOpen}
-                variant="outlined"
-                color="error"
-                startIcon={<Iconify icon="eva:trash-2-outline" />}
-              >
-                Delete
-              </Button>
-            </CardActions>
+            {isOwner ? (
+              <CardActions>
+                <Button
+                  onClick={handleEdit}
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<Iconify icon="eva:edit-fill" />}
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={handleAlertClickOpen}
+                  variant="outlined"
+                  color="error"
+                  startIcon={<Iconify icon="eva:trash-2-outline" />}
+                >
+                  Delete
+                </Button>
+              </CardActions>
+            ) : (
+              <CardActions>
+                <Button
+                  onClick={handleAlertClickOpen}
+                  variant="outlined"
+                  color="error"
+                  startIcon={
+                    <Iconify icon="streamline:interface-logout-arrow-exit-frame-leave-logout-rectangle-right" />
+                  }
+                >
+                  Leave Project
+                </Button>
+              </CardActions>
+            )}
           </Collapse>
         </>
       )}
 
-      <AlertDialog
-        loading={reqStatus.status === 'loading'}
-        open={openAlert}
-        handleClose={handleAlertClose}
-        handleAction={handlePermanentDelete}
-        title="Delete project ?"
-        message="The project and all tickets under it will be permanently deleted"
-      />
+      {isOwner ? (
+        <AlertDialog
+          loading={reqStatus.status === 'loading'}
+          open={openAlert}
+          handleClose={handleAlertClose}
+          handleAction={handlePermanentDelete}
+          title="Delete project ?"
+          message="The project and all tickets under it will be permanently deleted"
+        />
+      ) : (
+        <AlertDialog
+          loading={reqStatus.status === 'loading'}
+          open={openAlert}
+          handleClose={handleAlertClose}
+          handleAction={handleLeaveProject}
+          title="Leave project ?"
+          message="You will lose access to this project and all tickets under it"
+        />
+      )}
 
       <Divider sx={{ borderStyle: 'dashed' }} />
     </Card>

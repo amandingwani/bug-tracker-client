@@ -9,7 +9,6 @@ type IconifyProps = {
   icon: IconifyIcon | string;
   width?: number;
   sx?: BoxProps['sx'];
-  [other: string]: any;
 };
 
 const Iconify = forwardRef<HTMLDivElement, IconifyProps>(

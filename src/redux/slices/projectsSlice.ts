@@ -72,6 +72,9 @@ export const projectsSlice = createSlice({
                 project.status = action.payload.status;
             }
         },
+        removeOtherProject: (state, action: PayloadAction<{ projectId: number }>) => {
+            state.otherProjects = state.otherProjects.filter(p => p.id !== action.payload.projectId);
+        },
         setCreatedTicket: (state, action: PayloadAction<Ticket>) => {
             state.createdProjects.find(p => p.id === action.payload.project.id)?.tickets.push(action.payload)
             state.otherProjects.find(p => p.id === action.payload.project.id)?.tickets.push(action.payload)
@@ -265,7 +268,7 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
     }
 }
 
-export const { setProjects, setReqStatus, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket } = projectsSlice.actions
+export const { setProjects, setReqStatus, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket, removeOtherProject } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
