@@ -105,7 +105,6 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   return (
     <Card>
-      <p>hello</p>
       <CreateOrEditTicket
         openDrawer={openDrawer}
         onCloseDrawer={onCloseDrawer}
