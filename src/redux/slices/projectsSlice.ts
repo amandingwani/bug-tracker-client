@@ -15,6 +15,7 @@ import {
     UpdateTicketApiData
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
+import { unassignedUser } from '../constants'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -228,8 +229,14 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
             .then((ticket) => {
                 dispatch(setCreatedTicket(ticket))
                 setLoading(false)
+                reset({
+                    title: '',
+                    description: '',
+                    status: 'OPEN',
+                    type: 'BUG',
+                    priority: 'NORMAL',
+                });
                 closeDrawer();
-                reset();
             })
             .catch((err) => {
                 console.log(err);
@@ -262,7 +269,13 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
                 dispatch(updateTicket(ticket))
                 setLoading(false)
                 closeDrawer();
-                reset();
+                reset({
+                    title: '',
+                    description: '',
+                    status: 'OPEN',
+                    type: 'BUG',
+                    priority: 'NORMAL',
+                });
             })
             .catch((err) => { throw err });
     }

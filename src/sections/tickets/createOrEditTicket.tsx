@@ -58,25 +58,61 @@ export default function CreateOrEditTicket({
   project,
 }: CreateTicketProps) {
   const [loading, setLoading] = useState(false);
-  // // pre selected project when creating or editing a ticket under a project
-  // // or when you select a new project ?
-  // const [selectedProject, setSelectedProject] = useState<Project | null>(project ?? null);
+
+  let formDefaultProject: Project | undefined = undefined;
+  if (project) formDefaultProject = project;
+  else if (selectedTicket) formDefaultProject = selectedTicket.project;
 
   const projects = useAppSelector(selectProjects);
   const dispatch = useAppDispatch();
 
   const allProjects = [...projects.createdProjects, ...projects.otherProjects];
 
+  const [formSelectProject, setFormSelectProject] = useState<Project | null>(
+    formDefaultProject ?? allProjects[0]
+  );
+
   let projectOwner: Contributor | undefined = undefined;
 
   let contributorsOfAProject: Contributor[] = [];
-  if (selectedTicket) {
-    contributorsOfAProject = selectedTicket.project.contributors;
-    projectOwner = selectedTicket.project.owner;
-  } else if (project) {
-    contributorsOfAProject = project.contributors;
-    projectOwner = project.owner;
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+    getValues,
+    watch,
+    reset,
+    control,
+  } = useForm<TicketCreateInput>({
+    defaultValues: {
+      status: 'OPEN',
+      type: 'BUG',
+      priority: 'NORMAL',
+      assignee: selectedTicket?.assignee ? selectedTicket.assignee : unassignedUser,
+      project: formDefaultProject ?? allProjects[0],
+    },
+  });
+
+  if (formSelectProject) {
+    contributorsOfAProject = formSelectProject.contributors;
+    projectOwner = formSelectProject.owner;
+  } else if (getValues('project')) {
+    contributorsOfAProject = getValues('project').contributors;
+    projectOwner = getValues('project').owner;
   }
+
+  // if (selectedTicket) {
+  //   contributorsOfAProject = selectedTicket.project.contributors;
+  //   projectOwner = selectedTicket.project.owner;
+  // } else if (project) {
+  //   contributorsOfAProject = project.contributors;
+  //   projectOwner = project.owner;
+  // } else {
+  //   // creating a new ticket with the project selected from the form
+
+  // }
 
   // console.log({ selectedTicket });
   // console.log({ contributorsOfAProject });
@@ -88,24 +124,6 @@ export default function CreateOrEditTicket({
   }
 
   const WIDTH = '80%';
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-    reset,
-    control,
-  } = useForm<TicketCreateInput>({
-    defaultValues: {
-      status: 'OPEN',
-      type: 'BUG',
-      priority: 'NORMAL',
-      assignee: selectedTicket?.assignee ? selectedTicket.assignee : unassignedUser,
-      project: allProjects[0],
-    },
-  });
 
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
     setLoading(true);
@@ -161,8 +179,10 @@ export default function CreateOrEditTicket({
     setValue('priority', selectedTicket?.priority ?? 'NORMAL');
     setValue('assignee', selectedTicket?.assignee ?? unassignedUser);
     if (project) setValue('project', project);
-    else if (selectedTicket) setValue('project', selectedTicket.project);
-    // setSelectedProjectId(projectId ? projectId : selectedTicket?.projectId ?? null);
+    else if (selectedTicket) {
+      setValue('project', selectedTicket.project);
+      setFormSelectProject(selectedTicket?.project ?? null);
+    }
   }, [selectedTicket]);
 
   const renderContent = (
@@ -229,7 +249,10 @@ export default function CreateOrEditTicket({
                       options={allProjects}
                       getOptionLabel={(p) => p.name}
                       isOptionEqualToValue={(option, value) => option.id === value.id}
-                      onChange={(_, data) => field.onChange(data)}
+                      onChange={(_, data) => {
+                        field.onChange(data);
+                        setFormSelectProject(data);
+                      }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
