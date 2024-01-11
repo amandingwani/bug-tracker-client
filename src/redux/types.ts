@@ -18,6 +18,16 @@ export interface UserState {
     createdAt: Date
 }
 
+export interface AuthState {
+    user: UserState | null,
+    welcomeBackMsg: "" | ", Welcome back",
+    reqStatus: {
+        name: string,
+        status: 'idle' | 'loading' | 'succeeded' | 'failed'
+    },
+    error?: string
+}
+
 export interface ProjectsState {
     createdProjects: Project[],
     otherProjects: Project[],

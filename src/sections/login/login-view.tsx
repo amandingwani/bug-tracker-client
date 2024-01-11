@@ -20,6 +20,8 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
+import { useAppSelector } from 'src/redux/hooks';
+import { selectReqStatus } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -27,6 +29,8 @@ export default function LoginView() {
   const theme = useTheme();
 
   const router = useRouter();
+
+  const reqStatus = useAppSelector(selectReqStatus);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -112,17 +116,18 @@ export default function LoginView() {
           </Typography>
 
           <Stack direction="row" spacing={2}>
-            <Button
+            <LoadingButton
+              loading={reqStatus.status === 'loading'}
               onClick={() => handleGoogleLoginClick()}
               fullWidth
               size="large"
               color="inherit"
               variant="outlined"
-              startIcon={<Iconify icon="flat-color-icons:google" color="#DF3E30" />}
+              startIcon={<Iconify icon="flat-color-icons:google" />}
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16), fontWeight: 'light' }}
             >
               Sign in with Google
-            </Button>
+            </LoadingButton>
           </Stack>
 
           <Divider sx={{ my: 3 }}>
