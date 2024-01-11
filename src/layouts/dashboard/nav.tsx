@@ -21,6 +21,8 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
+import { useAppSelector } from 'src/redux/hooks';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +35,8 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
   const pathname = usePathname();
 
   const upLg = useResponsive('up', 'lg');
+
+  const user = useAppSelector(selectUser);
 
   useEffect(() => {
     if (openNav) {
@@ -54,14 +58,14 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={user?.picture} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{user?.firstName + ' ' + user?.lastName}</Typography>
 
-        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+        {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}
-        </Typography>
+        </Typography> */}
       </Box>
     </Box>
   );
