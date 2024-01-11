@@ -16,6 +16,7 @@ import TicketTableRow from '../tickets-table-row';
 import TicketsTableHead from '../tickets-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import TicketsTableToolbar from '../tickets-table-toolbar';
+import TableRowsLoader from '../table-rows-loader';
 import {
   emptyRows,
   applyFilter,
@@ -43,6 +44,9 @@ export default function TicketsPage(props: TicketsPageProps) {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const projects = useAppSelector(selectProjects);
+
+  const projectsLoading =
+    projects.reqStatus.name === 'loadProjects' && projects.reqStatus.status === 'loading';
 
   const [openDrawer, setOpenDrawer] = useState(false);
 
@@ -199,26 +203,32 @@ export default function TicketsPage(props: TicketsPageProps) {
                   { id: '' },
                 ]}
               />
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: Ticket) => (
-                    <TicketTableRow
-                      key={row.id}
-                      ticket={row}
-                      setOpenDrawer={setOpenDrawer}
-                      setSelectedTicket={setSelectedTicket}
-                      handleAlertClickOpen={handleAlertClickOpen}
-                    />
-                  ))}
+              {projectsLoading ? (
+                <TableBody>
+                  <TableRowsLoader rowsNum={5} />
+                </TableBody>
+              ) : (
+                <TableBody>
+                  {dataFiltered
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row: Ticket) => (
+                      <TicketTableRow
+                        key={row.id}
+                        ticket={row}
+                        setOpenDrawer={setOpenDrawer}
+                        setSelectedTicket={setSelectedTicket}
+                        handleAlertClickOpen={handleAlertClickOpen}
+                      />
+                    ))}
 
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
-                />
+                  <TableEmptyRows
+                    height={77}
+                    emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
+                  />
 
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
+                  {notFound && <TableNoData query={filterName} />}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </Scrollbar>
