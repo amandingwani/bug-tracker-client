@@ -24,6 +24,7 @@ import { Project, ProjectUpdate } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditProject from '../createOrEditProject';
+import TableRowsLoader from '../table-rows-loader';
 
 // ----------------------------------------------------------------------
 
@@ -31,6 +32,9 @@ export default function ProjectsPage() {
   const dispatch = useAppDispatch();
 
   const projects = useAppSelector(selectProjects);
+
+  const projectsLoading =
+    projects.reqStatus.name === 'loadProjects' && projects.reqStatus.status === 'loading';
 
   const [page, setPage] = useState(0);
 
@@ -166,26 +170,32 @@ export default function ProjectsPage() {
                   { id: '' },
                 ]}
               />
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: Project) => (
-                    <ProjectTableRow
-                      key={row.id}
-                      project={row}
-                      setOpenDrawer={setOpenDrawer}
-                      setSelectedProject={setSelectedProject}
-                      handleAlertClickOpen={handleAlertClickOpen}
-                    />
-                  ))}
+              {projectsLoading ? (
+                <TableBody>
+                  <TableRowsLoader rowsNum={5} />
+                </TableBody>
+              ) : (
+                <TableBody>
+                  {dataFiltered
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row: Project) => (
+                      <ProjectTableRow
+                        key={row.id}
+                        project={row}
+                        setOpenDrawer={setOpenDrawer}
+                        setSelectedProject={setSelectedProject}
+                        handleAlertClickOpen={handleAlertClickOpen}
+                      />
+                    ))}
 
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
-                />
+                  <TableEmptyRows
+                    height={77}
+                    emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
+                  />
 
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
+                  {notFound && <TableNoData query={filterName} />}
+                </TableBody>
+              )}
             </Table>
           </TableContainer>
         </Scrollbar>
