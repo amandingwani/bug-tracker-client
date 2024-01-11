@@ -58,6 +58,9 @@ export const projectsSlice = createSlice({
         setReqStatus: (state, action: PayloadAction<ProjectsState["reqStatus"]>) => {
             state.reqStatus = action.payload;
         },
+        setError: (state, action: PayloadAction<ProjectsState["error"]>) => {
+            state.error = action.payload;
+        },
         resetProjects: () => initialState,
         setCreatedProject: (state, action: PayloadAction<Project>) => {
             state.createdProjects.push(action.payload)
@@ -199,10 +202,17 @@ export const projectsSlice = createSlice({
 })
 
 export const loadProjects = (): AppThunk => {
-    return (dispatch) => {
-        getProjects()
-            .then((projects) => dispatch(setProjects(projects)))
-            .catch((err) => { throw err });
+    return async (dispatch) => {
+        try {
+            dispatch(setReqStatus({ name: 'loadProjects', status: 'loading' }));
+            const data = await getProjects();
+            dispatch(setReqStatus({ name: 'loadProjects', status: 'succeeded' }));
+            dispatch(setProjects(data))
+            dispatch(setReqStatus({ name: '', status: 'idle' }));
+        } catch (error) {
+            dispatch(setReqStatus({ name: 'loadProjects', status: 'failed' }));
+            dispatch(setError(error as string))
+        }
     }
 }
 
@@ -281,7 +291,7 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
     }
 }
 
-export const { setProjects, setReqStatus, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket, removeOtherProject } = projectsSlice.actions
+export const { setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket, removeOtherProject } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects

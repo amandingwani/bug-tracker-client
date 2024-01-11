@@ -8,11 +8,10 @@ import Typography from '@mui/material/Typography';
 
 interface AppWidgetSummaryProps {
   title: string;
-  total: number;
+  total?: number;
   sx?: SxProps<Theme>;
   icon: string | React.ReactNode;
   color?: string;
-  [other: string]: any;
 }
 
 export default function AppWidgetSummary({
