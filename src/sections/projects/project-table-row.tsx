@@ -12,6 +12,8 @@ import Iconify from 'src/components/iconify';
 import { Project, ProjectStatusMap, ProjectUpdate } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
+import { useAppSelector } from 'src/redux/hooks';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -24,7 +26,10 @@ interface ProjectTableRowProps {
 }
 
 export default function ProjectTableRow(props: ProjectTableRowProps) {
+  const user = useAppSelector(selectUser);
   const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
+
+  const isOwner = user?.id === props.project.owner.id;
 
   const handleOpenMenu = (event: React.MouseEvent) => {
     setOpen(event.currentTarget);
@@ -61,21 +66,25 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           <Label color={statusLabelColor}>{ProjectStatusMap[project.status]}</Label>
         </TableCell>
 
-        <TableCell align="right">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="eva:more-vertical-fill" />
-          </IconButton>
-        </TableCell>
+        {isOwner && (
+          <TableCell align="right">
+            <IconButton onClick={handleOpenMenu}>
+              <Iconify icon="eva:more-vertical-fill" />
+            </IconButton>
+          </TableCell>
+        )}
       </TableRow>
 
-      <ItemPopoverMenu
-        open={open}
-        handleCloseMenu={handleCloseMenu}
-        project={project}
-        setOpenDrawer={props.setOpenDrawer}
-        setSelectedProject={props.setSelectedProject}
-        handleAlertClickOpen={props.handleAlertClickOpen}
-      />
+      {isOwner && (
+        <ItemPopoverMenu
+          open={open}
+          handleCloseMenu={handleCloseMenu}
+          project={project}
+          setOpenDrawer={props.setOpenDrawer}
+          setSelectedProject={props.setSelectedProject}
+          handleAlertClickOpen={props.handleAlertClickOpen}
+        />
+      )}
     </>
   );
 }
