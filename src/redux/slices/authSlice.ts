@@ -5,6 +5,7 @@ import { loadProjects, resetProjects } from './projectsSlice'
 import { clearToken, loginWithGoogle } from 'src/services/auth'
 import getProfile from 'src/services/profile';
 import { resetHeader } from './pageSlice'
+import { updateAndShowNotification } from './notificationSlice'
 
 const initialState: AuthState = {
     user: null,
@@ -68,8 +69,11 @@ export const googleLogin = (code: string): AppThunk => {
             }
             dispatch(loadProjects());
         } catch (error) {
+            console.log(error)
             dispatch(setReqStatus({ name: 'googleLogin', status: 'failed' }));
-            dispatch(setError(error as string))
+            // dispatch(setError(error as string))
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            dispatch(setReqStatus({ name: '', status: 'idle' }));
         }
     }
 }

@@ -32,7 +32,6 @@ export default function Router(): ReactNode {
   } else {
     isLoggedIn = !!user;
   }
-  console.log({ isLoggedIn });
 
   const routes = useRoutes([
     {
