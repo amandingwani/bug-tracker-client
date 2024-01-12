@@ -4,6 +4,7 @@ import { Outlet, Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from 'src/layouts/dashboard';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
+import { UserState } from 'src/redux/types';
 
 export const IndexPage = lazy(() => import('src/pages/app'));
 export const BlogPage = lazy(() => import('src/pages/blog'));
@@ -19,8 +20,13 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 // ----------------------------------------------------------------------
 
 export default function Router(): ReactNode {
-  const user = useAppSelector(selectUser);
-  const isLoggedIn = !!user;
+  // const user = useAppSelector(selectUser);
+  const localStorageUserString = localStorage.getItem('BUG_NINJA_USER');
+  const localStorageUser: UserState | null = localStorageUserString
+    ? JSON.parse(localStorageUserString)
+    : null;
+  const isLoggedIn = !!localStorageUser;
+  console.log({ isLoggedIn });
 
   const routes = useRoutes([
     {

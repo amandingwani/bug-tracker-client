@@ -48,6 +48,7 @@ export const autoLogin = (): AppThunk => {
             .then((userData) => {
                 console.log({ profile: userData });
                 dispatch(setUser(userData))
+                localStorage.setItem("BUG_NINJA_USER", JSON.stringify(userData));
                 dispatch(loadProjects());
             })
             .catch((err) => { throw err });
@@ -61,6 +62,7 @@ export const googleLogin = (code: string): AppThunk => {
             const data = await loginWithGoogle(code);
             dispatch(setReqStatus({ name: 'googleLogin', status: 'succeeded' }));
             dispatch(setUser(data.user));
+            localStorage.setItem("BUG_NINJA_USER", JSON.stringify(data.user));
             if (data.status === 201) {
                 dispatch(hideWelcomeBackMsg());
             }
@@ -78,6 +80,7 @@ export const logout = (): AppThunk => {
         clearToken()
             .then(() => {
                 dispatch(resetAuth())
+                localStorage.removeItem("BUG_NINJA_USER");
                 dispatch(resetProjects())
                 dispatch(resetHeader())
             })
