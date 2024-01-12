@@ -11,7 +11,7 @@ export interface NotificationState {
 
 const initialState: NotificationState = {
     open: false,
-    durationMS: 10000
+    durationMS: 6000
 }
 
 export const notificationSlice = createSlice({
@@ -19,11 +19,7 @@ export const notificationSlice = createSlice({
     initialState,
     // The `reducers` field lets us define reducers and generate associated actions
     reducers: {
-        resetNotification: () => initialState,
-        hideNotification: (state) => {
-            state.open = false;
-            state.durationMS = 10000;
-        },
+        hideNotification: () => initialState,
         showNotification: (state) => {
             state.open = true;
         },
@@ -41,7 +37,7 @@ export const notificationSlice = createSlice({
     }
 })
 
-export const { resetNotification, hideNotification, showNotification, updateNotification, updateAndShowNotification } = notificationSlice.actions
+export const { hideNotification, showNotification, updateNotification, updateAndShowNotification } = notificationSlice.actions
 
 // The function below is called a selector and allows us to select a value from
 // the state. Selectors can also be defined inline where they're used instead of
