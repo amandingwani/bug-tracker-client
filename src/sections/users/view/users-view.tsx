@@ -29,6 +29,7 @@ import { Project, Contributor } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import AddUser from '../addUser';
+import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +42,6 @@ export default function UsersTable(props: Props) {
 
   const user = useAppSelector(selectUser);
   const reqStatus = useAppSelector(selectReqStatus);
-  const error = useAppSelector(selectError);
 
   const [page, setPage] = useState(0);
 
@@ -72,9 +72,10 @@ export default function UsersTable(props: Props) {
   const handleRemoveContributor = async () => {
     if (selectedUser) {
       dispatch(
-        removeContributorThunk({ id: props.project.id, email: selectedUser.email }, () =>
-          handleAlertClose()
-        )
+        removeContributorThunk({ id: props.project.id, email: selectedUser.email }, () => {
+          handleAlertClose();
+          dispatch(updateAndShowNotification({ severity: 'success', message: 'User removed!' }));
+        })
       );
     }
   };

@@ -125,6 +125,7 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
         createProject(data)
             .then((project) => {
                 dispatch(setCreatedProject(project))
+                dispatch(updateAndShowNotification({ severity: 'success', message: 'Project created!' }))
                 setLoading(false)
                 closeDrawer();
                 reset({
@@ -145,6 +146,7 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
         createTicket(data)
             .then((ticket) => {
                 dispatch(setCreatedTicket(ticket))
+                dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket created!' }))
                 setLoading(false)
                 reset({
                     title: '',
@@ -168,6 +170,7 @@ export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Disp
         updateProjectApi(data)
             .then((project) => {
                 dispatch(updateProject(project))
+                dispatch(updateAndShowNotification({ severity: 'success', message: 'Project updated!' }))
                 setLoading(false)
                 closeDrawer();
                 reset({
@@ -188,6 +191,7 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
         updateTicketApi(data)
             .then((ticket) => {
                 dispatch(updateTicket(ticket))
+                dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket updated!' }))
                 setLoading(false)
                 closeDrawer();
                 reset({
@@ -213,6 +217,7 @@ export const deleteTicketThunk = (ticketId: number, onSuccess?: () => void): App
             dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
             dispatch(deleteTicket(data))
             dispatch(setReqStatus({ name: '', status: 'idle' }));
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket deleted!' }))
             if (onSuccess)
                 onSuccess();
         } catch (error) {
@@ -230,6 +235,7 @@ export const deleteProjectThunk = (projectId: number, onSuccess?: () => void): A
             dispatch(setReqStatus({ name: 'deleteProject', status: 'succeeded' }));
             dispatch(deleteProject(data))
             dispatch(setReqStatus({ name: '', status: 'idle' }));
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'Project deleted!' }))
             if (onSuccess)
                 onSuccess();
         } catch (error) {
@@ -239,7 +245,7 @@ export const deleteProjectThunk = (projectId: number, onSuccess?: () => void): A
     }
 }
 
-export const addContributorThunk = (data: AddContributor, onSuccess?: () => void): AppThunk => {
+export const addContributorThunk = (data: AddContributor, onSuccess?: () => void, onError?: () => void): AppThunk => {
     return async (dispatch) => {
         try {
             dispatch(setReqStatus({ name: 'addContributor', status: 'loading' }));
@@ -247,11 +253,14 @@ export const addContributorThunk = (data: AddContributor, onSuccess?: () => void
             dispatch(setReqStatus({ name: 'addContributor', status: 'succeeded' }));
             dispatch(updateContributor(resData))
             dispatch(setReqStatus({ name: '', status: 'idle' }));
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'User added!' }))
             if (onSuccess)
                 onSuccess();
         } catch (error) {
             dispatch(setReqStatus({ name: 'addContributor', status: 'failed' }));
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            if (onError)
+                onError();
         }
     }
 }

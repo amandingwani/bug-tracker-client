@@ -44,13 +44,19 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
   const onSubmit: SubmitHandler<Email> = (data) => {
     setLoading(true);
     dispatch(
-      addContributorThunk({ id: projectId, ...data }, () => {
-        setLoading(false);
-        onCloseDrawer();
-        reset({
-          email: '',
-        });
-      })
+      addContributorThunk(
+        { id: projectId, ...data },
+        () => {
+          setLoading(false);
+          onCloseDrawer();
+          reset({
+            email: '',
+          });
+        },
+        () => {
+          setLoading(false);
+        }
+      )
     );
   };
 
