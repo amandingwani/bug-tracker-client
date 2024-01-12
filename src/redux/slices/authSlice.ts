@@ -5,7 +5,7 @@ import { loadProjects, resetProjects } from './projectsSlice'
 import { loginWithGoogle } from 'src/services/auth'
 import getProfile from 'src/services/profile';
 import { resetHeader } from './pageSlice'
-import { updateAndShowNotification } from './notificationSlice'
+import { hideNotification, updateAndShowNotification } from './notificationSlice'
 
 const initialState: AuthState = {
     user: null,
@@ -47,12 +47,13 @@ export const autoLogin = (): AppThunk => {
     return (dispatch) => {
         getProfile()
             .then((userData) => {
-                console.log({ profile: userData });
                 dispatch(setUser(userData))
                 localStorage.setItem("BUG_NINJA_USER", JSON.stringify(userData));
                 dispatch(loadProjects());
             })
-            .catch((err) => { throw err });
+            .catch((error) => {
+                // console.log(error)
+            });
     }
 }
 
@@ -82,6 +83,7 @@ export const logout = (): AppThunk => {
     return (dispatch) => {
         document.cookie = 'token=; expires=Session; path=/;';
         dispatch(resetAuth())
+        dispatch(hideNotification())
         localStorage.removeItem("BUG_NINJA_USER");
         localStorage.removeItem("BUG_NINJA_PAGE_HEADER");
         dispatch(resetProjects())

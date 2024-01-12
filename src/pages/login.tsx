@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import SnackbarNotification from 'src/components/snackbarNotification/snackbarNotification';
+import SnackbarNotification from 'src/components/snackbarNotification';
 
 import { LoginView } from 'src/sections/login';
 

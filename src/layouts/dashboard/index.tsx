@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import Nav from './nav';
 import Main from './main';
 import Header from './header';
+import SnackbarNotification from 'src/components/snackbarNotification';
 
 // ----------------------------------------------------------------------
 
@@ -13,6 +14,7 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 
   return (
     <>
+      <SnackbarNotification />
       <Header onOpenNav={() => setOpenNav(true)} />
 
       <Box

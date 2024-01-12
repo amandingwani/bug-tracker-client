@@ -16,6 +16,7 @@ import {
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 import { unassignedUser } from '../constants'
+import { updateAndShowNotification } from './notificationSlice'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -211,7 +212,8 @@ export const loadProjects = (): AppThunk => {
             dispatch(setReqStatus({ name: '', status: 'idle' }));
         } catch (error) {
             dispatch(setReqStatus({ name: 'loadProjects', status: 'failed' }));
-            dispatch(setError(error as string))
+            // dispatch(setError(error as string))
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error', noClose: true }))
         }
     }
 }
