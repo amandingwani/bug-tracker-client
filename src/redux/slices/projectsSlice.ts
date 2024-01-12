@@ -231,7 +231,10 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
                     status: 'OPEN'
                 })
             })
-            .catch((err) => { throw err });
+            .catch((err) => {
+                setLoading(false)
+                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            });
     }
 }
 
@@ -253,6 +256,7 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
             .catch((err) => {
                 console.log(err);
                 setLoading(false)
+                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
             });
     }
 }
@@ -270,7 +274,10 @@ export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Disp
                     status: 'OPEN'
                 })
             })
-            .catch((err) => { throw err });
+            .catch((err) => {
+                setLoading(false)
+                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            });
     }
 }
 
@@ -289,7 +296,10 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
                     priority: 'NORMAL',
                 });
             })
-            .catch((err) => { throw err });
+            .catch((err) => {
+                setLoading(false)
+                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            });
     }
 }
 
