@@ -23,7 +23,7 @@ import { useRouter } from 'src/routes/hooks';
 import { Project, ProjectStatusMap } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import {
-  deleteProject,
+  deleteProjectThunk,
   selectReqStatus,
   selectError,
   setReqStatus,
@@ -31,6 +31,7 @@ import {
   removeOtherProject,
 } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
+import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
 
 // ----------------------------------------------------------------------
 
@@ -72,14 +73,18 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
   const isOwner = user?.id === project?.owner.id;
 
   useEffect(() => {
-    if (reqStatus.name === 'deleteProject' && reqStatus.status === 'succeeded') {
-      dispatch(setReqStatus({ name: '', status: 'idle' }));
-      router.back();
-    } else if (reqStatus.name === 'removeContributor' && reqStatus.status === 'succeeded') {
-      dispatch(setReqStatus({ name: '', status: 'idle' }));
-      // delete the project from state
-      if (project) dispatch(removeOtherProject({ projectId: project.id }));
-      router.back();
+    if (reqStatus.name === 'removeContributor') {
+      if (reqStatus.status === 'succeeded') {
+        dispatch(setReqStatus({ name: '', status: 'idle' }));
+        // delete the project from state
+        if (project) dispatch(removeOtherProject({ projectId: project.id }));
+        router.back();
+      } else if (reqStatus.status === 'failed') {
+        dispatch(setReqStatus({ name: '', status: 'idle' }));
+        dispatch(
+          updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' })
+        );
+      }
     }
     return () => {
       console.log('ProjectDetails unmounting');
@@ -102,8 +107,12 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
     setOpenDrawer(true);
   };
 
+  const afterSuccessfulProjectDelete = () => {
+    router.back();
+  };
+
   const handlePermanentDelete = async () => {
-    if (project) dispatch(deleteProject(project.id));
+    if (project) dispatch(deleteProjectThunk(project.id, afterSuccessfulProjectDelete));
   };
 
   const handleLeaveProject = async () => {

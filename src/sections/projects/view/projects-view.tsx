@@ -18,13 +18,14 @@ import TableEmptyRows from '../table-empty-rows';
 import ProjectsTableToolbar from '../projects-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import { selectProjects, deleteProject, setReqStatus } from 'src/redux/slices/projectsSlice';
+import { selectProjects, deleteProjectThunk, setReqStatus } from 'src/redux/slices/projectsSlice';
 import { useAppSelector, useAppDispatch } from 'src/redux/hooks';
 import { Project, ProjectUpdate } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditProject from '../createOrEditProject';
 import TableRowsLoader from '../table-rows-loader';
+import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
 
 // ----------------------------------------------------------------------
 
@@ -54,19 +55,9 @@ export default function ProjectsPage() {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  useEffect(() => {
-    if (projects.reqStatus.name === 'deleteProject' && projects.reqStatus.status === 'succeeded') {
-      handleAlertClose();
-      dispatch(setReqStatus({ name: '', status: 'idle' }));
-    }
-    return () => {
-      console.log('Projects-view unmounting');
-    };
-  }, [projects.reqStatus]);
-
   const handlePermanentDelete = async () => {
     if (selectedProject) {
-      dispatch(deleteProject(selectedProject.id));
+      dispatch(deleteProjectThunk(selectedProject.id, () => handleAlertClose()));
     }
   };
 
