@@ -24,10 +24,10 @@ export const loginWithGoogle = (code: string) => {
   });
 };
 
-export const clearToken = () => {
-  return new Promise((resolve, reject) => {
-    axios.post('/auth/logout')
-      .then((res) => resolve(res.data))
-      .catch((err) => reject(err));
-  })
-}
+// export const clearToken = () => {
+//   return new Promise((resolve, reject) => {
+//     axios.post('/auth/logout')
+//       .then((res) => resolve(res.data))
+//       .catch((err) => reject(err));
+//   })
+// }

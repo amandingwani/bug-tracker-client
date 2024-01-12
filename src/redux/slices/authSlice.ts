@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { AuthState, UserState } from '../types'
 import { loadProjects, resetProjects } from './projectsSlice'
-import { clearToken, loginWithGoogle } from 'src/services/auth'
+import { loginWithGoogle } from 'src/services/auth'
 import getProfile from 'src/services/profile';
 import { resetHeader } from './pageSlice'
 import { updateAndShowNotification } from './notificationSlice'
@@ -80,16 +80,22 @@ export const googleLogin = (code: string): AppThunk => {
 
 export const logout = (): AppThunk => {
     return (dispatch) => {
-        // clear the token cookie
-        clearToken()
-            .then(() => {
-                dispatch(resetAuth())
-                localStorage.removeItem("BUG_NINJA_USER");
-                localStorage.removeItem("BUG_NINJA_PAGE_HEADER");
-                dispatch(resetProjects())
-                dispatch(resetHeader())
-            })
-            .catch((err) => { throw err });
+        document.cookie = 'token=; expires=Session; path=/;';
+        dispatch(resetAuth())
+        localStorage.removeItem("BUG_NINJA_USER");
+        localStorage.removeItem("BUG_NINJA_PAGE_HEADER");
+        dispatch(resetProjects())
+        dispatch(resetHeader())
+        // // clear the token cookie
+        // clearToken()
+        //     .then(() => {
+        //         dispatch(resetAuth())
+        //         localStorage.removeItem("BUG_NINJA_USER");
+        //         localStorage.removeItem("BUG_NINJA_PAGE_HEADER");
+        //         dispatch(resetProjects())
+        //         dispatch(resetHeader())
+        //     })
+        //     .catch((err) => { throw err });
     }
 }
 
