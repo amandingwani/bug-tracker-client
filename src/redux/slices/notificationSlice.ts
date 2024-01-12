@@ -6,10 +6,12 @@ export interface NotificationState {
     open: boolean,
     severity?: AlertColor;
     message?: string;
+    durationMS: number | null;
 }
 
 const initialState: NotificationState = {
-    open: false
+    open: false,
+    durationMS: 10000
 }
 
 export const notificationSlice = createSlice({
@@ -20,6 +22,7 @@ export const notificationSlice = createSlice({
         resetNotification: () => initialState,
         hideNotification: (state) => {
             state.open = false;
+            state.durationMS = 10000;
         },
         showNotification: (state) => {
             state.open = true;
@@ -28,10 +31,12 @@ export const notificationSlice = createSlice({
             state.severity = action.payload.severity;
             state.message = action.payload.message;
         },
-        updateAndShowNotification: (state, action: PayloadAction<{ severity: AlertColor, message: string }>) => {
+        updateAndShowNotification: (state, action: PayloadAction<{ severity: AlertColor, message: string, noClose?: boolean }>) => {
             state.open = true;
             state.severity = action.payload.severity;
             state.message = action.payload.message;
+            if (action.payload.noClose)
+                state.durationMS = null;
         },
     }
 })
