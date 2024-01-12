@@ -20,12 +20,18 @@ export const Page404 = lazy(() => import('src/pages/page-not-found'));
 // ----------------------------------------------------------------------
 
 export default function Router(): ReactNode {
-  // const user = useAppSelector(selectUser);
-  const localStorageUserString = localStorage.getItem('BUG_NINJA_USER');
-  const localStorageUser: UserState | null = localStorageUserString
-    ? JSON.parse(localStorageUserString)
-    : null;
-  const isLoggedIn = !!localStorageUser;
+  const user = useAppSelector(selectUser);
+  let isLoggedIn: boolean;
+  if (!user) {
+    const localStorageUserString = localStorage.getItem('BUG_NINJA_USER');
+    const localStorageUser: UserState | null = localStorageUserString
+      ? JSON.parse(localStorageUserString)
+      : null;
+
+    isLoggedIn = !!localStorageUser;
+  } else {
+    isLoggedIn = !!user;
+  }
   console.log({ isLoggedIn });
 
   const routes = useRoutes([
