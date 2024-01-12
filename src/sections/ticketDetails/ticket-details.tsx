@@ -24,12 +24,7 @@ import { useRouter } from 'src/routes/hooks';
 
 import { Ticket } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import {
-  deleteTicket,
-  selectReqStatus,
-  selectError,
-  setReqStatus,
-} from 'src/redux/slices/projectsSlice';
+import { deleteTicketThunk, selectReqStatus } from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -59,7 +54,6 @@ export default function TicketDetails({ title, ticket }: Props) {
   const router = useRouter();
 
   const reqStatus = useAppSelector(selectReqStatus);
-  const error = useAppSelector(selectError);
 
   const [expanded, setExpanded] = useState(true);
 
@@ -67,17 +61,17 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  useEffect(() => {
-    console.log({ reqStatus });
-    if (reqStatus.name === 'deleteTicket' && reqStatus.status === 'succeeded') {
-      // handleAlertClose();
-      dispatch(setReqStatus({ name: '', status: 'idle' }));
-      router.back();
-    }
-    return () => {
-      console.log('TicketDetails unmounting');
-    };
-  }, [reqStatus]);
+  // useEffect(() => {
+  //   console.log({ reqStatus });
+  //   if (reqStatus.name === 'deleteTicket' && reqStatus.status === 'succeeded') {
+  //     // handleAlertClose();
+  //     dispatch(setReqStatus({ name: '', status: 'idle' }));
+  //     router.back();
+  //   }
+  //   return () => {
+  //     console.log('TicketDetails unmounting');
+  //   };
+  // }, [reqStatus]);
 
   const handleAlertClickOpen = () => {
     setOpenAlert(true);
@@ -95,8 +89,12 @@ export default function TicketDetails({ title, ticket }: Props) {
     setOpenDrawer(true);
   };
 
+  const afterSuccessfulTicketDelete = () => {
+    router.back();
+  };
+
   const handlePermanentDelete = async () => {
-    if (ticket) dispatch(deleteTicket(ticket.id));
+    if (ticket) dispatch(deleteTicketThunk(ticket.id, afterSuccessfulTicketDelete));
   };
 
   const onCloseDrawer = () => {

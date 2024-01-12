@@ -15,7 +15,6 @@ import {
     UpdateTicketApiData
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
-import { unassignedUser } from '../constants'
 import { updateAndShowNotification } from './notificationSlice'
 
 // Define the initial state using that type
@@ -30,10 +29,6 @@ const initialState: ProjectsState = {
 
 export const deleteProject = createAsyncThunk('projects/deleteProject', async (projectId: number) => {
     return await deleteProjectApi(projectId)
-})
-
-export const deleteTicket = createAsyncThunk('projects/deleteTicket', async (ticketId: number) => {
-    return await deleteTicketApi(ticketId)
 })
 
 export const addContributor = createAsyncThunk('projects/addContributor', async (data: AddContributor) => {
@@ -100,35 +95,17 @@ export const projectsSlice = createSlice({
                 ticket.assignee = action.payload.assignee;
             }
         },
+        deleteTicket: (state, action: PayloadAction<Ticket>) => {
+            // Delete the ticket from the state
+            let project = state.createdProjects.find(p => p.id === action.payload.project.id);
+            if (!project)
+                project = state.otherProjects.find(p => p.id === action.payload.project.id)
+            if (project)
+                project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
+        }
     },
     extraReducers(builder) {
         builder
-            .addCase(deleteTicket.pending, (state, action) => {
-                state.reqStatus = {
-                    name: 'deleteTicket',
-                    status: 'loading'
-                }
-            })
-            .addCase(deleteTicket.fulfilled, (state, action) => {
-                state.reqStatus = {
-                    name: 'deleteTicket',
-                    status: 'succeeded'
-                }
-                state.error = undefined
-                // Delete the ticket from the state
-                let project = state.createdProjects.find(p => p.id === action.payload.project.id);
-                if (!project)
-                    project = state.otherProjects.find(p => p.id === action.payload.project.id)
-                if (project)
-                    project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
-            })
-            .addCase(deleteTicket.rejected, (state, action) => {
-                state.reqStatus = {
-                    name: 'deleteTicket',
-                    status: 'failed'
-                }
-                state.error = action.error.message
-            })
             .addCase(deleteProject.pending, (state, action) => {
                 state.reqStatus = {
                     name: 'deleteProject',
@@ -303,7 +280,24 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
     }
 }
 
-export const { setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket, removeOtherProject } = projectsSlice.actions
+export const deleteTicketThunk = (ticketId: number, cleanUp?: () => void): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setReqStatus({ name: 'deleteTicket', status: 'loading' }));
+            const data = await deleteTicketApi(ticketId)
+            dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
+            dispatch(deleteTicket(data))
+            dispatch(setReqStatus({ name: '', status: 'idle' }));
+            if (cleanUp)
+                cleanUp();
+        } catch (error) {
+            dispatch(setReqStatus({ name: 'deleteTicket', status: 'failed' }));
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
+    }
+}
+
+export const { setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, updateTicket, removeOtherProject, deleteTicket } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
