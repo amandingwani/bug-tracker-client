@@ -14,7 +14,7 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import {
-  addContributor,
+  addContributorThunk,
   selectReqStatus,
   selectError,
   setReqStatus,
@@ -32,9 +32,6 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
 
   const dispatch = useAppDispatch();
 
-  const reqStatus = useAppSelector(selectReqStatus);
-  const error = useAppSelector(selectError);
-
   const WIDTH = '80%';
 
   const {
@@ -44,20 +41,17 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
     reset,
   } = useForm<Email>();
 
-  useEffect(() => {
-    if (reqStatus.name === 'addContributor' && reqStatus.status === 'succeeded') {
-      setLoading(false);
-      onCloseDrawer();
-      reset({
-        email: '',
-      });
-      dispatch(setReqStatus({ name: '', status: 'idle' }));
-    }
-  }, [reqStatus]);
-
   const onSubmit: SubmitHandler<Email> = (data) => {
     setLoading(true);
-    dispatch(addContributor({ id: projectId, ...data }));
+    dispatch(
+      addContributorThunk({ id: projectId, ...data }, () => {
+        setLoading(false);
+        onCloseDrawer();
+        reset({
+          email: '',
+        });
+      })
+    );
   };
 
   const { ref: emailInputRef, ...emailInputProps } = register('email', {

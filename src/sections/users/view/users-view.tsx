@@ -18,7 +18,7 @@ import UsersTableToolbar from '../users-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import {
-  removeContributor,
+  removeContributorThunk,
   selectReqStatus,
   selectError,
   setReqStatus,
@@ -69,16 +69,13 @@ export default function UsersTable(props: Props) {
       email: user.email,
     });
 
-  useEffect(() => {
-    if (reqStatus.name === 'removeContributor' && reqStatus.status === 'succeeded') {
-      handleAlertClose();
-      dispatch(setReqStatus({ name: '', status: 'idle' }));
-    }
-  }, [reqStatus]);
-
   const handleRemoveContributor = async () => {
     if (selectedUser) {
-      dispatch(removeContributor({ id: props.project.id, email: selectedUser.email }));
+      dispatch(
+        removeContributorThunk({ id: props.project.id, email: selectedUser.email }, () =>
+          handleAlertClose()
+        )
+      );
     }
   };
 

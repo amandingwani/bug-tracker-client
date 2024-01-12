@@ -27,14 +27,6 @@ const initialState: ProjectsState = {
     }
 }
 
-export const addContributor = createAsyncThunk('projects/addContributor', async (data: AddContributor) => {
-    return await addContributorApi(data)
-})
-
-export const removeContributor = createAsyncThunk('projects/removeContributor', async (data: AddContributor) => {
-    return await removeContributorApi(data)
-})
-
 export const projectsSlice = createSlice({
     name: 'projects',
     // `createSlice` will infer the state type from the `initialState` argument
@@ -102,58 +94,13 @@ export const projectsSlice = createSlice({
                 project = state.otherProjects.find(p => p.id === action.payload.project.id)
             if (project)
                 project.tickets = project.tickets.filter(t => t.id !== action.payload.id)
+        },
+        updateContributor: (state, action: PayloadAction<Project>) => {
+            // Update the contributors array
+            const project = state.createdProjects.find(p => p.id === action.payload.id);
+            if (project)
+                project.contributors = action.payload.contributors;
         }
-    },
-    extraReducers(builder) {
-        builder
-            .addCase(addContributor.pending, (state, action) => {
-                state.reqStatus = {
-                    name: 'addContributor',
-                    status: 'loading'
-                }
-            })
-            .addCase(addContributor.fulfilled, (state, action) => {
-                state.reqStatus = {
-                    name: 'addContributor',
-                    status: 'succeeded'
-                }
-                state.error = undefined
-                // Update the contributors array
-                const project = state.createdProjects.find(p => p.id === action.payload.id);
-                if (project)
-                    project.contributors = action.payload.contributors;
-            })
-            .addCase(addContributor.rejected, (state, action) => {
-                state.reqStatus = {
-                    name: 'addContributor',
-                    status: 'failed'
-                }
-                state.error = action.error.message
-            })
-            .addCase(removeContributor.pending, (state, action) => {
-                state.reqStatus = {
-                    name: 'removeContributor',
-                    status: 'loading'
-                }
-            })
-            .addCase(removeContributor.fulfilled, (state, action) => {
-                state.reqStatus = {
-                    name: 'removeContributor',
-                    status: 'succeeded'
-                }
-                state.error = undefined
-                // Update the contributors array
-                const project = state.createdProjects.find(p => p.id === action.payload.id);
-                if (project)
-                    project.contributors = action.payload.contributors;
-            })
-            .addCase(removeContributor.rejected, (state, action) => {
-                state.reqStatus = {
-                    name: 'removeContributor',
-                    status: 'failed'
-                }
-                state.error = action.error.message
-            })
     }
 })
 
@@ -258,7 +205,7 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
     }
 }
 
-export const deleteTicketThunk = (ticketId: number, cleanUp?: () => void): AppThunk => {
+export const deleteTicketThunk = (ticketId: number, onSuccess?: () => void): AppThunk => {
     return async (dispatch) => {
         try {
             dispatch(setReqStatus({ name: 'deleteTicket', status: 'loading' }));
@@ -266,8 +213,8 @@ export const deleteTicketThunk = (ticketId: number, cleanUp?: () => void): AppTh
             dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
             dispatch(deleteTicket(data))
             dispatch(setReqStatus({ name: '', status: 'idle' }));
-            if (cleanUp)
-                cleanUp();
+            if (onSuccess)
+                onSuccess();
         } catch (error) {
             dispatch(setReqStatus({ name: 'deleteTicket', status: 'failed' }));
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
@@ -275,7 +222,7 @@ export const deleteTicketThunk = (ticketId: number, cleanUp?: () => void): AppTh
     }
 }
 
-export const deleteProjectThunk = (projectId: number, cleanUp?: () => void): AppThunk => {
+export const deleteProjectThunk = (projectId: number, onSuccess?: () => void): AppThunk => {
     return async (dispatch) => {
         try {
             dispatch(setReqStatus({ name: 'deleteProject', status: 'loading' }));
@@ -283,8 +230,8 @@ export const deleteProjectThunk = (projectId: number, cleanUp?: () => void): App
             dispatch(setReqStatus({ name: 'deleteProject', status: 'succeeded' }));
             dispatch(deleteProject(data))
             dispatch(setReqStatus({ name: '', status: 'idle' }));
-            if (cleanUp)
-                cleanUp();
+            if (onSuccess)
+                onSuccess();
         } catch (error) {
             dispatch(setReqStatus({ name: 'deleteProject', status: 'failed' }));
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
@@ -292,7 +239,41 @@ export const deleteProjectThunk = (projectId: number, cleanUp?: () => void): App
     }
 }
 
-export const { setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket } = projectsSlice.actions
+export const addContributorThunk = (data: AddContributor, onSuccess?: () => void): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setReqStatus({ name: 'addContributor', status: 'loading' }));
+            const resData = await addContributorApi(data)
+            dispatch(setReqStatus({ name: 'addContributor', status: 'succeeded' }));
+            dispatch(updateContributor(resData))
+            dispatch(setReqStatus({ name: '', status: 'idle' }));
+            if (onSuccess)
+                onSuccess();
+        } catch (error) {
+            dispatch(setReqStatus({ name: 'addContributor', status: 'failed' }));
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
+    }
+}
+
+export const removeContributorThunk = (data: AddContributor, onSuccess?: () => void): AppThunk => {
+    return async (dispatch) => {
+        try {
+            dispatch(setReqStatus({ name: 'removeContributor', status: 'loading' }));
+            const resData = await removeContributorApi(data)
+            dispatch(setReqStatus({ name: 'removeContributor', status: 'succeeded' }));
+            dispatch(updateContributor(resData))
+            dispatch(setReqStatus({ name: '', status: 'idle' }));
+            if (onSuccess)
+                onSuccess();
+        } catch (error) {
+            dispatch(setReqStatus({ name: 'removeContributor', status: 'failed' }));
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
+    }
+}
+
+export const { setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects

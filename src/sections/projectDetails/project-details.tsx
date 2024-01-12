@@ -27,7 +27,7 @@ import {
   selectReqStatus,
   selectError,
   setReqStatus,
-  removeContributor,
+  removeContributorThunk,
   removeOtherProject,
 } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
@@ -72,25 +72,6 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const isOwner = user?.id === project?.owner.id;
 
-  useEffect(() => {
-    if (reqStatus.name === 'removeContributor') {
-      if (reqStatus.status === 'succeeded') {
-        dispatch(setReqStatus({ name: '', status: 'idle' }));
-        // delete the project from state
-        if (project) dispatch(removeOtherProject({ projectId: project.id }));
-        router.back();
-      } else if (reqStatus.status === 'failed') {
-        dispatch(setReqStatus({ name: '', status: 'idle' }));
-        dispatch(
-          updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' })
-        );
-      }
-    }
-    return () => {
-      console.log('ProjectDetails unmounting');
-    };
-  }, [reqStatus]);
-
   const handleAlertClickOpen = () => {
     setOpenAlert(true);
   };
@@ -117,7 +98,13 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const handleLeaveProject = async () => {
     if (project && user) {
-      dispatch(removeContributor({ id: project.id, email: user.email }));
+      dispatch(
+        removeContributorThunk({ id: project.id, email: user.email }, () => {
+          // delete the project from state
+          if (project) dispatch(removeOtherProject({ projectId: project.id }));
+          router.back();
+        })
+      );
     }
   };
 
