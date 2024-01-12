@@ -81,6 +81,7 @@ export const logout = (): AppThunk => {
             .then(() => {
                 dispatch(resetAuth())
                 localStorage.removeItem("BUG_NINJA_USER");
+                localStorage.removeItem("BUG_NINJA_PAGE_HEADER");
                 dispatch(resetProjects())
                 dispatch(resetHeader())
             })

@@ -28,6 +28,7 @@ export default function ProjectDetailsPage() {
 
   useEffect(() => {
     dispatch(updateHeader(titleString));
+    localStorage.setItem('BUG_NINJA_PAGE_HEADER', titleString);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
