@@ -62,7 +62,6 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const user = useAppSelector(selectUser);
   const reqStatus = useAppSelector(selectReqStatus);
-  const error = useAppSelector(selectError);
 
   const [expanded, setExpanded] = useState(true);
 

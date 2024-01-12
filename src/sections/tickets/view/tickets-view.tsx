@@ -68,16 +68,6 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  // useEffect(() => {
-  //   if (projects.reqStatus.name === 'deleteTicket' && projects.reqStatus.status === 'succeeded') {
-  //     handleAlertClose();
-  //     dispatch(setReqStatus({ name: '', status: 'idle' }));
-  //   }
-  //   return () => {
-  //     console.log('Tickets-view unmounting');
-  //   };
-  // }, [projects.reqStatus]);
-
   const afterSuccessfulTicketDelete = () => {
     handleAlertClose();
   };

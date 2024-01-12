@@ -60,14 +60,22 @@ export default function UsersTable(props: Props) {
   const [openAlert, setOpenAlert] = useState(false);
 
   let users: Contributor[] = [];
-  if (user)
-    users = props.project.contributors.concat({
-      id: user.id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      registered: true,
-      email: user.email,
-    });
+  if (user) {
+    // if user is not owner of project (therefore, already in contributors), then just add the owner
+    if (user.id !== props.project.owner.id) {
+      users = props.project.contributors.concat(props.project.owner);
+    }
+    // else user is owner of project, add user to contributors
+    else {
+      users = props.project.contributors.concat({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        registered: true,
+        email: user.email,
+      });
+    }
+  }
 
   const handleRemoveContributor = async () => {
     if (selectedUser) {

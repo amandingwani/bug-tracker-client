@@ -72,6 +72,8 @@ export default function CreateOrEditTicket({
     formDefaultProject ?? allProjects[0]
   );
 
+  console.log({ formSelectProject });
+
   let projectOwner: Contributor | undefined = undefined;
 
   let contributorsOfAProject: Contributor[] = [];
