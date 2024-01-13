@@ -76,7 +76,7 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
         },
       }}
     >
-      <Typography variant="h4" align="center">
+      <Typography variant="h4" align="center" p={'10px'}>
         Add User
       </Typography>
       <Divider></Divider>
@@ -93,11 +93,11 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack gap="10px" marginTop="10px">
+            <Stack marginTop="20px" spacing={{ xs: 2, sm: 2 }}>
               <FormControl>
                 <TextField
                   id="email"
-                  label="Email"
+                  label="User Email"
                   variant="outlined"
                   error={!!errors.email}
                   helperText={errors.email?.message}
@@ -137,7 +137,6 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
     <Box
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: WIDTH },
       }}
     >
       <Drawer
@@ -146,7 +145,8 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
         onClose={onCloseDrawer}
         PaperProps={{
           sx: {
-            width: WIDTH,
+            width: '400px',
+            maxWidth: '80%',
           },
         }}
       >
