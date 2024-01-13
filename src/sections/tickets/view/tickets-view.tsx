@@ -148,18 +148,16 @@ export default function TicketsPage(props: TicketsPageProps) {
       else if (filterData.author === 'Other users' && t.author.id === user.id) filterBool = false;
 
       if (filterData.assignee === 'Me' && t.assignee?.id !== user.id) filterBool = false;
-      else if (filterData.assignee === 'Other users' && t.assignee?.id === user.id)
+      else if (
+        filterData.assignee === 'Other users' &&
+        (t.assignee === null || t.assignee?.id === user.id)
+      ) {
         filterBool = false;
-      else if (filterData.assignee === 'Unassigned' && t.assignee) filterBool = false;
+      } else if (filterData.assignee === 'Unassigned' && t.assignee) filterBool = false;
 
       return filterBool;
     });
   }
-
-  // if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
-  //   ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
-  // else if (filterSelected.assign) ticketsToDisplay = ticketsAssignedToMe;
-  // else if (filterSelected.created) ticketsToDisplay = ticketsCreatedByMe;
 
   const dataFiltered = applyFilter({
     inputData: ticketsToDisplay,
