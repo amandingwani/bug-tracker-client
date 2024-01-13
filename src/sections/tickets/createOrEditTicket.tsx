@@ -109,8 +109,6 @@ export default function CreateOrEditTicket({
     allUsersOfAProject.push(projectOwner);
   }
 
-  const WIDTH = '80%';
-
   const onSubmit: SubmitHandler<TicketCreateInput> = (data) => {
     setLoading(true);
     if (!selectedTicket) {
@@ -189,7 +187,7 @@ export default function CreateOrEditTicket({
         },
       }}
     >
-      <Typography variant="h4" align="center">
+      <Typography variant="h4" align="center" p={'10px'}>
         {!selectedTicket ? 'Create' : 'Edit'} Ticket
       </Typography>
       <Divider></Divider>
@@ -206,7 +204,7 @@ export default function CreateOrEditTicket({
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack gap="10px" marginTop="10px">
+            <Stack marginTop="20px" spacing={{ xs: 2, sm: 2 }}>
               <FormControl>
                 <TextField
                   id="title"
@@ -391,7 +389,6 @@ export default function CreateOrEditTicket({
     <Box
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: WIDTH },
       }}
     >
       <Drawer
@@ -400,7 +397,8 @@ export default function CreateOrEditTicket({
         onClose={onCloseDrawer}
         PaperProps={{
           sx: {
-            width: WIDTH,
+            width: '400px',
+            maxWidth: '80%',
           },
         }}
       >

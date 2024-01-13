@@ -46,8 +46,6 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
 
   const dispatch = useAppDispatch();
 
-  const WIDTH = '80%';
-
   const {
     register,
     handleSubmit,
@@ -96,7 +94,7 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
         },
       }}
     >
-      <Typography variant="h4" align="center">
+      <Typography variant="h4" align="center" p={'10px'}>
         {!selectedProject ? 'Create' : 'Edit'} Project
       </Typography>
       <Divider></Divider>
@@ -113,7 +111,7 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
           }}
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Stack gap="10px" marginTop="10px">
+            <Stack marginTop="20px" spacing={{ xs: 2, sm: 2 }}>
               <FormControl>
                 <TextField
                   id="name"
@@ -196,7 +194,6 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
     <Box
       sx={{
         flexShrink: { lg: 0 },
-        width: { lg: WIDTH },
       }}
     >
       <Drawer
@@ -205,7 +202,8 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
         onClose={onCloseDrawer}
         PaperProps={{
           sx: {
-            width: WIDTH,
+            width: '400px',
+            maxWidth: '80%',
           },
         }}
       >
