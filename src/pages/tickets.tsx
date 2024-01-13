@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+import Container from '@mui/material/Container';
 import { TicketsView } from 'src/sections/tickets/view';
 
 import { updateHeader } from 'src/redux/slices/pageSlice';
@@ -24,7 +25,9 @@ export default function TicketsPage() {
         <title> {titleString} | Bug Ninja </title>
       </Helmet>
 
-      <TicketsView />
+      <Container maxWidth="xl">
+        <TicketsView />
+      </Container>
     </>
   );
 }

@@ -41,7 +41,7 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
   };
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <ProjectDetails title="Project Details" project={project} />
 
       {project && (

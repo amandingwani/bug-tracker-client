@@ -128,7 +128,7 @@ export default function ProjectsPage() {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Container>
+    <Container maxWidth="xl">
       <CreateOrEditProject
         openDrawer={openDrawer}
         onCloseDrawer={onCloseDrawer}
