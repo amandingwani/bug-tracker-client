@@ -63,8 +63,11 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  // if user is not author or assignee, then not allowed to edit or delete
-  const allowed = ticket?.author.id === user?.id || ticket?.assignee?.id === user?.id;
+  // if user is not author or assignee or project owner, then not allowed to edit or delete
+  const allowed =
+    ticket?.author.id === user?.id ||
+    ticket?.assignee?.id === user?.id ||
+    ticket?.project.owner.id === user?.id;
 
   const handleAlertClickOpen = () => {
     setOpenAlert(true);
