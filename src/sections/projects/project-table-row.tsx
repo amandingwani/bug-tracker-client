@@ -66,6 +66,8 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           <Label color={statusLabelColor}>{ProjectStatusMap[project.status]}</Label>
         </TableCell>
 
+        <TableCell>{new Date(project.createdAt).toLocaleString()}</TableCell>
+
         {isOwner && (
           <TableCell align="right">
             <IconButton onClick={handleOpenMenu}>

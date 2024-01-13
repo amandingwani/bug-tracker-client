@@ -252,7 +252,7 @@ function Details({ project }: { project: Project }) {
       </Stack>
       <Stack direction="row" spacing={2} pl={1}>
         <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Created At:'}
+          {'Created On:'}
         </Typography>
         <Typography variant="body2" noWrap>
           {new Date(createdAt).toLocaleString()}

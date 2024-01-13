@@ -193,7 +193,7 @@ export default function TicketsPage(props: TicketsPageProps) {
                   { id: 'type', label: 'Type' },
                   { id: 'priority', label: 'Priority' },
                   { id: 'project', label: 'Project' },
-                  { id: 'createdAt', label: 'Created At', minWidth: 120 },
+                  { id: 'createdAt', label: 'Created On', minWidth: 120 },
                   { id: '' },
                 ]}
               />

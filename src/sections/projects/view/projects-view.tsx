@@ -158,6 +158,7 @@ export default function ProjectsPage() {
                   { id: 'name', label: 'Project Name' },
                   { id: 'owner', label: 'Owner' },
                   { id: 'status', label: 'Status' },
+                  { id: 'createdAt', label: 'Created On', minWidth: 120 },
                   { id: '' },
                 ]}
               />
