@@ -72,8 +72,6 @@ export default function CreateOrEditTicket({
     formDefaultProject ?? allProjects[0]
   );
 
-  console.log({ formSelectProject });
-
   let projectOwner: Contributor | undefined = undefined;
 
   let contributorsOfAProject: Contributor[] = [];
@@ -104,20 +102,6 @@ export default function CreateOrEditTicket({
     contributorsOfAProject = getValues('project').contributors;
     projectOwner = getValues('project').owner;
   }
-
-  // if (selectedTicket) {
-  //   contributorsOfAProject = selectedTicket.project.contributors;
-  //   projectOwner = selectedTicket.project.owner;
-  // } else if (project) {
-  //   contributorsOfAProject = project.contributors;
-  //   projectOwner = project.owner;
-  // } else {
-  //   // creating a new ticket with the project selected from the form
-
-  // }
-
-  // console.log({ selectedTicket });
-  // console.log({ contributorsOfAProject });
 
   const allUsersOfAProject: Contributor[] = [unassignedUser, ...contributorsOfAProject];
 
@@ -186,6 +170,13 @@ export default function CreateOrEditTicket({
       setFormSelectProject(selectedTicket?.project ?? null);
     }
   }, [selectedTicket]);
+
+  useEffect(() => {
+    if (project) {
+      setValue('project', project);
+      setFormSelectProject(project);
+    }
+  }, [project, setValue]);
 
   const renderContent = (
     <Scrollbar
