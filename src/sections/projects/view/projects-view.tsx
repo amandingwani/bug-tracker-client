@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
@@ -18,14 +18,14 @@ import TableEmptyRows from '../table-empty-rows';
 import ProjectsTableToolbar from '../projects-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import { selectProjects, deleteProjectThunk, setReqStatus } from 'src/redux/slices/projectsSlice';
+import { selectProjects, deleteProjectThunk } from 'src/redux/slices/projectsSlice';
 import { useAppSelector, useAppDispatch } from 'src/redux/hooks';
 import { Project, ProjectUpdate } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditProject from '../createOrEditProject';
 import TableRowsLoader from '../table-rows-loader';
-import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
+import { FilterData, defaultFilterData } from '../types';
 
 // ----------------------------------------------------------------------
 
@@ -51,7 +51,7 @@ export default function ProjectsPage() {
 
   const [selectedProject, setSelectedProject] = useState<ProjectUpdate | null>(null);
 
-  const [filterSelected, setFilterSelected] = useState({ other: true, created: true });
+  const [filterData, setFilterData] = useState<FilterData>(defaultFilterData);
 
   const [openAlert, setOpenAlert] = useState(false);
 
@@ -72,17 +72,14 @@ export default function ProjectsPage() {
 
   let projectsToDisplay: Project[] = [];
 
-  if (filterSelected.other && filterSelected.created)
+  // owner filter
+  if (filterData.owner === 'All')
     projectsToDisplay = [...projects.createdProjects, ...projects.otherProjects];
-  else if (filterSelected.other) projectsToDisplay = projects.otherProjects;
-  else if (filterSelected.created) projectsToDisplay = projects.createdProjects;
+  else if (filterData.owner === 'Other users') projectsToDisplay = projects.otherProjects;
+  else projectsToDisplay = projects.createdProjects;
 
-  const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    if (event.target.name === 'other') {
-      setFilterSelected({ ...filterSelected, other: checked });
-    } else if (event.target.name === 'created')
-      setFilterSelected({ ...filterSelected, created: checked });
-  };
+  // status filter
+  projectsToDisplay = projectsToDisplay.filter((p) => filterData.status[p.status]);
 
   const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
     const isAsc = orderBy === id && order === 'asc';
@@ -143,8 +140,8 @@ export default function ProjectsPage() {
           filterName={filterName}
           onFilterName={handleFilterByName}
           onNewProjectClick={onNewProjectClick}
-          filterSelected={filterSelected}
-          handleCheckboxClick={handleCheckboxClick}
+          filterData={filterData}
+          setFilterData={setFilterData}
         />
 
         <Scrollbar>

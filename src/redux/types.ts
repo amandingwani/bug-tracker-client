@@ -64,7 +64,9 @@ export interface Ticket {
     project: Project
 }
 
-export type ProjectStatus = 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELED' | 'TESTING' | 'DEPLOYED'
+export const ProjectStatusArr = ['OPEN', 'IN_PROGRESS', 'ON_HOLD', 'COMPLETED', 'CANCELED', 'TESTING', 'DEPLOYED'] as const
+export type ProjectStatus = typeof ProjectStatusArr[number]
+// export type ProjectStatus = 'OPEN' | 'IN_PROGRESS' | 'ON_HOLD' | 'COMPLETED' | 'CANCELED' | 'TESTING' | 'DEPLOYED'
 export const ProjectStatusMap = {
     'OPEN': 'OPEN',
     'IN_PROGRESS': 'IN PROGRESS',

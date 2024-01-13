@@ -1,4 +1,5 @@
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,6 +12,8 @@ import Popover from '@mui/material/Popover';
 import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import { useState } from 'react';
+import ProjectsFilters from './projects-filters';
+import { FilterData } from './types';
 
 // ----------------------------------------------------------------------
 
@@ -18,16 +21,16 @@ interface ProjectsTableToolbarProps {
   filterName: string;
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
   onNewProjectClick: React.MouseEventHandler<HTMLButtonElement>;
-  filterSelected: { other: boolean; created: boolean };
-  handleCheckboxClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  filterData: FilterData;
+  setFilterData: React.Dispatch<React.SetStateAction<FilterData>>;
 }
 
 export default function ProjectsTableToolbar({
   filterName,
   onFilterName,
   onNewProjectClick,
-  filterSelected,
-  handleCheckboxClick,
+  filterData,
+  setFilterData,
 }: ProjectsTableToolbarProps) {
   const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
 
@@ -39,6 +42,16 @@ export default function ProjectsTableToolbar({
     setOpen(null);
   };
 
+  const [openFilter, setOpenFilter] = useState(false);
+
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
+  };
+
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
+  };
+
   return (
     <Toolbar
       sx={{
@@ -48,7 +61,12 @@ export default function ProjectsTableToolbar({
         p: (theme) => theme.spacing(0, 1, 0, 3),
       }}
     >
-      <Stack direction="row" alignItems="center">
+      <Stack
+        direction="row"
+        alignItems="center"
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={2}
+      >
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
@@ -62,38 +80,14 @@ export default function ProjectsTableToolbar({
             </InputAdornment>
           }
         />
-        <Tooltip title="Filter list">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
 
-        <Popover
-          open={!!open}
-          anchorEl={open}
-          onClose={handleCloseMenu}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          slotProps={{
-            paper: {
-              sx: { width: 230 },
-            },
-          }}
-        >
-          <Typography>
-            <Checkbox checked={filterSelected.other} name="other" onChange={handleCheckboxClick} />
-            Created by other users
-          </Typography>
-
-          <Typography>
-            <Checkbox
-              checked={filterSelected.created}
-              name="created"
-              onChange={handleCheckboxClick}
-            />
-            Created by me
-          </Typography>
-        </Popover>
+        <ProjectsFilters
+          openFilter={openFilter}
+          onOpenFilter={handleOpenFilter}
+          onCloseFilter={handleCloseFilter}
+          filterData={filterData}
+          setFilterData={setFilterData}
+        />
       </Stack>
       <Button
         onClick={onNewProjectClick}
