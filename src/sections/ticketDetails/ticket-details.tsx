@@ -25,6 +25,7 @@ import { useRouter } from 'src/routes/hooks';
 import { Ticket } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { deleteTicketThunk, selectReqStatus } from 'src/redux/slices/projectsSlice';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
@@ -53,6 +54,7 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   const router = useRouter();
 
+  const user = useAppSelector(selectUser);
   const reqStatus = useAppSelector(selectReqStatus);
 
   const [expanded, setExpanded] = useState(true);
@@ -61,17 +63,8 @@ export default function TicketDetails({ title, ticket }: Props) {
 
   const [openAlert, setOpenAlert] = useState(false);
 
-  // useEffect(() => {
-  //   console.log({ reqStatus });
-  //   if (reqStatus.name === 'deleteTicket' && reqStatus.status === 'succeeded') {
-  //     // handleAlertClose();
-  //     dispatch(setReqStatus({ name: '', status: 'idle' }));
-  //     router.back();
-  //   }
-  //   return () => {
-  //     console.log('TicketDetails unmounting');
-  //   };
-  // }, [reqStatus]);
+  // if user is not author or assignee, then not allowed to edit or delete
+  const allowed = ticket?.author.id === user?.id || ticket?.assignee?.id === user?.id;
 
   const handleAlertClickOpen = () => {
     setOpenAlert(true);
@@ -132,24 +125,26 @@ export default function TicketDetails({ title, ticket }: Props) {
                 <Details ticket={ticket} />
               </Scrollbar>
             </CardContent>
-            <CardActions>
-              <Button
-                onClick={handleEdit}
-                variant="outlined"
-                color="primary"
-                startIcon={<Iconify icon="eva:edit-fill" />}
-              >
-                Edit
-              </Button>
-              <Button
-                onClick={handleAlertClickOpen}
-                variant="outlined"
-                color="error"
-                startIcon={<Iconify icon="eva:trash-2-outline" />}
-              >
-                Delete
-              </Button>
-            </CardActions>
+            {allowed && (
+              <CardActions>
+                <Button
+                  onClick={handleEdit}
+                  variant="outlined"
+                  color="primary"
+                  startIcon={<Iconify icon="eva:edit-fill" />}
+                >
+                  Edit
+                </Button>
+                <Button
+                  onClick={handleAlertClickOpen}
+                  variant="outlined"
+                  color="error"
+                  startIcon={<Iconify icon="eva:trash-2-outline" />}
+                >
+                  Delete
+                </Button>
+              </CardActions>
+            )}
           </Collapse>
         </>
       )}
