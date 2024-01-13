@@ -20,6 +20,7 @@ import {
   setReqStatus,
 } from 'src/redux/slices/projectsSlice';
 import { AddContributor, Contributor, Email } from 'src/redux/types';
+import Button from '@mui/material/Button';
 
 interface Props {
   openDrawer: boolean;
@@ -104,16 +105,27 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
                   {...emailInputProps}
                 />
               </FormControl>
-              <LoadingButton
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                color="inherit"
-                loading={loading}
-              >
-                Submit
-              </LoadingButton>
+              <Stack spacing={{ xs: 2, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
+                <LoadingButton
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  loading={loading}
+                >
+                  Add
+                </LoadingButton>
+                <Button
+                  size="large"
+                  type="button"
+                  variant="outlined"
+                  color="primary"
+                  disabled={loading}
+                  onClick={() => onCloseDrawer()}
+                >
+                  Cancel
+                </Button>
+              </Stack>
             </Stack>
           </form>
         </Box>
