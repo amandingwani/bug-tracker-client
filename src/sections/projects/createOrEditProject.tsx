@@ -164,16 +164,27 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
                   )}
                 />
               </FormControl>
-              <LoadingButton
-                fullWidth
-                size="large"
-                type="submit"
-                variant="contained"
-                color="inherit"
-                loading={loading}
-              >
-                Submit
-              </LoadingButton>
+              <Stack spacing={{ xs: 2, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
+                <LoadingButton
+                  size="large"
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  loading={loading}
+                >
+                  Submit
+                </LoadingButton>
+                <Button
+                  size="large"
+                  type="button"
+                  variant="outlined"
+                  color="primary"
+                  disabled={loading}
+                  onClick={() => onCloseDrawer()}
+                >
+                  Cancel
+                </Button>
+              </Stack>
             </Stack>
           </form>
         </Box>
