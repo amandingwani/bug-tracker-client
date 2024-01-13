@@ -39,9 +39,9 @@ export default function ProjectsPage() {
 
   const [page, setPage] = useState(0);
 
-  const [order, setOrder] = useState<'asc' | 'desc'>('asc');
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('createdAt');
 
   const [filterName, setFilterName] = useState('');
 
