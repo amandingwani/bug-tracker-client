@@ -62,3 +62,9 @@ export function applyFilter({ inputData, comparator, filterName }: ApplyFilterPr
 
   return inputData;
 }
+
+export const isEmailDomainAllowed = (email: string) => {
+  const allowedDomains = ['gmail.com'];
+  const [, domain] = email.split('@');
+  return allowedDomains.includes(domain);
+};

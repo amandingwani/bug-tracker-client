@@ -21,6 +21,7 @@ import {
 } from 'src/redux/slices/projectsSlice';
 import { AddContributor, Contributor, Email } from 'src/redux/types';
 import Button from '@mui/material/Button';
+import { isEmailDomainAllowed } from './utils';
 
 interface Props {
   openDrawer: boolean;
@@ -62,7 +63,8 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
   };
 
   const { ref: emailInputRef, ...emailInputProps } = register('email', {
-    required: "Please enter the user's email",
+    required: 'Email is required',
+    validate: (value) => isEmailDomainAllowed(value) || 'Email domain not supported',
   });
 
   const renderContent = (
@@ -97,6 +99,7 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
               <FormControl>
                 <TextField
                   id="email"
+                  // type="email"
                   label="User Email"
                   variant="outlined"
                   error={!!errors.email}
