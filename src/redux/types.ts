@@ -83,7 +83,8 @@ export type TicketType = typeof TicketTypeArr[number]
 export const TicketPriorityArr = ['URGENT', 'HIGH', 'NORMAL', 'LOW'] as const
 export type TicketPriority = typeof TicketPriorityArr[number]
 
-export type TicketStatus = 'OPEN' | 'IN_PROGRESS' | 'TO_BE_TESTED' | 'CLOSED'
+export const TicketStatusArr = ['OPEN', 'IN_PROGRESS', 'TO_BE_TESTED', 'CLOSED'] as const
+export type TicketStatus = typeof TicketStatusArr[number]
 export const TicketStatusMap = {
     'OPEN': 'OPEN',
     'IN_PROGRESS': 'IN PROGRESS',

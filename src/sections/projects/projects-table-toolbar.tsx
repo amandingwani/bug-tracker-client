@@ -32,16 +32,6 @@ export default function ProjectsTableToolbar({
   filterData,
   setFilterData,
 }: ProjectsTableToolbarProps) {
-  const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
-
-  const handleOpenMenu = (event: React.MouseEvent) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-
   const [openFilter, setOpenFilter] = useState(false);
 
   const handleOpenFilter = () => {

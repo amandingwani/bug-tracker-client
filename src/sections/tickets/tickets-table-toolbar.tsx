@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
 import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,31 +13,34 @@ import Iconify from 'src/components/iconify';
 import Checkbox from '@mui/material/Checkbox';
 import { Typography } from '@mui/material';
 
+import TicketsFilters from './tickets-filters';
+import { FilterData } from './types';
+
 // ----------------------------------------------------------------------
 
 interface TicketsTableToolbarProps {
   filterName: string;
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  filterSelected: { assign: boolean; created: boolean };
-  handleCheckboxClick?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+  filterData: FilterData;
+  setFilterData: React.Dispatch<React.SetStateAction<FilterData>>;
   onNewTicketClick: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 export default function TicketsTableToolbar({
   filterName,
   onFilterName,
-  filterSelected,
-  handleCheckboxClick,
+  filterData,
+  setFilterData,
   onNewTicketClick,
 }: TicketsTableToolbarProps) {
-  const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
+  const [openFilter, setOpenFilter] = useState(false);
 
-  const handleOpenMenu = (event: React.MouseEvent) => {
-    setOpen(event.currentTarget);
+  const handleOpenFilter = () => {
+    setOpenFilter(true);
   };
 
-  const handleCloseMenu = () => {
-    setOpen(null);
+  const handleCloseFilter = () => {
+    setOpenFilter(false);
   };
 
   return (
@@ -48,7 +52,12 @@ export default function TicketsTableToolbar({
         p: (theme) => theme.spacing(0, 1, 0, 3),
       }}
     >
-      <Stack direction="row" alignItems="center">
+      <Stack
+        direction="row"
+        alignItems="center"
+        divider={<Divider orientation="vertical" flexItem />}
+        spacing={2}
+      >
         <OutlinedInput
           value={filterName}
           onChange={onFilterName}
@@ -62,42 +71,14 @@ export default function TicketsTableToolbar({
             </InputAdornment>
           }
         />
-        <Tooltip title="Filter list">
-          <IconButton onClick={handleOpenMenu}>
-            <Iconify icon="ic:round-filter-list" />
-          </IconButton>
-        </Tooltip>
 
-        <Popover
-          open={!!open}
-          anchorEl={open}
-          onClose={handleCloseMenu}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-          transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-          slotProps={{
-            paper: {
-              sx: { width: 180 },
-            },
-          }}
-        >
-          <Typography>
-            <Checkbox
-              checked={filterSelected.assign}
-              name="assign"
-              onChange={handleCheckboxClick}
-            />
-            Assigned to me
-          </Typography>
-
-          <Typography>
-            <Checkbox
-              checked={filterSelected.created}
-              name="created"
-              onChange={handleCheckboxClick}
-            />
-            Created by me
-          </Typography>
-        </Popover>
+        <TicketsFilters
+          openFilter={openFilter}
+          onOpenFilter={handleOpenFilter}
+          onCloseFilter={handleCloseFilter}
+          filterData={filterData}
+          setFilterData={setFilterData}
+        />
       </Stack>
       <Button
         onClick={onNewTicketClick}

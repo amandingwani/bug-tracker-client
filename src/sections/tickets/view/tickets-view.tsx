@@ -1,8 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
-import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
@@ -25,13 +24,14 @@ import {
   filterTicketsCreatedByMe,
 } from '../utils';
 
-import { selectProjects, deleteTicketThunk, setReqStatus } from 'src/redux/slices/projectsSlice';
+import { selectProjects, deleteTicketThunk } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Ticket } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../createOrEditTicket';
+import { FilterData, defaultFilterData } from '../types';
 
 // ----------------------------------------------------------------------
 
@@ -52,8 +52,8 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [selectedTicket, setSelectedTicket] = useState<Ticket | undefined>(undefined);
 
-  const [filterSelected, setFilterSelected] = useState(
-    props.filterSelected ?? { assign: true, created: false }
+  const [filterData, setFilterData] = useState<FilterData>(
+    props.project ? { ...defaultFilterData, assignee: 'All' } : defaultFilterData
   );
 
   const [page, setPage] = useState(0);
@@ -90,13 +90,6 @@ export default function TicketsPage(props: TicketsPageProps) {
   const onCloseDrawer = () => {
     setOpenDrawer(false);
     setSelectedTicket(undefined);
-  };
-
-  const handleCheckboxClick = (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-    if (event.target.name === 'assign') {
-      setFilterSelected({ ...filterSelected, assign: checked });
-    } else if (event.target.name === 'created')
-      setFilterSelected({ ...filterSelected, created: checked });
   };
 
   const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
@@ -141,15 +134,32 @@ export default function TicketsPage(props: TicketsPageProps) {
     allTickets = allProjects.map((project) => [...project.tickets]).flat();
   }
 
-  const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
-  const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
+  // const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
+  // const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
 
   let ticketsToDisplay: Ticket[] = [];
 
-  if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
-    ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
-  else if (filterSelected.assign) ticketsToDisplay = ticketsAssignedToMe;
-  else if (filterSelected.created) ticketsToDisplay = ticketsCreatedByMe;
+  if (user) {
+    ticketsToDisplay = allTickets.filter((t) => {
+      let filterBool =
+        filterData.status[t.status] && filterData.type[t.type] && filterData.priority[t.priority];
+
+      if (filterData.author === 'Me' && t.author.id !== user.id) filterBool = false;
+      else if (filterData.author === 'Other users' && t.author.id === user.id) filterBool = false;
+
+      if (filterData.assignee === 'Me' && t.assignee?.id !== user.id) filterBool = false;
+      else if (filterData.assignee === 'Other users' && t.assignee?.id === user.id)
+        filterBool = false;
+      else if (filterData.assignee === 'Unassigned' && t.assignee) filterBool = false;
+
+      return filterBool;
+    });
+  }
+
+  // if (filterSelected.assign && filterSelected.created && ticketsAssignedToMe && ticketsCreatedByMe)
+  //   ticketsToDisplay = ticketsAssignedToMe.concat(ticketsCreatedByMe);
+  // else if (filterSelected.assign) ticketsToDisplay = ticketsAssignedToMe;
+  // else if (filterSelected.created) ticketsToDisplay = ticketsCreatedByMe;
 
   const dataFiltered = applyFilter({
     inputData: ticketsToDisplay,
@@ -172,8 +182,8 @@ export default function TicketsPage(props: TicketsPageProps) {
         <TicketsTableToolbar
           filterName={filterName}
           onFilterName={handleFilterByName}
-          filterSelected={filterSelected}
-          handleCheckboxClick={handleCheckboxClick}
+          filterData={filterData}
+          setFilterData={setFilterData}
           onNewTicketClick={onNewTicketClick}
         />
 
