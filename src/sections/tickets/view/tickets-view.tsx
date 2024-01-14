@@ -36,7 +36,6 @@ import { FilterData, defaultFilterData } from '../types';
 // ----------------------------------------------------------------------
 
 interface TicketsPageProps {
-  filterSelected?: { assign: boolean; created: boolean };
   project?: Project;
 }
 
