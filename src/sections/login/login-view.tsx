@@ -40,45 +40,45 @@ export default function LoginView() {
 
   const handleGoogleLoginClick = useGoogleLogin();
 
-  const renderForm = (
-    <>
-      <Stack spacing={3}>
-        <TextField name="email" label="Email address" />
+  // const renderForm = (
+  //   <>
+  //     <Stack spacing={3}>
+  //       <TextField name="email" label="Email address" />
 
-        <TextField
-          name="password"
-          label="Password"
-          type={showPassword ? 'text' : 'password'}
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
-                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-      </Stack>
+  //       <TextField
+  //         name="password"
+  //         label="Password"
+  //         type={showPassword ? 'text' : 'password'}
+  //         InputProps={{
+  //           endAdornment: (
+  //             <InputAdornment position="end">
+  //               <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+  //                 <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+  //               </IconButton>
+  //             </InputAdornment>
+  //           ),
+  //         }}
+  //       />
+  //     </Stack>
 
-      <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
-        <Link variant="subtitle2" underline="hover">
-          Forgot password?
-        </Link>
-      </Stack>
+  //     <Stack direction="row" alignItems="center" justifyContent="flex-end" sx={{ my: 3 }}>
+  //       <Link variant="subtitle2" underline="hover">
+  //         Forgot password?
+  //       </Link>
+  //     </Stack>
 
-      <LoadingButton
-        fullWidth
-        size="large"
-        type="submit"
-        variant="contained"
-        color="inherit"
-        onClick={handleClick}
-      >
-        Login
-      </LoadingButton>
-    </>
-  );
+  //     <LoadingButton
+  //       fullWidth
+  //       size="large"
+  //       type="submit"
+  //       variant="contained"
+  //       color="inherit"
+  //       onClick={handleClick}
+  //     >
+  //       Login
+  //     </LoadingButton>
+  //   </>
+  // );
 
   return (
     <Box
@@ -106,14 +106,16 @@ export default function LoginView() {
             maxWidth: 420,
           }}
         >
-          <Typography variant="h4">Sign in to Bug Ninja</Typography>
+          <Typography variant="h4" sx={{ mb: 4 }}>
+            Welcome to Bug Ninja
+          </Typography>
 
-          <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
+          {/* <Typography variant="body2" sx={{ mt: 2, mb: 5 }}>
             Don’t have an account?
             <Link variant="subtitle2" sx={{ ml: 0.5 }}>
               Get started
             </Link>
-          </Typography>
+          </Typography> */}
 
           <Stack direction="row" spacing={2}>
             <LoadingButton
@@ -126,7 +128,7 @@ export default function LoginView() {
               startIcon={<Iconify icon="flat-color-icons:google" />}
               sx={{ borderColor: alpha(theme.palette.grey[500], 0.16), fontWeight: 'light' }}
             >
-              Sign in with Google
+              Continue with Google
             </LoadingButton>
           </Stack>
 
@@ -136,7 +138,17 @@ export default function LoginView() {
             </Typography>
           </Divider>
 
-          {renderForm}
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            color="inherit"
+            onClick={handleClick}
+          >
+            Demo Login
+          </LoadingButton>
+          {/* {renderForm} */}
         </Card>
       </Stack>
     </Box>
