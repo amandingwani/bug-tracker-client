@@ -13,11 +13,11 @@ import { bgBlur } from 'src/theme/css';
 
 import Iconify from 'src/components/iconify';
 
-import Searchbar from './common/searchbar';
+// import Searchbar from './common/searchbar';
 import Logo from 'src/components/logo';
 import { NAV, HEADER } from './config-layout';
 import AccountPopover from './common/account-popover';
-import NotificationsPopover from './common/notifications-popover';
+// import NotificationsPopover from './common/notifications-popover';
 
 import { selectPage } from 'src/redux/slices/pageSlice';
 import { useAppSelector } from 'src/redux/hooks';
@@ -53,12 +53,12 @@ export default function Header({
       </Box>
 
       {/* Todo */}
-      <Searchbar />
+      {/* <Searchbar /> */}
 
       <Box sx={{ flexGrow: 1 }} />
 
       <Stack direction="row" alignItems="center" spacing={1}>
-        <NotificationsPopover />
+        {/* <NotificationsPopover /> */}
         <AccountPopover />
       </Stack>
     </>
