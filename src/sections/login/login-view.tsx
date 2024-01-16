@@ -84,13 +84,14 @@ export default function LoginView() {
     <Box
       sx={{
         ...bgGradient({
-          color: alpha(theme.palette.background.default, 0.9),
+          color: alpha(theme.palette.background.default, 0.8),
           imgUrl: '/assets/background/overlay_4.jpg',
         }),
         height: 1,
       }}
     >
       <Logo
+        withText={false}
         sx={{
           position: 'fixed',
           top: { xs: 16, md: 24 },
@@ -98,10 +99,11 @@ export default function LoginView() {
         }}
       />
 
-      <Stack alignItems="center" justifyContent="center" sx={{ height: 1 }}>
+      <Stack alignItems="center" justifyContent="center" sx={{ height: 1, px: 2 }}>
         <Card
           sx={{
-            p: 5,
+            py: 5,
+            px: { xs: 4, sm: 5, md: 5 },
             width: 1,
             maxWidth: 420,
           }}
