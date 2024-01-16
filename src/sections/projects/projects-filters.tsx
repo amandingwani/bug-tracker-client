@@ -51,7 +51,7 @@ export default function ProjectsFilters({
 
   const onSubmit: SubmitHandler<FilterData> = (data) => {
     setFilterData(data);
-    // console.log(data);
+    onCloseFilter();
   };
 
   const renderOwner = (

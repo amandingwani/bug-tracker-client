@@ -56,6 +56,7 @@ export default function TicketsFilters({
 
   const onSubmit: SubmitHandler<FilterData> = (data) => {
     setFilterData(data);
+    onCloseFilter();
     // console.log(data);
   };
 
