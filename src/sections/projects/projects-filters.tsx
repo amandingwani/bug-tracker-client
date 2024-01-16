@@ -120,12 +120,13 @@ export default function ProjectsFilters({
         onClose={onCloseFilter}
         PaperProps={{
           sx: {
-            width: '400px',
+            width: '300px',
             maxWidth: '80%',
+            overflow: 'hidden',
           },
         }}
       >
-        <Scrollbar
+        {/* <Scrollbar
           sx={{
             height: 1,
             '& .simplebar-content': {
@@ -134,67 +135,81 @@ export default function ProjectsFilters({
               flexDirection: 'column',
             },
           }}
+        > */}
+        <Stack
+          direction="row"
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{ px: 1, py: 2, height: '8vh' }}
         >
-          <Stack
-            direction="row"
-            alignItems="center"
-            justifyContent="space-between"
-            sx={{ px: 1, py: 2 }}
+          <Typography variant="h4" align="center" sx={{ ml: 1 }}>
+            Filters
+          </Typography>
+          <IconButton onClick={onCloseFilter}>
+            <Iconify icon="eva:close-fill" />
+          </IconButton>
+        </Stack>
+
+        <Divider />
+
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Box
+            sx={{
+              height: '92vh',
+              display: 'flex',
+              flexDirection: 'column',
+            }}
           >
-            <Typography variant="h4" align="center" p={'10px'}>
-              Filters
-            </Typography>
-            <IconButton onClick={onCloseFilter}>
-              <Iconify icon="eva:close-fill" />
-            </IconButton>
-          </Stack>
+            <Scrollbar>
+              <Stack
+                spacing={{ xs: 1, sm: 2, md: 3 }}
+                paddingX={{ xs: 2, sm: 2, md: 3 }}
+                paddingTop={{ xs: 2, sm: 2, md: 3 }}
+                direction={'column'}
+                justifyContent="space-evenly"
+                alignItems="flex-start"
+              >
+                {renderOwner}
 
-          <Divider />
+                {renderStatus}
+              </Stack>
+            </Scrollbar>
 
-          <Stack spacing={3} padding={2}>
-            <Box
-              justifyContent="center"
-              alignItems="center"
-              sx={{
-                paddingX: {
-                  xs: 1,
-                  md: 2,
-                },
-              }}
+            <Divider />
+
+            <Stack
+              spacing={3}
+              padding={{ xs: 1, sm: 1, md: 2 }}
+              // paddingX={{ xs: 2, sm: 2, md: 3 }}
+              direction="row"
+              flexWrap="wrap"
+              justifyContent={'space-between'}
             >
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Stack spacing={3} pb={3}>
-                  {renderOwner}
-
-                  {renderStatus}
-                </Stack>
-                <Stack spacing={{ xs: 2, sm: 2 }} direction="row" useFlexGap flexWrap="wrap">
-                  <Button
-                    size="large"
-                    type="submit"
-                    color="primary"
-                    variant="contained"
-                    // startIcon={<Iconify icon="ic:round-clear-all" />}
-                  >
-                    Filter
-                  </Button>
-                  <Button
-                    size="large"
-                    type="button"
-                    color="primary"
-                    variant="outlined"
-                    onClick={() => {
-                      reset(defaultFilterValues);
-                    }}
-                    // startIcon={<Iconify icon="ic:round-clear-all" />}
-                  >
-                    Reset
-                  </Button>
-                </Stack>
-              </form>
-            </Box>
-          </Stack>
-        </Scrollbar>
+              <Button
+                size="large"
+                type="submit"
+                color="primary"
+                variant="contained"
+                // startIcon={<Iconify icon="ic:round-clear-all" />}
+              >
+                Filter
+              </Button>
+              <Button
+                size="large"
+                type="button"
+                color="primary"
+                variant="outlined"
+                onClick={() => {
+                  reset(defaultFilterValues);
+                }}
+                // startIcon={<Iconify icon="ic:round-clear-all" />}
+              >
+                Reset
+              </Button>
+            </Stack>
+          </Box>
+        </form>
+        {/* </Scrollbar> */}
       </Drawer>
     </>
   );
