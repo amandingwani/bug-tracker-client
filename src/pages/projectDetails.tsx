@@ -19,23 +19,24 @@ export default function ProjectDetailsPage() {
     projects.createdProjects.find((p) => p.id === id) ||
     projects.otherProjects.find((p) => p.id === id);
 
-  let titleString = 'Projects';
+  let headerString: string | null = null;
   if (project) {
-    titleString = project.name;
+    headerString = project.name;
   }
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(updateHeader(titleString));
-    localStorage.setItem('BUG_NINJA_PAGE_HEADER', titleString);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (headerString) {
+      dispatch(updateHeader(headerString));
+      localStorage.setItem('BUG_NINJA_PAGE_HEADER', headerString);
+    }
+  }, [dispatch, headerString]);
 
   return (
     <>
       <Helmet>
-        <title> {titleString} | Bug Ninja </title>
+        <title> Project | Bug Ninja </title>
       </Helmet>
 
       <ProjectDetailsView project={project} />

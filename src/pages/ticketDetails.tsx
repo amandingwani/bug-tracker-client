@@ -22,16 +22,17 @@ export default function TicketDetailsPage() {
 
   const ticket = project?.tickets.find((t) => t.id === tId);
 
-  let titleString = 'Ticket';
-  if (ticket) titleString = ticket.title;
+  let headerString: string | null = null;
+  if (ticket) headerString = ticket.title;
 
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(updateHeader(titleString));
-    localStorage.setItem('BUG_NINJA_PAGE_HEADER', titleString);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (headerString) {
+      dispatch(updateHeader(headerString));
+      localStorage.setItem('BUG_NINJA_PAGE_HEADER', headerString);
+    }
+  }, [dispatch, headerString]);
 
   return (
     <>

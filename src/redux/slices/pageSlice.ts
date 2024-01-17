@@ -6,7 +6,7 @@ export interface PageState {
 }
 
 const initialState: PageState = {
-    header: "Dashboard"
+    header: ""
 }
 
 export const pageSlice = createSlice({

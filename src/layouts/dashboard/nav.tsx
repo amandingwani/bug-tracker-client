@@ -48,7 +48,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  const renderAccount = (
+  const renderAccount = user ? (
     <Box
       sx={{
         my: 3,
@@ -61,18 +61,19 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={user?.picture} alt="photoURL" />
+      <Avatar src={user.picture} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{user?.firstName + ' ' + user?.lastName}</Typography>
+        <Typography variant="subtitle2">{user.firstName + ' ' + user.lastName}</Typography>
 
         {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}
         </Typography> */}
       </Box>
     </Box>
+  ) : (
+    <></>
   );
-
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
       {navConfig.map((item) => (
