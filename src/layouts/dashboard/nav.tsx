@@ -21,8 +21,9 @@ import Scrollbar from 'src/components/scrollbar';
 
 import { NAV } from './config-layout';
 import navConfig from './config-navigation';
-import { useAppSelector } from 'src/redux/hooks';
-import { selectUser } from 'src/redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { selectUser, logout } from 'src/redux/slices/authSlice';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -33,6 +34,8 @@ interface NavProps {
 
 export default function Nav({ openNav, onCloseNav }: NavProps) {
   const pathname = usePathname();
+
+  const dispatch = useAppDispatch();
 
   const upLg = useResponsive('up', 'lg');
 
@@ -78,6 +81,58 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
     </Stack>
   );
 
+  const renderDemoReminder = (
+    <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
+      <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
+        <Box
+          component="img"
+          src="/assets/illustrations/illustration_avatar.png"
+          sx={{ width: 100, position: 'absolute', top: -50 }}
+        />
+
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography variant="h6">🌟 Demo Mode Active!</Typography>
+
+          <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
+            {
+              "Enjoy a preview of Bug Ninja with sample data. Feel free to navigate and make changes. Your actions won't impact any real data."
+            }
+          </Typography>
+        </Box>
+        <Button
+          variant="outlined"
+          // fullWidth
+          onClick={() => dispatch(logout())}
+          sx={{
+            minHeight: 40,
+            borderRadius: 0.75,
+            typography: 'body2',
+            color: 'text.secondary',
+            textTransform: 'capitalize',
+            fontWeight: 'fontWeightMedium',
+            borderColor: 'text.secondary',
+            '&:hover': {
+              borderColor: 'text.secondary',
+              bgcolor: (theme) => alpha(theme.palette.text.secondary, 0.16),
+            },
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Iconify icon={'solar:logout-2-bold-duotone'} sx={{ width: 24, height: 24, mr: 2 }} />
+
+            {'Exit Demo'}
+          </Box>
+        </Button>
+      </Stack>
+    </Box>
+  );
+
   const renderContent = (
     <Scrollbar
       sx={{
@@ -96,6 +151,9 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       {renderMenu}
 
       <Box sx={{ flexGrow: 1 }} />
+
+      {/* demo mode */}
+      {/* {renderDemoReminder} */}
     </Scrollbar>
   );
 
