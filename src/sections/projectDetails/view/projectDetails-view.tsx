@@ -74,7 +74,7 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
 
   const [expanded, setExpanded] = useState(false);
 
-  const [tabValue, setTabValue] = useState(0);
+  const [tabValue, setTabValue] = useState(2);
 
   const loading = reqStatus.name === 'loadProjects' && reqStatus.status === 'loading';
 
