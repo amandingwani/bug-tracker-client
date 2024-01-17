@@ -8,17 +8,17 @@ import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
-interface ProjectsTableToolbarProps {
+interface UsersTableToolbarProps {
   filterName: string;
   onFilterName?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
-  onAddUserClick: React.MouseEventHandler<HTMLButtonElement>;
+  onAddUserClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-export default function ProjectsTableToolbar({
+export default function UsersTableToolbar({
   filterName,
   onFilterName,
   onAddUserClick,
-}: ProjectsTableToolbarProps) {
+}: UsersTableToolbarProps) {
   return (
     <Toolbar
       sx={{
@@ -43,14 +43,16 @@ export default function ProjectsTableToolbar({
           }
         />
       </Stack>
-      <Button
-        onClick={onAddUserClick}
-        variant="contained"
-        color="inherit"
-        startIcon={<Iconify icon="eva:plus-fill" />}
-      >
-        Add User
-      </Button>
+      {onAddUserClick && (
+        <Button
+          onClick={onAddUserClick}
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
+          Add User
+        </Button>
+      )}
     </Toolbar>
   );
 }

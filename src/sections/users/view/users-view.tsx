@@ -151,7 +151,7 @@ export default function UsersTable(props: Props) {
         <UsersTableToolbar
           filterName={filterName}
           onFilterName={handleFilterByName}
-          onAddUserClick={onAddUserClick}
+          onAddUserClick={user?.id === props.project.owner.id ? onAddUserClick : undefined}
         />
 
         <Scrollbar>
