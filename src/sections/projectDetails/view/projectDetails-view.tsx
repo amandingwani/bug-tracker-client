@@ -6,6 +6,11 @@ import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Collapse from '@mui/material/Collapse';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import Skeleton from '@mui/material/Skeleton';
 import Iconify from 'src/components/iconify';
 
 import ProjectDetails from '../project-details';
@@ -15,6 +20,8 @@ import { Project } from 'src/redux/types';
 import { TicketsView } from 'src/sections/tickets/view';
 import { UsersView } from 'src/sections/users/view';
 import Scrollbar from 'src/components/scrollbar';
+import { useAppSelector } from 'src/redux/hooks';
+import { selectReqStatus } from 'src/redux/slices/projectsSlice';
 
 // ----------------------------------------------------------------------
 
@@ -33,8 +40,47 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
+
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && children}
+    </div>
+  );
+}
+
+function a11yProps(index: number) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
+
 export default function ProjectDetailsPage({ project }: { project?: Project }) {
+  const reqStatus = useAppSelector(selectReqStatus);
+
   const [expanded, setExpanded] = useState(false);
+
+  const [tabValue, setTabValue] = useState(0);
+
+  const loading = reqStatus.name === 'loadProjects' && reqStatus.status === 'loading';
+
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setTabValue(newValue);
+  };
 
   const handleExpandClick = () => {
     setExpanded(!expanded);
@@ -42,38 +88,40 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
 
   return (
     <Container maxWidth="xl">
-      <ProjectDetails title="Project Details" project={project} />
-
-      {project && (
-        <>
-          <Card>
-            <CardHeader
-              title={'Users'}
-              action={
-                <ExpandMore
-                  expand={expanded}
-                  onClick={handleExpandClick}
-                  aria-expanded={expanded}
-                  aria-label="Expand"
-                >
-                  <Iconify icon="ooui:expand" />
-                </ExpandMore>
-              }
-              // sx={expanded ? {} : { paddingBottom: 3 }}
-              sx={{ pb: 3 }}
-            />
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <CardContent>
-                <Scrollbar>
-                  <UsersView project={project} />
-                </Scrollbar>
-              </CardContent>
-            </Collapse>
-          </Card>
-
-          <TicketsView project={project} />
-        </>
-      )}
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
+          <Tab label="Details" {...a11yProps(0)} />
+          <Tab label="Users" {...a11yProps(1)} />
+          <Tab label="Tickets" {...a11yProps(2)} />
+        </Tabs>
+      </Box>
+      <CustomTabPanel value={tabValue} index={0}>
+        {loading ? (
+          <Skeleton variant="rounded">
+            <ProjectDetails title="Project Details" project={project} />
+          </Skeleton>
+        ) : (
+          <ProjectDetails title="Project Details" project={project} />
+        )}
+      </CustomTabPanel>
+      <CustomTabPanel value={tabValue} index={1}>
+        {loading ? (
+          <Skeleton variant="rounded">
+            <ProjectDetails title="Project Details" project={project} />
+          </Skeleton>
+        ) : (
+          project && <UsersView project={project} />
+        )}
+      </CustomTabPanel>
+      <CustomTabPanel value={tabValue} index={2}>
+        {loading ? (
+          <Skeleton variant="rounded">
+            <ProjectDetails title="Project Details" project={project} />
+          </Skeleton>
+        ) : (
+          project && <TicketsView project={project} sx={{ mt: 4 }} />
+        )}
+      </CustomTabPanel>
     </Container>
   );
 }

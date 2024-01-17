@@ -32,11 +32,13 @@ import { Project, Ticket } from 'src/redux/types';
 import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../createOrEditTicket';
 import { FilterData, defaultFilterData } from '../types';
+import { SxProps, Theme } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
 interface TicketsPageProps {
   project?: Project;
+  sx?: SxProps<Theme>;
 }
 
 export default function TicketsPage(props: TicketsPageProps) {
@@ -167,7 +169,7 @@ export default function TicketsPage(props: TicketsPageProps) {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Card>
+    <Card sx={props.sx}>
       <CreateOrEditTicket
         openDrawer={openDrawer}
         onCloseDrawer={onCloseDrawer}

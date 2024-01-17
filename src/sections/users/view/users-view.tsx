@@ -144,7 +144,7 @@ export default function UsersTable(props: Props) {
   const notFound = !dataFiltered.length && !!filterName;
 
   return (
-    <Card>
+    <Card sx={{ mt: 4 }}>
       <AddUser openDrawer={openDrawer} onCloseDrawer={onCloseDrawer} projectId={props.project.id} />
 
       <Card>

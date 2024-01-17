@@ -63,8 +63,6 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
   const user = useAppSelector(selectUser);
   const reqStatus = useAppSelector(selectReqStatus);
 
-  const [expanded, setExpanded] = useState(true);
-
   const [openDrawer, setOpenDrawer] = useState(false);
 
   const [openAlert, setOpenAlert] = useState(false);
@@ -77,10 +75,6 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
   const handleAlertClose = () => {
     setOpenAlert(false);
-  };
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
   };
 
   const handleEdit: React.MouseEventHandler<HTMLButtonElement> = () => {
@@ -112,7 +106,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
   };
 
   return (
-    <Card>
+    <Card sx={{ mt: 4 }}>
       {project && (
         <>
           <CreateOrEditProject
@@ -128,59 +122,48 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
           <CardHeader
             title={title}
-            action={
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="Expand"
-              >
-                <Iconify icon="ooui:expand" />
-              </ExpandMore>
-            }
             // sx={expanded ? {} : { paddingBottom: 3 }}
             sx={{ pb: 3 }}
           />
-          <Collapse in={expanded} timeout="auto" unmountOnExit>
-            <CardContent>
-              <Scrollbar>
-                <Details project={project} />
-              </Scrollbar>
-            </CardContent>
-            {isOwner ? (
-              <CardActions>
-                <Button
-                  onClick={handleEdit}
-                  variant="outlined"
-                  color="primary"
-                  startIcon={<Iconify icon="eva:edit-fill" />}
-                >
-                  Edit
-                </Button>
-                <Button
-                  onClick={handleAlertClickOpen}
-                  variant="outlined"
-                  color="error"
-                  startIcon={<Iconify icon="eva:trash-2-outline" />}
-                >
-                  Delete
-                </Button>
-              </CardActions>
-            ) : (
-              <CardActions>
-                <Button
-                  onClick={handleAlertClickOpen}
-                  variant="outlined"
-                  color="error"
-                  startIcon={
-                    <Iconify icon="streamline:interface-logout-arrow-exit-frame-leave-logout-rectangle-right" />
-                  }
-                >
-                  Leave Project
-                </Button>
-              </CardActions>
-            )}
-          </Collapse>
+
+          <CardContent>
+            <Scrollbar>
+              <Details project={project} />
+            </Scrollbar>
+          </CardContent>
+          {isOwner ? (
+            <CardActions>
+              <Button
+                onClick={handleEdit}
+                variant="outlined"
+                color="primary"
+                startIcon={<Iconify icon="eva:edit-fill" />}
+              >
+                Edit
+              </Button>
+              <Button
+                onClick={handleAlertClickOpen}
+                variant="outlined"
+                color="error"
+                startIcon={<Iconify icon="eva:trash-2-outline" />}
+              >
+                Delete
+              </Button>
+            </CardActions>
+          ) : (
+            <CardActions>
+              <Button
+                onClick={handleAlertClickOpen}
+                variant="outlined"
+                color="error"
+                startIcon={
+                  <Iconify icon="streamline:interface-logout-arrow-exit-frame-leave-logout-rectangle-right" />
+                }
+              >
+                Leave Project
+              </Button>
+            </CardActions>
+          )}
         </>
       )}
 
