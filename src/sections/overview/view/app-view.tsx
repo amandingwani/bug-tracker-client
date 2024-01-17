@@ -113,7 +113,7 @@ export default function AppView() {
           { label: 'OPEN', value: dashboardData?.ticketStatusCount.OPEN },
           { label: 'IN PROGRESS', value: dashboardData?.ticketStatusCount.IN_PROGRESS },
           { label: 'TO BE TESTED', value: dashboardData?.ticketStatusCount.TO_BE_TESTED },
-          { label: 'CLOSED', value: dashboardData?.ticketStatusCount.CLOSED },
+          // { label: 'CLOSED', value: dashboardData?.ticketStatusCount.CLOSED },
         ],
       }}
     />
