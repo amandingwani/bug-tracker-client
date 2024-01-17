@@ -232,9 +232,7 @@ function Details({ project }: { project: Project }) {
         <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
           {'Description:'}
         </Typography>
-        <Typography variant="body2" noWrap>
-          {description}
-        </Typography>
+        <Typography variant="body2">{description}</Typography>
       </Stack>
       <Stack direction="row" spacing={2} pl={1}>
         <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
