@@ -9,29 +9,32 @@ import MenuItem from '@mui/material/MenuItem';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
+import { useRouter } from 'src/routes/hooks';
+
 import { selectUser, logout } from 'src/redux/slices/authSlice';
 import { useAppSelector, useAppDispatch } from 'src/redux/hooks';
 
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    icon: 'eva:home-fill',
-  },
-  {
-    label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
-    icon: 'eva:settings-2-fill',
-  },
-];
+// const MENU_OPTIONS = [
+//   {
+//     label: 'Home',
+//     icon: 'eva:home-fill',
+//   },
+//   {
+//     label: 'Profile',
+//     icon: 'eva:person-fill',
+//   },
+//   {
+//     label: 'Settings',
+//     icon: 'eva:settings-2-fill',
+//   },
+// ];
 
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const router = useRouter();
   const [open, setOpen] = useState<null | HTMLElement>(null);
 
   const user = useAppSelector(selectUser);
@@ -99,19 +102,30 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        {MENU_OPTIONS.map((option) => (
+        {/* {MENU_OPTIONS.map((option) => (
           <MenuItem key={option.label} onClick={handleClose}>
             {option.label}
           </MenuItem>
-        ))}
+        ))} */}
 
-        <Divider sx={{ borderStyle: 'dashed', m: 0 }} />
+        <MenuItem
+          key={'Home'}
+          sx={{ typography: 'body2' }}
+          onClick={() => {
+            router.push('/');
+            handleClose();
+          }}
+        >
+          {'Home'}
+        </MenuItem>
+
+        {/* <Divider sx={{ borderStyle: 'dashed', m: 0 }} /> */}
 
         <MenuItem
           disableRipple
           disableTouchRipple
           onClick={() => dispatch(logout())}
-          sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
+          sx={{ typography: 'body2', color: 'error.main', pb: 1.5 }}
         >
           Logout
         </MenuItem>
