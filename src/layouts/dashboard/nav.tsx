@@ -153,7 +153,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       <Box sx={{ flexGrow: 1 }} />
 
       {/* demo mode */}
-      {/* {renderDemoReminder} */}
+      {user?.id === -1 && renderDemoReminder}
     </Scrollbar>
   );
 

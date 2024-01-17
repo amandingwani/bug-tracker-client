@@ -16,6 +16,7 @@ import {
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 import { updateAndShowNotification } from './notificationSlice'
+import { projects } from 'src/_mock/projects'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -117,6 +118,19 @@ export const loadProjects = (): AppThunk => {
             // dispatch(setError(error as string))
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error', noClose: true }))
         }
+    }
+}
+
+export const loadDemoProjects = (): AppThunk => {
+    return (dispatch) => {
+        const data: ProjectsState = {
+            ...projects,
+            reqStatus: {
+                name: '',
+                status: 'idle'
+            }
+        }
+        dispatch(setProjects(data))
     }
 }
 

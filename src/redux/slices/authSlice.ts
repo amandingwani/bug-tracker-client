@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { AuthState, UserState } from '../types'
-import { loadProjects, resetProjects } from './projectsSlice'
+import { loadDemoProjects, loadProjects, resetProjects } from './projectsSlice'
 import { loginWithGoogle } from 'src/services/auth'
 import getProfile from 'src/services/profile';
 import { resetHeader } from './pageSlice'
 import { hideNotification, updateAndShowNotification } from './notificationSlice'
+import { demoUser } from '../constants'
 
 const initialState: AuthState = {
     user: null,
@@ -76,6 +77,13 @@ export const googleLogin = (code: string): AppThunk => {
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
             dispatch(setReqStatus({ name: '', status: 'idle' }));
         }
+    }
+}
+
+export const demoLogin = (): AppThunk => {
+    return (dispatch) => {
+        dispatch(setUser(demoUser));
+        dispatch(loadDemoProjects());
     }
 }
 

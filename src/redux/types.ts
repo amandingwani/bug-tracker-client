@@ -15,7 +15,7 @@ export interface UserState {
     firstName: string
     lastName?: string
     picture?: string
-    createdAt: Date
+    createdAt: string
 }
 
 export interface AuthState {
@@ -45,7 +45,7 @@ export interface Project {
     owner: Contributor;
     status: ProjectStatus;
     tickets: Ticket[];
-    createdAt: Date;
+    createdAt: string;
     contributors: Contributor[];
 }
 

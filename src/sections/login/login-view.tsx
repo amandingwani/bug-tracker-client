@@ -20,8 +20,8 @@ import { bgGradient } from 'src/theme/css';
 
 import Logo from 'src/components/logo';
 import Iconify from 'src/components/iconify';
-import { useAppSelector } from 'src/redux/hooks';
-import { selectReqStatus } from 'src/redux/slices/authSlice';
+import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import { demoLogin, selectReqStatus } from 'src/redux/slices/authSlice';
 import { useResponsive } from 'src/hooks/use-responsive';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -29,10 +29,10 @@ import Paper from '@mui/material/Paper';
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
+  const dispatch = useAppDispatch();
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
-  console.log(lgUp);
 
   const router = useRouter();
 
@@ -40,8 +40,9 @@ export default function LoginView() {
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleClick = () => {
-    router.push('/dashboard');
+  const handleDemoClick = () => {
+    dispatch(demoLogin());
+    // router.push('/dashboard');
   };
 
   const handleGoogleLoginClick = useGoogleLogin();
@@ -79,7 +80,7 @@ export default function LoginView() {
   //       type="submit"
   //       variant="contained"
   //       color="inherit"
-  //       onClick={handleClick}
+  //       onClick={handleDemoClick}
   //     >
   //       Login
   //     </LoadingButton>
@@ -146,7 +147,7 @@ export default function LoginView() {
   //             type="submit"
   //             variant="contained"
   //             color="inherit"
-  //             onClick={handleClick}
+  //             onClick={handleDemoClick}
   //           >
   //             Demo Login
   //           </LoadingButton>
@@ -224,7 +225,7 @@ export default function LoginView() {
             type="submit"
             variant="contained"
             color="inherit"
-            onClick={handleClick}
+            onClick={handleDemoClick}
           >
             Demo Login
           </LoadingButton>
@@ -314,7 +315,7 @@ export default function LoginView() {
             type="submit"
             variant="contained"
             color="inherit"
-            onClick={handleClick}
+            onClick={handleDemoClick}
           >
             Demo Login
           </LoadingButton>
