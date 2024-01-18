@@ -41,6 +41,7 @@ import {
   Contributor,
   Project,
   Ticket,
+  ProjectUnderTicket,
 } from 'src/redux/types';
 import { unassignedUser } from 'src/redux/constants';
 
@@ -59,7 +60,7 @@ export default function CreateOrEditTicket({
 }: CreateTicketProps) {
   const [loading, setLoading] = useState(false);
 
-  let formDefaultProject: Project | undefined = undefined;
+  let formDefaultProject: ProjectUnderTicket | undefined = undefined;
   if (project) formDefaultProject = project;
   else if (selectedTicket) formDefaultProject = selectedTicket.project;
 
@@ -68,7 +69,7 @@ export default function CreateOrEditTicket({
 
   const allProjects = [...projects.createdProjects, ...projects.otherProjects];
 
-  const [formSelectProject, setFormSelectProject] = useState<Project | null>(
+  const [formSelectProject, setFormSelectProject] = useState<ProjectUnderTicket | null>(
     formDefaultProject ?? allProjects[0]
   );
 
@@ -229,35 +230,37 @@ export default function CreateOrEditTicket({
                   {...descriptionInputProps}
                 />
               </FormControl>
-              <FormControl>
-                <Controller
-                  control={control}
-                  name="project"
-                  rules={{ required: 'Please select a project' }}
-                  render={({ field }) => (
-                    <Autocomplete
-                      {...field}
-                      options={allProjects}
-                      getOptionLabel={(p) => p.name}
-                      isOptionEqualToValue={(option, value) => option.id === value.id}
-                      onChange={(_, data) => {
-                        field.onChange(data);
-                        setFormSelectProject(data);
-                      }}
-                      renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          id="project-field"
-                          label="Select Project"
-                          variant="outlined"
-                          error={!!errors.project}
-                          helperText={errors.project?.message}
-                        />
-                      )}
-                    />
-                  )}
-                />
-              </FormControl>
+              {!selectedTicket && (
+                <FormControl>
+                  <Controller
+                    control={control}
+                    name="project"
+                    rules={{ required: 'Please select a project' }}
+                    render={({ field }) => (
+                      <Autocomplete
+                        {...field}
+                        options={allProjects}
+                        getOptionLabel={(p) => p.name}
+                        isOptionEqualToValue={(option, value) => option.id === value.id}
+                        onChange={(_, data) => {
+                          field.onChange(data);
+                          setFormSelectProject(data);
+                        }}
+                        renderInput={(params) => (
+                          <TextField
+                            {...params}
+                            id="project-field"
+                            label="Select Project"
+                            variant="outlined"
+                            error={!!errors.project}
+                            helperText={errors.project?.message}
+                          />
+                        )}
+                      />
+                    )}
+                  />
+                </FormControl>
+              )}
               <FormControl>
                 <Controller
                   control={control}

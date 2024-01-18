@@ -49,6 +49,13 @@ export interface Project {
     contributors: Contributor[];
 }
 
+export interface ProjectUnderTicket {
+    id: number,
+    name: string,
+    contributors: Contributor[],
+    owner: Contributor
+}
+
 export interface Ticket {
     id: number;
     title: string;
@@ -61,12 +68,7 @@ export interface Ticket {
     priority: TicketPriority;
     status: TicketStatus;
     createdAt: string;
-    project: {
-        id: number,
-        name: string,
-        contributors: Contributor[],
-        owner: Contributor
-    }
+    project: ProjectUnderTicket
 }
 
 export const ProjectStatusArr = ['OPEN', 'IN_PROGRESS', 'ON_HOLD', 'COMPLETED', 'CANCELED', 'TESTING', 'DEPLOYED'] as const
@@ -113,7 +115,7 @@ export type TicketCreateInput = {
     type: TicketType;
     priority: TicketPriority;
     status: TicketStatus;
-    project: Project,
+    project: ProjectUnderTicket;
     assignee: Contributor;
 }
 
