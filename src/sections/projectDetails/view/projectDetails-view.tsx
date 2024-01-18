@@ -87,7 +87,7 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
       Projects
     </Link>,
     <Typography key="2" color="text.primary">
-      Project
+      {project?.name}
     </Typography>,
   ];
 
