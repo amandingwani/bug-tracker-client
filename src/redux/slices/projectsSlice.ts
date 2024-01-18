@@ -101,7 +101,13 @@ export const projectsSlice = createSlice({
             const project = state.createdProjects.find(p => p.id === action.payload.id);
             if (project)
                 project.contributors = action.payload.contributors;
-        }
+        },
+        demoRemoveContributor: (state, action: PayloadAction<AddContributor>) => {
+            // Update the contributors array
+            const project = state.createdProjects.find(p => p.id === action.payload.id);
+            if (project)
+                project.contributors = project.contributors.filter(c => c.email !== action.payload.email);
+        },
     }
 })
 
@@ -280,12 +286,18 @@ export const addContributorThunk = (data: AddContributor, onSuccess?: () => void
 }
 
 export const removeContributorThunk = (data: AddContributor, onSuccess?: () => void): AppThunk => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
             dispatch(setReqStatus({ name: 'removeContributor', status: 'loading' }));
-            const resData = await removeContributorApi(data)
-            dispatch(setReqStatus({ name: 'removeContributor', status: 'succeeded' }));
-            dispatch(updateContributor(resData))
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                dispatch(setReqStatus({ name: 'removeContributor', status: 'succeeded' }));
+                dispatch(demoRemoveContributor(data))
+            } else {
+                const resData = await removeContributorApi(data)
+                dispatch(setReqStatus({ name: 'removeContributor', status: 'succeeded' }));
+                dispatch(updateContributor(resData))
+            }
             dispatch(setReqStatus({ name: '', status: 'idle' }));
             if (onSuccess)
                 onSuccess();
@@ -296,7 +308,7 @@ export const removeContributorThunk = (data: AddContributor, onSuccess?: () => v
     }
 }
 
-export const { setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
+export const { demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
