@@ -7,6 +7,10 @@ import { TicketDetailsView } from 'src/sections/ticketDetails/view';
 import { updateHeader } from 'src/redux/slices/pageSlice';
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
+import Link from '@mui/material/Link';
+import { RouterLink } from 'src/routes/components';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 // ----------------------------------------------------------------------
 
@@ -25,6 +29,27 @@ export default function TicketDetailsPage() {
   let headerString: string | null = null;
   if (ticket) headerString = `${ticket.project.name} : ${ticket.title}`;
 
+  const breadcrumbs = [
+    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
+      Bug Ninja
+    </Link>,
+    <Link component={RouterLink} underline="hover" key="2" color="inherit" href="/projects">
+      Projects
+    </Link>,
+    <Link
+      component={RouterLink}
+      underline="hover"
+      key="2"
+      color="inherit"
+      href={`/projects/${project?.id}`}
+    >
+      {project?.name}
+    </Link>,
+    <Typography key="2" color="text.primary">
+      Ticket
+    </Typography>,
+  ];
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -39,8 +64,10 @@ export default function TicketDetailsPage() {
       <Helmet>
         <title> Ticket | Bug Ninja </title>
       </Helmet>
-
-      <TicketDetailsView ticket={ticket} />
+      <Breadcrumbs sx={{ pl: 3 }} aria-label="breadcrumb">
+        {breadcrumbs}
+      </Breadcrumbs>
+      <TicketDetailsView ticket={ticket} sx={{ mt: 2 }} />
     </>
   );
 }

@@ -8,11 +8,11 @@ import { Ticket, TicketStatusMap } from 'src/redux/types';
 import TicketDetails from '../ticket-details';
 import TicketInfoWidget from '../ticket-info-widget';
 import Iconify from 'src/components/iconify';
-import { Box } from '@mui/material';
+import { Box, SxProps, Theme } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
-export default function TicketDetailsPage({ ticket }: { ticket?: Ticket }) {
+export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx: SxProps<Theme> }) {
   const renderType = (
     <TicketInfoWidget
       title="Type"
@@ -40,7 +40,7 @@ export default function TicketDetailsPage({ ticket }: { ticket?: Ticket }) {
   const renderDetails = <TicketDetails title="Ticket Details" ticket={ticket} />;
 
   return (
-    <Container maxWidth="xl">
+    <Container maxWidth="xl" sx={sx}>
       <Grid container spacing={3} sx={{ justifyContent: 'space-between' }}>
         <Grid item xs={12} sm={6} md={3} sx={{ pb: 2, pt: 2 }}>
           {ticket ? (

@@ -6,12 +6,25 @@ import { TicketsView } from 'src/sections/tickets/view';
 
 import { updateHeader } from 'src/redux/slices/pageSlice';
 import { useAppDispatch } from 'src/redux/hooks';
+import Link from '@mui/material/Link';
+import { RouterLink } from 'src/routes/components';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 // ----------------------------------------------------------------------
 
 export default function TicketsPage() {
   const titleString = 'Tickets';
   const dispatch = useAppDispatch();
+
+  const breadcrumbs = [
+    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
+      Bug Ninja
+    </Link>,
+    <Typography key="2" color="text.primary">
+      Tickets
+    </Typography>,
+  ];
 
   useEffect(() => {
     dispatch(updateHeader(titleString));
@@ -26,7 +39,8 @@ export default function TicketsPage() {
       </Helmet>
 
       <Container maxWidth="xl">
-        <TicketsView />
+        <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+        <TicketsView sx={{ mt: 2 }} />
       </Container>
     </>
   );

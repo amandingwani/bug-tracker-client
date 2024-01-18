@@ -6,6 +6,9 @@ import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
 // import { projects } from 'src/_mock/projects';
 
@@ -26,6 +29,7 @@ import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditProject from '../createOrEditProject';
 import TableRowsLoader from '../table-rows-loader';
 import { FilterData, defaultFilterData } from '../types';
+import { RouterLink } from 'src/routes/components';
 
 // ----------------------------------------------------------------------
 
@@ -54,6 +58,15 @@ export default function ProjectsPage() {
   const [filterData, setFilterData] = useState<FilterData>(defaultFilterData);
 
   const [openAlert, setOpenAlert] = useState(false);
+
+  const breadcrumbs = [
+    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
+      Bug Ninja
+    </Link>,
+    <Typography key="2" color="text.primary">
+      Projects
+    </Typography>,
+  ];
 
   const handlePermanentDelete = async () => {
     if (selectedProject) {
@@ -135,7 +148,9 @@ export default function ProjectsPage() {
         selectedProject={selectedProject}
       />
 
-      <Card>
+      <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+
+      <Card sx={{ mt: 2 }}>
         <ProjectsTableToolbar
           filterName={filterName}
           onFilterName={handleFilterByName}

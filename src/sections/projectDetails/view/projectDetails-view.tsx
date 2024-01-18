@@ -22,6 +22,9 @@ import { UsersView } from 'src/sections/users/view';
 import Scrollbar from 'src/components/scrollbar';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectReqStatus } from 'src/redux/slices/projectsSlice';
+import { RouterLink } from 'src/routes/components';
+import Link from '@mui/material/Link';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 // ----------------------------------------------------------------------
 
@@ -76,6 +79,18 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
 
   const [tabValue, setTabValue] = useState(2);
 
+  const breadcrumbs = [
+    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
+      Bug Ninja
+    </Link>,
+    <Link component={RouterLink} underline="hover" key="2" color="inherit" href="/projects">
+      Projects
+    </Link>,
+    <Typography key="2" color="text.primary">
+      Project
+    </Typography>,
+  ];
+
   const loading = reqStatus.name === 'loadProjects' && reqStatus.status === 'loading';
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -88,7 +103,8 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
 
   return (
     <Container maxWidth="xl">
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+      <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 2 }}>
         <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
           <Tab label="Details" {...a11yProps(0)} />
           <Tab label="Users" {...a11yProps(1)} />
