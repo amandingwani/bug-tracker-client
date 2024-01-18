@@ -61,7 +61,12 @@ export interface Ticket {
     priority: TicketPriority;
     status: TicketStatus;
     createdAt: string;
-    project: Project
+    project: {
+        id: number,
+        name: string,
+        contributors: Contributor[],
+        owner: Contributor
+    }
 }
 
 export const ProjectStatusArr = ['OPEN', 'IN_PROGRESS', 'ON_HOLD', 'COMPLETED', 'CANCELED', 'TESTING', 'DEPLOYED'] as const
