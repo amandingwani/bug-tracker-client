@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { useState } from 'react';
+import { alpha, styled, useTheme } from '@mui/material/styles';
 
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -26,6 +26,8 @@ import { Ticket } from 'src/redux/types';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { deleteTicketThunk, selectReqStatus } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
+
+import InfoWidget from 'src/sections/ticketDetails/ticket-info-widget';
 
 // ----------------------------------------------------------------------
 
@@ -108,7 +110,7 @@ export default function TicketDetails({ title, ticket }: Props) {
       {ticket && (
         <>
           <CardHeader
-            title={title}
+            title={'Ticket : ' + ticket.title}
             action={
               <ExpandMore
                 expand={expanded}
@@ -120,7 +122,7 @@ export default function TicketDetails({ title, ticket }: Props) {
               </ExpandMore>
             }
             // sx={expanded ? {} : { paddingBottom: 3 }}
-            sx={{ pb: 3 }}
+            sx={{ pb: 1 }}
           />
           <Collapse in={expanded} timeout="auto" unmountOnExit>
             <CardContent>
@@ -129,7 +131,7 @@ export default function TicketDetails({ title, ticket }: Props) {
               </Scrollbar>
             </CardContent>
             {allowed && (
-              <CardActions>
+              <CardActions sx={{ pl: 2, pb: 2 }}>
                 <Button
                   onClick={handleEdit}
                   variant="outlined"
@@ -169,59 +171,72 @@ export default function TicketDetails({ title, ticket }: Props) {
 // ----------------------------------------------------------------------
 
 function Details({ ticket }: { ticket: Ticket }) {
+  const theme = useTheme();
   const { id, title, description, author, assignee, createdAt, project } = ticket;
 
   return (
-    <Stack direction="column" alignItems="left" spacing={2}>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Name:'}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {title}
-        </Typography>
+    <Stack direction="column" alignItems="left" spacing={2} pl={1}>
+      <Typography variant="body2" color="text.secondary" pb={2}>
+        {description}
+      </Typography>
+
+      <Stack direction="row" spacing={2}>
+        <InfoWidget
+          title="Ticket author"
+          value={author.firstName + ' ' + author.lastName}
+          icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
+          sx={{
+            backgroundColor: alpha(theme.palette.grey[500], 0.2),
+          }}
+        />
+
+        <InfoWidget
+          title="Ticket assignee"
+          value={assignee?.firstName + ' ' + assignee?.lastName}
+          icon={<Iconify icon="majesticons:user-line" sx={{ width: 64, height: 64 }} />}
+          sx={{
+            backgroundColor: alpha(theme.palette.grey[500], 0.2),
+          }}
+        />
       </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Description:'}
-        </Typography>
-        <Typography variant="body2">{description}</Typography>
-      </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Author:'}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {author.firstName + ' ' + author.lastName}
-        </Typography>
-      </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Assignee:'}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {assignee?.firstName + ' ' + assignee?.lastName}
-        </Typography>
-      </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Created On:'}
+
+      <Stack direction="row" spacing={2} pt={2}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          fontWeight={'fontWeightBold'}
+          noWrap
+          sx={{ width: 100 }}
+        >
+          {'Created On'}
         </Typography>
         <Typography variant="body2" noWrap>
           {new Date(createdAt).toLocaleString()}
         </Typography>
       </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'ID:'}
+      <Stack direction="row" spacing={2}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          fontWeight={'fontWeightBold'}
+          noWrap
+          sx={{ width: 100 }}
+        >
+          {'Ticket ID'}
         </Typography>
         <Typography variant="body2" noWrap>
           {id}
         </Typography>
       </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Project:'}
+      <Stack direction="row" spacing={2}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          fontWeight={'fontWeightBold'}
+          noWrap
+          sx={{ width: 100 }}
+        >
+          {'Project'}
         </Typography>
         <Typography
           variant="body2"

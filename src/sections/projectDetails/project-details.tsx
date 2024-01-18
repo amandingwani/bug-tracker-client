@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { alpha, styled, useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -32,6 +32,7 @@ import {
 } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
+import InfoWidget from 'src/sections/ticketDetails/ticket-info-widget';
 
 // ----------------------------------------------------------------------
 
@@ -121,9 +122,9 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
           />
 
           <CardHeader
-            title={title}
+            title={project.name}
             // sx={expanded ? {} : { paddingBottom: 3 }}
-            sx={{ pb: 3 }}
+            sx={{ pb: 1 }}
           />
 
           <CardContent>
@@ -132,7 +133,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
             </Scrollbar>
           </CardContent>
           {isOwner ? (
-            <CardActions>
+            <CardActions sx={{ pl: 2, pb: 2 }}>
               <Button
                 onClick={handleEdit}
                 variant="outlined"
@@ -151,7 +152,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
               </Button>
             </CardActions>
           ) : (
-            <CardActions>
+            <CardActions sx={{ pl: 2, pb: 2 }}>
               <Button
                 onClick={handleAlertClickOpen}
                 variant="outlined"
@@ -195,6 +196,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 // ----------------------------------------------------------------------
 
 function Details({ project }: { project: Project }) {
+  const theme = useTheme();
   const { id, name, description, owner, status, createdAt } = project;
 
   let statusLabelColor: LabelColor = 'success';
@@ -202,46 +204,52 @@ function Details({ project }: { project: Project }) {
   else if (project.status === 'ON_HOLD') statusLabelColor = 'warning';
 
   return (
-    <Stack direction="column" alignItems="left" spacing={2}>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Name:'}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {name}
-        </Typography>
+    <Stack direction="column" alignItems="left" spacing={2} pl={1}>
+      <Typography variant="body2" color="text.secondary" pb={2}>
+        {description}
+      </Typography>
+
+      <Stack direction="row" spacing={2}>
+        <InfoWidget
+          title="Status"
+          value={ProjectStatusMap[status]}
+          icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
+          sx={{
+            backgroundColor: alpha(theme.palette[statusLabelColor].main, 0.2),
+          }}
+        />
+
+        <InfoWidget
+          title="Project owner"
+          value={owner.firstName + ' ' + owner.lastName}
+          icon={<Iconify icon="grommet-icons:user-admin" sx={{ width: 64, height: 64 }} />}
+          sx={{
+            backgroundColor: alpha(theme.palette.grey[500], 0.2),
+          }}
+        />
       </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Description:'}
+
+      <Stack direction="row" spacing={2} pt={2}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          fontWeight={'fontWeightBold'}
+          noWrap
+          sx={{ width: 100 }}
+        >
+          {'Created On'}
         </Typography>
-        <Typography variant="body2">{description}</Typography>
+        <Typography variant="body2">{new Date(createdAt).toLocaleString()}</Typography>
       </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Owner:'}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {owner.firstName + ' ' + owner.lastName}
-        </Typography>
-      </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Status:'}
-        </Typography>
-        <Label color={statusLabelColor}>{ProjectStatusMap[status]}</Label>
-      </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'Created On:'}
-        </Typography>
-        <Typography variant="body2" noWrap>
-          {new Date(createdAt).toLocaleString()}
-        </Typography>
-      </Stack>
-      <Stack direction="row" spacing={2} pl={1}>
-        <Typography variant="body2" fontWeight={'fontWeightBold'} noWrap sx={{ width: 100 }}>
-          {'ID:'}
+      <Stack direction="row" spacing={2}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          fontWeight={'fontWeightBold'}
+          noWrap
+          sx={{ width: 100 }}
+        >
+          {'Project ID'}
         </Typography>
         <Typography variant="body2" noWrap>
           {id}
