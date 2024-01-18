@@ -75,7 +75,12 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const handlePermanentDelete = async () => {
     if (selectedTicket) {
-      dispatch(deleteTicketThunk(selectedTicket.id, afterSuccessfulTicketDelete));
+      dispatch(
+        deleteTicketThunk(
+          { id: selectedTicket.id, project: { id: selectedTicket.project.id } },
+          afterSuccessfulTicketDelete
+        )
+      );
     }
   };
 

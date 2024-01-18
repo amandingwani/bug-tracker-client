@@ -17,6 +17,7 @@ import {
 import { UseFormReset } from 'react-hook-form'
 import { updateAndShowNotification } from './notificationSlice'
 import { projects } from 'src/_mock/projects'
+import { faker } from '@faker-js/faker'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -61,7 +62,7 @@ export const projectsSlice = createSlice({
                 project.status = action.payload.status;
             }
         },
-        deleteProject: (state, action: PayloadAction<Project>) => {
+        deleteProject: (state, action: PayloadAction<Project | { id: number }>) => {
             // Delete the project from the state
             state.createdProjects = state.createdProjects.filter(p => p.id !== action.payload.id);
         },
@@ -88,7 +89,7 @@ export const projectsSlice = createSlice({
                 ticket.assignee = action.payload.assignee;
             }
         },
-        deleteTicket: (state, action: PayloadAction<Ticket>) => {
+        deleteTicket: (state, action: PayloadAction<Ticket | { id: number, project: { id: number } }>) => {
             // Delete the ticket from the state
             let project = state.createdProjects.find(p => p.id === action.payload.project.id);
             if (!project)
@@ -101,6 +102,18 @@ export const projectsSlice = createSlice({
             const project = state.createdProjects.find(p => p.id === action.payload.id);
             if (project)
                 project.contributors = action.payload.contributors;
+        },
+        demoAddContributor: (state, action: PayloadAction<AddContributor>) => {
+            // Update the contributors array
+            const project = state.createdProjects.find(p => p.id === action.payload.id);
+            if (project) {
+                project.contributors.push({
+                    id: faker.number.int({ min: 10000, max: 99999 }),
+                    firstName: action.payload.email.split('@')[0],
+                    email: action.payload.email,
+                    registered: false
+                })
+            }
         },
         demoRemoveContributor: (state, action: PayloadAction<AddContributor>) => {
             // Update the contributors array
@@ -229,13 +242,19 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React
     }
 }
 
-export const deleteTicketThunk = (ticketId: number, onSuccess?: () => void): AppThunk => {
-    return async (dispatch) => {
+export const deleteTicketThunk = (ticket: { id: number, project: { id: number } }, onSuccess?: () => void): AppThunk => {
+    return async (dispatch, getState) => {
         try {
             dispatch(setReqStatus({ name: 'deleteTicket', status: 'loading' }));
-            const data = await deleteTicketApi(ticketId)
-            dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
-            dispatch(deleteTicket(data))
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
+                dispatch(deleteTicket({ id: ticket.id, project: { id: ticket.project.id } }))
+            } else {
+                const data = await deleteTicketApi(ticket.id)
+                dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
+                dispatch(deleteTicket(data))
+            }
             dispatch(setReqStatus({ name: '', status: 'idle' }));
             dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket deleted!' }))
             if (onSuccess)
@@ -248,12 +267,18 @@ export const deleteTicketThunk = (ticketId: number, onSuccess?: () => void): App
 }
 
 export const deleteProjectThunk = (projectId: number, onSuccess?: () => void): AppThunk => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
             dispatch(setReqStatus({ name: 'deleteProject', status: 'loading' }));
-            const data = await deleteProjectApi(projectId)
-            dispatch(setReqStatus({ name: 'deleteProject', status: 'succeeded' }));
-            dispatch(deleteProject(data))
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                dispatch(setReqStatus({ name: 'deleteProject', status: 'succeeded' }));
+                dispatch(deleteProject({ id: projectId }))
+            } else {
+                const data = await deleteProjectApi(projectId)
+                dispatch(setReqStatus({ name: 'deleteProject', status: 'succeeded' }));
+                dispatch(deleteProject(data))
+            }
             dispatch(setReqStatus({ name: '', status: 'idle' }));
             dispatch(updateAndShowNotification({ severity: 'success', message: 'Project deleted!' }))
             if (onSuccess)
@@ -266,12 +291,18 @@ export const deleteProjectThunk = (projectId: number, onSuccess?: () => void): A
 }
 
 export const addContributorThunk = (data: AddContributor, onSuccess?: () => void, onError?: () => void): AppThunk => {
-    return async (dispatch) => {
+    return async (dispatch, getState) => {
         try {
             dispatch(setReqStatus({ name: 'addContributor', status: 'loading' }));
-            const resData = await addContributorApi(data)
-            dispatch(setReqStatus({ name: 'addContributor', status: 'succeeded' }));
-            dispatch(updateContributor(resData))
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                dispatch(setReqStatus({ name: 'addContributor', status: 'succeeded' }));
+                dispatch(demoAddContributor(data))
+            } else {
+                const resData = await addContributorApi(data)
+                dispatch(setReqStatus({ name: 'addContributor', status: 'succeeded' }));
+                dispatch(updateContributor(resData))
+            }
             dispatch(setReqStatus({ name: '', status: 'idle' }));
             dispatch(updateAndShowNotification({ severity: 'success', message: 'User added!' }))
             if (onSuccess)
@@ -308,7 +339,7 @@ export const removeContributorThunk = (data: AddContributor, onSuccess?: () => v
     }
 }
 
-export const { demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
+export const { demoAddContributor, demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects

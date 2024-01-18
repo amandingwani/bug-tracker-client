@@ -92,7 +92,13 @@ export default function TicketDetails({ title, ticket }: Props) {
   };
 
   const handlePermanentDelete = async () => {
-    if (ticket) dispatch(deleteTicketThunk(ticket.id, afterSuccessfulTicketDelete));
+    if (ticket)
+      dispatch(
+        deleteTicketThunk(
+          { id: ticket.id, project: { id: ticket.project.id } },
+          afterSuccessfulTicketDelete
+        )
+      );
   };
 
   const onCloseDrawer = () => {
