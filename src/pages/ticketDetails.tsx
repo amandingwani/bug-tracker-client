@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
+import Container from '@mui/material/Container';
+
 import { TicketDetailsView } from 'src/sections/ticketDetails/view';
 
 import { updateHeader } from 'src/redux/slices/pageSlice';
@@ -64,10 +66,10 @@ export default function TicketDetailsPage() {
       <Helmet>
         <title> Ticket | Bug Ninja </title>
       </Helmet>
-      <Breadcrumbs sx={{ pl: 3 }} aria-label="breadcrumb">
-        {breadcrumbs}
-      </Breadcrumbs>
-      <TicketDetailsView ticket={ticket} sx={{ mt: 2 }} />
+      <Container maxWidth="xl">
+        <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+        <TicketDetailsView ticket={ticket} sx={{ mt: 2 }} />
+      </Container>
     </>
   );
 }
