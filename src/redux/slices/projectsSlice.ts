@@ -148,6 +148,34 @@ export const projectsSlice = createSlice({
                 project.tickets.push(newTicket)
             }
         },
+        demoUpdateTicket: (state, action: PayloadAction<UpdateTicketApiData>) => {
+            let project = state.createdProjects.find(p => p.id === action.payload.projectId);
+            if (!project) {
+                project = state.otherProjects.find(p => p.id === action.payload.projectId)
+            }
+            if (project) {
+                const ticket = project.tickets.find(t => t.id === action.payload.id)
+                if (ticket) {
+                    ticket.title = action.payload.title;
+                    ticket.description = action.payload.description;
+                    ticket.type = action.payload.type;
+                    ticket.priority = action.payload.priority;
+                    ticket.status = action.payload.status;
+
+                    // assignee
+                    if (action.payload.assigneeId) {
+                        // if self assigned
+                        if (action.payload.assigneeId === ticket.author.id) {
+                            ticket.assignee = ticket.author
+                        } else {
+                            ticket.assignee = project.contributors.find(c => c.id === action.payload.assigneeId)
+                        }
+                    } else {
+                        ticket.assignee = undefined;
+                    }
+                }
+            }
+        },
     }
 })
 
@@ -260,25 +288,29 @@ export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Disp
 }
 
 export const updateAndLoadTicket = (data: UpdateTicketApiData, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
-    return (dispatch) => {
-        updateTicketApi(data)
-            .then((ticket) => {
+    return async (dispatch, getState) => {
+        try {
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                dispatch(demoUpdateTicket(data))
+            } else {
+                const ticket = await updateTicketApi(data)
                 dispatch(updateTicket(ticket))
-                dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket updated!' }))
-                setLoading(false)
-                closeDrawer();
-                reset({
-                    title: '',
-                    description: '',
-                    status: 'OPEN',
-                    type: 'BUG',
-                    priority: 'NORMAL',
-                });
-            })
-            .catch((err) => {
-                setLoading(false)
-                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            }
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket updated!' }))
+            setLoading(false)
+            closeDrawer();
+            reset({
+                title: '',
+                description: '',
+                status: 'OPEN',
+                type: 'BUG',
+                priority: 'NORMAL',
             });
+        } catch (error) {
+            setLoading(false)
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
     }
 }
 
@@ -379,7 +411,7 @@ export const removeContributorThunk = (data: AddContributor, onSuccess?: () => v
     }
 }
 
-export const { demoSetCreatedTicket, demoAddContributor, demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
+export const { demoUpdateTicket, demoSetCreatedTicket, demoAddContributor, demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects
