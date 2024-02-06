@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
-import type { AddContributor, Project, ProjectCreateInput, ProjectsState, ProjectUpdate, Ticket, TicketCreateInput, TicketUpdate } from '../types'
+import type { AddContributor, Project, ProjectCreateInput, ProjectsState, ProjectStatus, ProjectUpdate, Ticket, TicketCreateInput, TicketUpdate } from '../types'
 import {
     getProjects,
     createProject,
@@ -52,7 +52,7 @@ export const projectsSlice = createSlice({
         setCreatedProject: (state, action: PayloadAction<Project>) => {
             state.createdProjects.push(action.payload)
         },
-        updateProject: (state, action: PayloadAction<Project>) => {
+        updateProject: (state, action: PayloadAction<Project | { id: number, name: string, description: string, status: ProjectStatus }>) => {
             let project = state.createdProjects.find(p => p.id === action.payload.id);
             if (!project) {
                 project = state.otherProjects.find(p => p.id === action.payload.id)
@@ -235,23 +235,27 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
 }
 
 export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<ProjectCreateInput>): AppThunk => {
-    return (dispatch) => {
-        updateProjectApi(data)
-            .then((project) => {
+    return async (dispatch, getState) => {
+        try {
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                dispatch(updateProject(data))
+            } else {
+                const project = await updateProjectApi(data)
                 dispatch(updateProject(project))
-                dispatch(updateAndShowNotification({ severity: 'success', message: 'Project updated!' }))
-                setLoading(false)
-                closeDrawer();
-                reset({
-                    name: '',
-                    description: '',
-                    status: 'OPEN'
-                })
+            }
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'Project updated!' }))
+            setLoading(false)
+            closeDrawer();
+            reset({
+                name: '',
+                description: '',
+                status: 'OPEN'
             })
-            .catch((err) => {
-                setLoading(false)
-                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
-            });
+        } catch (error) {
+            setLoading(false)
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
     }
 }
 
