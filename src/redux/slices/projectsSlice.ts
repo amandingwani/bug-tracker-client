@@ -18,6 +18,7 @@ import { UseFormReset } from 'react-hook-form'
 import { updateAndShowNotification } from './notificationSlice'
 import { generateAddProjectApiResponse, projects } from 'src/_mock/projects'
 import { faker } from '@faker-js/faker'
+import { generateAddTicketPartialApiResponse } from 'src/_mock/tickets'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -121,6 +122,32 @@ export const projectsSlice = createSlice({
             if (project)
                 project.contributors = project.contributors.filter(c => c.email !== action.payload.email);
         },
+        demoSetCreatedTicket: (state, action: PayloadAction<Ticket>) => {
+            // find the project under which ticket was created
+            let project = state.createdProjects.find(p => p.id === action.payload.project.id)
+            if (!project) {
+                project = state.otherProjects.find(p => p.id === action.payload.project.id)
+            }
+
+            if (project) {
+                const newTicket = action.payload;
+                // assignee
+                if (newTicket.assignee) {
+                    // if self assigned
+                    if (newTicket.assignee.id === newTicket.author.id) {
+                        newTicket.assignee = newTicket.author
+                    } else {
+                        newTicket.assignee = project.contributors.find(c => c.id === newTicket.assignee?.id)
+                    }
+                }
+                // project
+                newTicket.project.name = project.name
+                newTicket.project.owner = project.owner
+                newTicket.project.contributors = project.contributors
+
+                project.tickets.push(newTicket)
+            }
+        },
     }
 })
 
@@ -157,13 +184,13 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
     return async (dispatch, getState) => {
         try {
             const user = getState().auth.user;
+            let project: Project;
             if (user?.id === -1) {
-                const project = generateAddProjectApiResponse(data);
-                dispatch(setCreatedProject(project))
+                project = generateAddProjectApiResponse(data);
             } else {
-                const project = await createProject(data)
-                dispatch(setCreatedProject(project))
+                project = await createProject(data)
             }
+            dispatch(setCreatedProject(project))
             dispatch(updateAndShowNotification({ severity: 'success', message: 'Project created!' }))
             setLoading(false)
             closeDrawer();
@@ -180,26 +207,30 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
 }
 
 export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<TicketCreateInput>): AppThunk => {
-    return (dispatch) => {
-        createTicket(data)
-            .then((ticket) => {
+    return async (dispatch, getState) => {
+        try {
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                const ticket = generateAddTicketPartialApiResponse(data);
+                dispatch(demoSetCreatedTicket(ticket))
+            } else {
+                const ticket = await createTicket(data)
                 dispatch(setCreatedTicket(ticket))
-                dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket created!' }))
-                setLoading(false)
-                reset({
-                    title: '',
-                    description: '',
-                    status: 'OPEN',
-                    type: 'BUG',
-                    priority: 'NORMAL',
-                });
-                closeDrawer();
-            })
-            .catch((err) => {
-                console.log(err);
-                setLoading(false)
-                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            }
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'Ticket created!' }))
+            setLoading(false)
+            reset({
+                title: '',
+                description: '',
+                status: 'OPEN',
+                type: 'BUG',
+                priority: 'NORMAL',
             });
+            closeDrawer();
+        } catch (error) {
+            setLoading(false)
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
     }
 }
 
@@ -344,7 +375,7 @@ export const removeContributorThunk = (data: AddContributor, onSuccess?: () => v
     }
 }
 
-export const { demoAddContributor, demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
+export const { demoSetCreatedTicket, demoAddContributor, demoRemoveContributor, setProjects, setReqStatus, setError, resetProjects, setCreatedProject, setCreatedTicket, updateProject, deleteProject, updateTicket, removeOtherProject, deleteTicket, updateContributor } = projectsSlice.actions
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectProjects = (state: RootState) => state.projects

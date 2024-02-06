@@ -1,6 +1,8 @@
 import { sample } from 'lodash';
 import { faker } from '@faker-js/faker';
 import { Ticket, TicketPriorityArr, TicketStatusArr, TicketType } from 'src/redux/types';
+import { CreateTicketApiData } from 'src/services/projects';
+import { demoUser } from 'src/redux/constants';
 
 const ticketTitleAndDesc: { title: string, description: string, type: TicketType }[] = [
     { title: 'Bug in Algorithmic Logic', type: 'BUG', description: 'The algorithm is producing incorrect results under certain edge cases. Investigate and fix the logic flaw.' },
@@ -73,7 +75,7 @@ const ticketTitleAndDesc: { title: string, description: string, type: TicketType
 ]
 
 export const demoPartialTickets: Partial<Ticket>[] = [...Array(ticketTitleAndDesc.length)].map((_, index) => ({
-    id: faker.number.int({ min: 1000, max: 9999 }),
+    id: faker.number.int({ min: 1000, max: 8999 }),
     title: ticketTitleAndDesc[index].title,
     description: ticketTitleAndDesc[index].description,
     type: ticketTitleAndDesc[index].type,
@@ -81,3 +83,28 @@ export const demoPartialTickets: Partial<Ticket>[] = [...Array(ticketTitleAndDes
     status: sample(TicketStatusArr),
     createdAt: faker.date.recent({ days: 360 }).toLocaleString()
 }));
+
+export const generateAddTicketPartialApiResponse = (data: CreateTicketApiData): Ticket => {
+    return {
+        id: faker.number.int({ min: 9000, max: 9999 }),
+        title: data.title,
+        description: data.description,
+        type: data.type,
+        priority: data.priority,
+        status: data.status,
+        createdAt: new Date().toISOString(),
+        author: {
+            id: demoUser.id,
+            firstName: demoUser.firstName,
+            lastName: demoUser.lastName,
+            email: demoUser.email,
+            registered: true,
+        },
+        assignee: data.assigneeId ? {
+            id: data.assigneeId
+        } : undefined,
+        project: {
+            id: data.projectId
+        }
+    }
+}
