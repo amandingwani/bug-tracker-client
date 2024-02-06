@@ -81,7 +81,7 @@ export const demoPartialTickets: Partial<Ticket>[] = [...Array(ticketTitleAndDes
     type: ticketTitleAndDesc[index].type,
     priority: sample(TicketPriorityArr),
     status: sample(TicketStatusArr),
-    createdAt: faker.date.recent({ days: 360 }).toLocaleString()
+    createdAt: faker.date.recent({ days: 360 }).toISOString()
 }));
 
 export const generateAddTicketPartialApiResponse = (data: CreateTicketApiData): Ticket => {
