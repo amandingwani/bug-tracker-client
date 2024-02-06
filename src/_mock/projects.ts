@@ -1,6 +1,6 @@
 import { sample, sampleSize } from 'lodash';
 import { faker } from '@faker-js/faker';
-import { Project, ProjectStatusArr, Ticket } from 'src/redux/types';
+import { Project, ProjectCreateInput, ProjectStatusArr, Ticket } from 'src/redux/types';
 import { demoUser } from 'src/redux/constants';
 import { demoContributors, generateContributor } from './contributor';
 import { demoPartialTickets } from './tickets';
@@ -154,7 +154,7 @@ const createdProjects: Project[] = [...Array(5)].map((_, index) => generateCreat
 const generateOtherProject = (index: number): Project => {
   index = index + 5;
   const p: Project = {
-    id: faker.number.int({ min: 5000, max: 9999 }),
+    id: faker.number.int({ min: 5000, max: 8999 }),
     name: projectNameAndDesc[index].name,
     description: projectNameAndDesc[index].description,
     owner: generateContributor(),
@@ -203,4 +203,23 @@ function capitalizeFirstLetter(string: string) {
 export const projects: Projects = {
   createdProjects: createdProjects,
   otherProjects: otherProjects
+}
+
+export const generateAddProjectApiResponse = (data: ProjectCreateInput): Project => {
+  return {
+    id: faker.number.int({ min: 9000, max: 9999 }),
+    name: data.name,
+    description: data.description,
+    status: data.status,
+    owner: {
+      id: demoUser.id,
+      firstName: demoUser.firstName,
+      lastName: demoUser.lastName,
+      email: demoUser.email,
+      registered: true,
+    },
+    contributors: [],
+    createdAt: new Date().toISOString(),
+    tickets: []
+  }
 }

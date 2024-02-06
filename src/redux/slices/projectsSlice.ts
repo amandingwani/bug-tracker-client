@@ -16,7 +16,7 @@ import {
 } from 'src/services/projects'
 import { UseFormReset } from 'react-hook-form'
 import { updateAndShowNotification } from './notificationSlice'
-import { projects } from 'src/_mock/projects'
+import { generateAddProjectApiResponse, projects } from 'src/_mock/projects'
 import { faker } from '@faker-js/faker'
 
 // Define the initial state using that type
@@ -154,23 +154,28 @@ export const loadDemoProjects = (): AppThunk => {
 }
 
 export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<ProjectCreateInput>): AppThunk => {
-    return (dispatch) => {
-        createProject(data)
-            .then((project) => {
+    return async (dispatch, getState) => {
+        try {
+            const user = getState().auth.user;
+            if (user?.id === -1) {
+                const project = generateAddProjectApiResponse(data);
                 dispatch(setCreatedProject(project))
-                dispatch(updateAndShowNotification({ severity: 'success', message: 'Project created!' }))
-                setLoading(false)
-                closeDrawer();
-                reset({
-                    name: '',
-                    description: '',
-                    status: 'OPEN'
-                })
+            } else {
+                const project = await createProject(data)
+                dispatch(setCreatedProject(project))
+            }
+            dispatch(updateAndShowNotification({ severity: 'success', message: 'Project created!' }))
+            setLoading(false)
+            closeDrawer();
+            reset({
+                name: '',
+                description: '',
+                status: 'OPEN'
             })
-            .catch((err) => {
-                setLoading(false)
-                dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
-            });
+        } catch (error) {
+            setLoading(false)
+            dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+        }
     }
 }
 
