@@ -54,7 +54,7 @@ export interface CreateTicketApiData {
     priority: TicketPriority;
     status: TicketStatus;
     projectId: number;
-    assigneeId?: number;
+    assigneeId: number | null;
 }
 
 export const createTicket = (data: CreateTicketApiData) => {
