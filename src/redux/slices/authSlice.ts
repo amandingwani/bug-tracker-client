@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import type { RootState, AppThunk } from 'src/redux/store'
 import type { AuthState, UserState } from '../types'
 import { loadDemoProjects, loadProjects, resetProjects } from './projectsSlice'
@@ -7,6 +7,7 @@ import getProfile from 'src/services/profile';
 import { resetHeader } from './pageSlice'
 import { hideNotification, updateAndShowNotification } from './notificationSlice'
 import { demoUser } from '../constants'
+import { deleteCookie } from 'src/utils/cookie'
 
 const initialState: AuthState = {
     user: null,
@@ -89,7 +90,7 @@ export const demoLogin = (): AppThunk => {
 
 export const logout = (): AppThunk => {
     return (dispatch) => {
-        document.cookie = 'token=; expires=Session; path=/;';
+        deleteCookie("token");
         dispatch(resetAuth())
         dispatch(hideNotification())
         localStorage.removeItem("BUG_NINJA_USER");
