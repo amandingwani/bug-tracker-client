@@ -16,6 +16,9 @@ export default function TableRowsLoader({ rowsNum }: { rowsNum: number }) {
       <TableCell>
         <Skeleton animation="wave" variant="text" />
       </TableCell>
+      <TableCell>
+        <Skeleton animation="wave" variant="text" />
+      </TableCell>
     </TableRow>
   ));
 }
