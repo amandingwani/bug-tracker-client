@@ -14,6 +14,7 @@ import { LabelColor } from 'src/components/label/labelSubTypes';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
+import { Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -49,15 +50,21 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
     <>
       <TableRow hover tabIndex={-1}>
         <TableCell component="th" scope="row">
-          <Typography
-            variant="button"
+          <Link
             noWrap
             textTransform={'capitalize'}
             component={RouterLink}
             href={`/projects/${project.id}`}
+            underline="none"
+            fontWeight={600}
+            sx={{
+              '&:hover': {
+                color: 'primary.darker',
+              },
+            }}
           >
             {project.name}
-          </Typography>
+          </Link>
         </TableCell>
 
         <TableCell>{project.owner.firstName + ' ' + project.owner.lastName}</TableCell>

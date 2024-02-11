@@ -28,6 +28,7 @@ import { deleteTicketThunk, selectReqStatus } from 'src/redux/slices/projectsSli
 import { selectUser } from 'src/redux/slices/authSlice';
 
 import InfoWidget from 'src/sections/ticketDetails/ticket-info-widget';
+import { Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -244,14 +245,21 @@ function Details({ ticket }: { ticket: Ticket }) {
         >
           {'Project'}
         </Typography>
-        <Typography
+        <Link
           variant="body2"
           noWrap
           component={RouterLink}
           href={`/projects/${ticket.project.id}`}
+          underline="none"
+          fontWeight={600}
+          sx={{
+            '&:hover': {
+              color: 'primary.darker',
+            },
+          }}
         >
           {project.name}
-        </Typography>
+        </Link>
       </Stack>
     </Stack>
   );

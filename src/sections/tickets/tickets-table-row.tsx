@@ -12,6 +12,7 @@ import Iconify from 'src/components/iconify';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 import { TicketStatusMap, Ticket, TicketUpdate } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
+import { Link } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -49,14 +50,21 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           </Typography>
         </TableCell>
         <TableCell>
-          <Typography
+          <Link
             variant="subtitle2"
             noWrap
             component={RouterLink}
             href={`/projects/${ticket.project.id}/tickets/${ticket.id}`}
+            underline="none"
+            fontWeight={600}
+            sx={{
+              '&:hover': {
+                color: 'primary.darker',
+              },
+            }}
           >
             {ticket.title}
-          </Typography>
+          </Link>
         </TableCell>
 
         <TableCell>{ticket.author.firstName + ' ' + ticket.author.lastName}</TableCell>
@@ -74,14 +82,21 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         </TableCell>
 
         <TableCell>
-          <Typography
+          <Link
             variant="subtitle2"
             noWrap
             component={RouterLink}
             href={`/projects/${ticket.project.id}`}
+            underline="none"
+            fontWeight={600}
+            sx={{
+              '&:hover': {
+                color: 'primary.darker',
+              },
+            }}
           >
             {ticket.project.name}
-          </Typography>
+          </Link>
         </TableCell>
 
         <TableCell>{new Date(ticket.createdAt).toLocaleString()}</TableCell>
