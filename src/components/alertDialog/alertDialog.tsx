@@ -23,6 +23,7 @@ interface Props {
   title: string;
   message?: string;
   loading: boolean;
+  actionButtonString?: string;
 }
 
 export default function AlertDialog({
@@ -32,6 +33,7 @@ export default function AlertDialog({
   message,
   handleAction,
   loading,
+  actionButtonString = 'Delete',
 }: Props) {
   return (
     <StyledDialog
@@ -53,7 +55,7 @@ export default function AlertDialog({
           autoFocus
           startIcon={<Iconify icon="eva:trash-2-outline" />}
         >
-          Delete
+          {actionButtonString}
         </LoadingButton>
         <Button onClick={handleClose} variant="outlined" color="inherit">
           Cancel

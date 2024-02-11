@@ -185,6 +185,7 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
           handleAction={handleLeaveProject}
           title="Leave project ?"
           message="You will lose access to this project and all tickets under it"
+          actionButtonString="Leave"
         />
       )}
 
