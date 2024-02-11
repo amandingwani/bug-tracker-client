@@ -13,6 +13,8 @@ import Link from '@mui/material/Link';
 import { RouterLink } from 'src/routes/components';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Iconify from 'src/components/iconify';
+import { emphasize } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -32,8 +34,18 @@ export default function TicketDetailsPage() {
   if (ticket) headerString = `${ticket.project.name} : ${ticket.title}`;
 
   const breadcrumbs = [
-    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
-      Bug Ninja
+    <Link
+      component={RouterLink}
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <Iconify icon="ic:round-home" />
     </Link>,
     <Link component={RouterLink} underline="hover" key="2" color="inherit" href="/projects">
       Projects
@@ -67,7 +79,9 @@ export default function TicketDetailsPage() {
         <title> Ticket | Bug Ninja </title>
       </Helmet>
       <Container maxWidth="xl">
-        <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+        <Breadcrumbs aria-label="breadcrumb" separator="›">
+          {breadcrumbs}
+        </Breadcrumbs>
         <TicketDetailsView ticket={ticket} sx={{ mt: 2 }} />
       </Container>
     </>

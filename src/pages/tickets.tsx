@@ -10,6 +10,7 @@ import Link from '@mui/material/Link';
 import { RouterLink } from 'src/routes/components';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -18,8 +19,18 @@ export default function TicketsPage() {
   const dispatch = useAppDispatch();
 
   const breadcrumbs = [
-    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
-      Bug Ninja
+    <Link
+      component={RouterLink}
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <Iconify icon="ic:round-home" />
     </Link>,
     <Typography key="2" color="text.primary">
       Tickets
@@ -39,7 +50,9 @@ export default function TicketsPage() {
       </Helmet>
 
       <Container maxWidth="xl">
-        <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+        <Breadcrumbs aria-label="breadcrumb" separator="›">
+          {breadcrumbs}
+        </Breadcrumbs>
         <TicketsView sx={{ mt: 2 }} />
       </Container>
     </>

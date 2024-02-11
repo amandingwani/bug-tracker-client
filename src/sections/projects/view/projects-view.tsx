@@ -30,6 +30,7 @@ import CreateOrEditProject from '../createOrEditProject';
 import TableRowsLoader from '../table-rows-loader';
 import { FilterData, defaultFilterData } from '../types';
 import { RouterLink } from 'src/routes/components';
+import Iconify from 'src/components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -60,8 +61,18 @@ export default function ProjectsPage() {
   const [openAlert, setOpenAlert] = useState(false);
 
   const breadcrumbs = [
-    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
-      Bug Ninja
+    <Link
+      component={RouterLink}
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <Iconify icon="ic:round-home" />
     </Link>,
     <Typography key="2" color="text.primary">
       Projects
@@ -148,7 +159,9 @@ export default function ProjectsPage() {
         selectedProject={selectedProject}
       />
 
-      <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        {breadcrumbs}
+      </Breadcrumbs>
 
       <Card sx={{ mt: 2 }}>
         <ProjectsTableToolbar

@@ -80,8 +80,18 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
   const [tabValue, setTabValue] = useState(2);
 
   const breadcrumbs = [
-    <Link component={RouterLink} underline="hover" key="1" color="inherit" href="/">
-      Bug Ninja
+    <Link
+      component={RouterLink}
+      underline="hover"
+      key="1"
+      color="inherit"
+      href="/"
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <Iconify icon="ic:round-home" />
     </Link>,
     <Link component={RouterLink} underline="hover" key="2" color="inherit" href="/projects">
       Projects
@@ -103,7 +113,9 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
 
   return (
     <Container maxWidth="xl">
-      <Breadcrumbs aria-label="breadcrumb">{breadcrumbs}</Breadcrumbs>
+      <Breadcrumbs aria-label="breadcrumb" separator="›">
+        {breadcrumbs}
+      </Breadcrumbs>
       <Box sx={{ borderBottom: 1, borderColor: 'divider', mt: 2 }}>
         <Tabs value={tabValue} onChange={handleTabChange} aria-label="basic tabs example">
           <Tab label="Details" {...a11yProps(0)} />
