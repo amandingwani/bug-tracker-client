@@ -33,6 +33,7 @@ import AlertDialog from 'src/components/alertDialog';
 import CreateOrEditTicket from '../createOrEditTicket';
 import { FilterData, defaultFilterData } from '../types';
 import { SxProps, Theme } from '@mui/material/styles';
+import TableEmpty from 'src/components/table-empty';
 
 // ----------------------------------------------------------------------
 
@@ -140,6 +141,8 @@ export default function TicketsPage(props: TicketsPageProps) {
     allTickets = allProjects.map((project) => [...project.tickets]).flat();
   }
 
+  const noTickets = allTickets.length === 0;
+
   // const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
   // const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
 
@@ -233,6 +236,20 @@ export default function TicketsPage(props: TicketsPageProps) {
                     height={77}
                     emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
                   />
+
+                  {!noTickets && dataFiltered.length === 0 && !notFound && (
+                    <TableEmpty
+                      heading="No tickets found."
+                      msg="Adjust filters to discover matching tickets or check back later."
+                    />
+                  )}
+
+                  {noTickets && !notFound && (
+                    <TableEmpty
+                      heading="Great news! No pending tickets at the moment."
+                      msg="Start by creating new tickets or check back later."
+                    />
+                  )}
 
                   {notFound && <TableNoData query={filterName} />}
                 </TableBody>

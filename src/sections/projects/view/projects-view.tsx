@@ -31,7 +31,7 @@ import TableRowsLoader from '../table-rows-loader';
 import { FilterData, defaultFilterData } from '../types';
 import { RouterLink } from 'src/routes/components';
 import Iconify from 'src/components/iconify';
-import TableEmpty from '../table-empty';
+import TableEmpty from 'src/components/table-empty';
 
 // ----------------------------------------------------------------------
 
