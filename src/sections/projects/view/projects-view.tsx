@@ -31,6 +31,7 @@ import TableRowsLoader from '../table-rows-loader';
 import { FilterData, defaultFilterData } from '../types';
 import { RouterLink } from 'src/routes/components';
 import Iconify from 'src/components/iconify';
+import TableEmpty from '../table-empty';
 
 // ----------------------------------------------------------------------
 
@@ -95,6 +96,8 @@ export default function ProjectsPage() {
   };
 
   let projectsToDisplay: Project[] = [];
+
+  const noProjects = projects.createdProjects.length + projects.otherProjects.length === 0;
 
   // owner filter
   if (filterData.owner === 'All')
@@ -209,6 +212,20 @@ export default function ProjectsPage() {
                     height={77}
                     emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
                   />
+
+                  {!noProjects && dataFiltered.length === 0 && !notFound && (
+                    <TableEmpty
+                      heading="No projects found!"
+                      msg="Adjust filters to discover matching projects."
+                    />
+                  )}
+
+                  {noProjects && !notFound && (
+                    <TableEmpty
+                      heading="Your project list is empty."
+                      msg="Ready to start something new?"
+                    />
+                  )}
 
                   {notFound && <TableNoData query={filterName} />}
                 </TableBody>

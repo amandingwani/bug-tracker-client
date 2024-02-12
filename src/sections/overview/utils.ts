@@ -1,4 +1,4 @@
-import { Project, ProjectsState } from "src/redux/types";
+import { ProjectsState } from "src/redux/types";
 
 // tickets count by status
 export type DashboardData = {
