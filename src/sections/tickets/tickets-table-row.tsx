@@ -10,13 +10,16 @@ import { RouterLink } from 'src/routes/components';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
-import { TicketStatusMap, Ticket, TicketUpdate } from 'src/redux/types';
+import { TicketStatusMap, Ticket } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 import { Link } from '@mui/material';
+import { AllowedAction } from 'src/components/itemPopoverMenu/types';
+import { useAppSelector } from 'src/redux/hooks';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
-interface ProjectTableRowProps {
+interface TicketTableRowProps {
   key: number;
   ticket: Ticket;
   setOpenDrawer: (value: React.SetStateAction<boolean>) => void;
@@ -24,10 +27,27 @@ interface ProjectTableRowProps {
   handleAlertClickOpen: () => void;
 }
 
-export default function ProjectTableRow(props: ProjectTableRowProps) {
+export default function TicketTableRow(props: TicketTableRowProps) {
+  const user = useAppSelector(selectUser);
+
   const [open, setOpen] = useState<(EventTarget & Element) | null>(null);
 
   const ticket = props.ticket;
+
+  // Allowed actions for the popover menu #########################################################
+  const allowedAction: AllowedAction = {
+    edit: false,
+    delete: false,
+  };
+
+  // user can be author or project owner to delete
+  if (user?.id === props.ticket.author.id || user?.id === props.ticket.project.owner.id)
+    allowedAction.delete = true;
+
+  // user can be author or assignee or project owner to edit
+  if (allowedAction.delete || user?.id === props.ticket.assignee?.id) allowedAction.edit = true;
+
+  // #############################################################################################
 
   const handleOpenMenu = (event: React.MouseEvent) => {
     setOpen(event.currentTarget);
@@ -109,6 +129,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
       </TableRow>
 
       <ItemPopoverMenu
+        allowedAction={allowedAction}
         open={open}
         handleCloseMenu={handleCloseMenu}
         ticket={ticket}

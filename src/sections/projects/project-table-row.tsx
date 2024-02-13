@@ -75,25 +75,22 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
 
         <TableCell>{new Date(project.createdAt).toLocaleString()}</TableCell>
 
-        {isOwner && (
-          <TableCell align="right">
-            <IconButton onClick={handleOpenMenu}>
-              <Iconify icon="eva:more-vertical-fill" />
-            </IconButton>
-          </TableCell>
-        )}
+        <TableCell align="right">
+          <IconButton onClick={handleOpenMenu}>
+            <Iconify icon="eva:more-vertical-fill" />
+          </IconButton>
+        </TableCell>
       </TableRow>
 
-      {isOwner && (
-        <ItemPopoverMenu
-          open={open}
-          handleCloseMenu={handleCloseMenu}
-          project={project}
-          setOpenDrawer={props.setOpenDrawer}
-          setSelectedProject={props.setSelectedProject}
-          handleAlertClickOpen={props.handleAlertClickOpen}
-        />
-      )}
+      <ItemPopoverMenu
+        allowedAction={isOwner ? { edit: true, delete: true } : { edit: false, delete: false }}
+        open={open}
+        handleCloseMenu={handleCloseMenu}
+        project={project}
+        setOpenDrawer={props.setOpenDrawer}
+        setSelectedProject={props.setSelectedProject}
+        handleAlertClickOpen={props.handleAlertClickOpen}
+      />
     </>
   );
 }

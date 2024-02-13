@@ -1,9 +1,12 @@
 import Popover from '@mui/material/Popover';
 import MenuItem from '@mui/material/MenuItem';
 import Iconify from 'src/components/iconify';
+import { useRouter } from 'src/routes/hooks';
 import { Project, ProjectUpdate, Ticket } from 'src/redux/types';
+import { AllowedAction } from './types';
 
 interface Props {
+  allowedAction: AllowedAction;
   open: (EventTarget & Element) | null;
   handleCloseMenu: () => void;
   project?: Project;
@@ -15,6 +18,7 @@ interface Props {
 }
 
 const ItemPopoverMenu = ({
+  allowedAction,
   open,
   handleCloseMenu,
   project,
@@ -24,40 +28,59 @@ const ItemPopoverMenu = ({
   setSelectedTicket,
   handleAlertClickOpen,
 }: Props) => {
+  const router = useRouter();
+
+  let handleView: React.MouseEventHandler<HTMLLIElement> = handleCloseMenu;
   let handleEdit: React.MouseEventHandler<HTMLLIElement> = handleCloseMenu;
   let handleDelete: React.MouseEventHandler<HTMLLIElement> = handleCloseMenu;
   if (project && setOpenDrawer && setSelectedProject) {
-    handleEdit = () => {
-      setSelectedProject({
-        id: project.id,
-        name: project.name,
-        description: project.description ?? '',
-        status: project.status,
-      });
+    handleView = () => {
       handleCloseMenu();
-      setOpenDrawer(true);
+      router.push(`/projects/${project.id}`);
     };
-    handleDelete = () => {
-      setSelectedProject({
-        id: project.id,
-        name: project.name,
-        description: project.description ?? '',
-        status: project.status,
-      });
-      handleCloseMenu();
-      handleAlertClickOpen();
-    };
+    if (allowedAction.edit) {
+      handleEdit = () => {
+        setSelectedProject({
+          id: project.id,
+          name: project.name,
+          description: project.description ?? '',
+          status: project.status,
+        });
+        handleCloseMenu();
+        setOpenDrawer(true);
+      };
+    }
+    if (allowedAction.delete) {
+      handleDelete = () => {
+        setSelectedProject({
+          id: project.id,
+          name: project.name,
+          description: project.description ?? '',
+          status: project.status,
+        });
+        handleCloseMenu();
+        handleAlertClickOpen();
+      };
+    }
   } else if (ticket && setOpenDrawer && setSelectedTicket) {
-    handleEdit = () => {
-      setSelectedTicket(ticket);
+    handleView = () => {
       handleCloseMenu();
-      setOpenDrawer(true);
+      router.push(`/projects/${ticket.project.id}/tickets/${ticket.id}`);
     };
-    handleDelete = () => {
-      setSelectedTicket(ticket);
-      handleCloseMenu();
-      handleAlertClickOpen();
-    };
+    if (allowedAction.edit) {
+      handleEdit = () => {
+        setSelectedTicket(ticket);
+        handleCloseMenu();
+        setOpenDrawer(true);
+      };
+    }
+    if (allowedAction.delete) {
+      handleDelete = () => {
+        setSelectedTicket(ticket);
+        handleCloseMenu();
+        handleAlertClickOpen();
+      };
+    }
   }
 
   return (
@@ -73,15 +96,24 @@ const ItemPopoverMenu = ({
         },
       }}
     >
-      <MenuItem onClick={handleEdit}>
-        <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
-        Edit
+      <MenuItem onClick={handleView}>
+        <Iconify icon="carbon:view-filled" sx={{ mr: 2 }} />
+        View
       </MenuItem>
 
-      <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
-        <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
-        Delete
-      </MenuItem>
+      {allowedAction.edit && (
+        <MenuItem onClick={handleEdit}>
+          <Iconify icon="eva:edit-fill" sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
+      )}
+
+      {allowedAction.delete && (
+        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
+          <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
+          Delete
+        </MenuItem>
+      )}
     </Popover>
   );
 };
