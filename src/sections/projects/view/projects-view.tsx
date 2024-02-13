@@ -209,7 +209,7 @@ export default function ProjectsPage() {
                     ))}
 
                   <TableEmptyRows
-                    height={69}
+                    height={77}
                     emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
                   />
 

@@ -63,7 +63,7 @@ export default function TicketTableRow(props: TicketTableRowProps) {
 
   return (
     <>
-      <TableRow hover tabIndex={-1}>
+      <TableRow hover tabIndex={-1} sx={{ height: 77 }}>
         <TableCell component="th" scope="row">
           <Typography variant="subtitle2" noWrap>
             {ticket.id}

@@ -48,7 +48,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
 
   return (
     <>
-      <TableRow hover tabIndex={-1}>
+      <TableRow hover tabIndex={-1} sx={{ height: 77 }}>
         <TableCell component="th" scope="row">
           <Link
             textTransform={'capitalize'}
