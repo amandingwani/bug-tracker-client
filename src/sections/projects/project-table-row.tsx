@@ -60,6 +60,11 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
               '&:hover': {
                 color: 'primary.darker',
               },
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
             }}
           >
             {project.name}

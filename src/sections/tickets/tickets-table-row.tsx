@@ -80,6 +80,11 @@ export default function TicketTableRow(props: TicketTableRowProps) {
               '&:hover': {
                 color: 'primary.darker',
               },
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
             }}
           >
             {ticket.title}
