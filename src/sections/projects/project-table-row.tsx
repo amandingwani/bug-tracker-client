@@ -49,7 +49,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
   return (
     <>
       <TableRow hover tabIndex={-1} sx={{ height: 77 }}>
-        <TableCell component="th" scope="row">
+        <TableCell component="th" scope="row" sx={{ minWidth: 200 }}>
           <Link
             textTransform={'capitalize'}
             component={RouterLink}
@@ -71,9 +71,11 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           </Link>
         </TableCell>
 
-        <TableCell>{project.owner.firstName + ' ' + project.owner.lastName}</TableCell>
+        <TableCell sx={{ minWidth: 150 }}>
+          {project.owner.firstName + ' ' + project.owner.lastName}
+        </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ minWidth: 150 }}>
           <Label color={statusLabelColor}>{ProjectStatusMap[project.status]}</Label>
         </TableCell>
 

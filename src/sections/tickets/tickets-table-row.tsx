@@ -69,7 +69,7 @@ export default function TicketTableRow(props: TicketTableRowProps) {
             {ticket.id}
           </Typography>
         </TableCell>
-        <TableCell sx={{ minWidth: 200 }}>
+        <TableCell sx={{ minWidth: 300 }}>
           <Link
             variant="subtitle2"
             component={RouterLink}
@@ -91,14 +91,16 @@ export default function TicketTableRow(props: TicketTableRowProps) {
           </Link>
         </TableCell>
 
-        <TableCell>{ticket.author.firstName + ' ' + ticket.author.lastName}</TableCell>
-        <TableCell>
+        <TableCell sx={{ minWidth: 150 }}>
+          {ticket.author.firstName + ' ' + ticket.author.lastName}
+        </TableCell>
+        <TableCell sx={{ minWidth: 150 }}>
           {ticket.assignee
             ? ticket.assignee.firstName + ' ' + ticket.assignee.lastName
             : 'Unassigned'}
         </TableCell>
 
-        <TableCell>{TicketStatusMap[ticket.status]}</TableCell>
+        <TableCell sx={{ minWidth: 150 }}>{TicketStatusMap[ticket.status]}</TableCell>
         <TableCell>{ticket.type}</TableCell>
 
         <TableCell>
@@ -116,6 +118,11 @@ export default function TicketTableRow(props: TicketTableRowProps) {
               '&:hover': {
                 color: 'primary.darker',
               },
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
             }}
           >
             {ticket.project.name}
