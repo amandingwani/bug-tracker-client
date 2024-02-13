@@ -211,7 +211,7 @@ export default function TicketsPage(props: TicketsPageProps) {
                   { id: 'priority', label: 'Priority' },
                   { id: 'project', label: 'Project' },
                   { id: 'createdAt', label: 'Created On', minWidth: 120 },
-                  { id: '' },
+                  { id: '', align: 'right' },
                 ]}
               />
               {projectsLoading ? (

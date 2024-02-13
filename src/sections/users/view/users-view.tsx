@@ -165,7 +165,7 @@ export default function UsersTable(props: Props) {
                   { id: 'name', label: 'User Name' },
                   { id: 'email', label: 'Email' },
                   { id: 'status', label: 'Status' },
-                  { id: '' },
+                  { id: '', align: 'right' },
                 ]}
               />
               <TableBody>
