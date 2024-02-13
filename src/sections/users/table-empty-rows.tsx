@@ -22,7 +22,7 @@ export default function TableEmptyRows({
         }),
       }}
     >
-      <TableCell colSpan={9} />
+      <TableCell colSpan={4} />
     </TableRow>
   );
 }

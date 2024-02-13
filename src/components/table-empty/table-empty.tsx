@@ -5,10 +5,18 @@ import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
-export default function TableEmpty({ heading, msg }: { heading: string; msg: string }) {
+export default function TableEmpty({
+  heading,
+  msg,
+  colSpan,
+}: {
+  heading: string;
+  msg: string;
+  colSpan: number;
+}) {
   return (
     <TableRow>
-      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+      <TableCell align="center" colSpan={colSpan} sx={{ py: 3 }}>
         <Paper
           sx={{
             textAlign: 'center',

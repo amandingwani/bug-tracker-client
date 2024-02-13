@@ -241,6 +241,7 @@ export default function TicketsPage(props: TicketsPageProps) {
                     <TableEmpty
                       heading="No tickets found."
                       msg="Adjust filters to discover matching tickets or check back later."
+                      colSpan={10}
                     />
                   )}
 
@@ -248,6 +249,7 @@ export default function TicketsPage(props: TicketsPageProps) {
                     <TableEmpty
                       heading="Great news! No pending tickets at the moment."
                       msg="Start by creating new tickets or check back later."
+                      colSpan={10}
                     />
                   )}
 

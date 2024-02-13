@@ -217,6 +217,7 @@ export default function ProjectsPage() {
                     <TableEmpty
                       heading="No projects found!"
                       msg="Adjust filters to discover matching projects."
+                      colSpan={6}
                     />
                   )}
 
@@ -224,6 +225,7 @@ export default function ProjectsPage() {
                     <TableEmpty
                       heading="Your project list is empty."
                       msg="Ready to start something new?"
+                      colSpan={6}
                     />
                   )}
 
