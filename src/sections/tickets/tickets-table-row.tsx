@@ -69,10 +69,9 @@ export default function TicketTableRow(props: TicketTableRowProps) {
             {ticket.id}
           </Typography>
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ minWidth: 200 }}>
           <Link
             variant="subtitle2"
-            noWrap
             component={RouterLink}
             href={`/projects/${ticket.project.id}/tickets/${ticket.id}`}
             underline="none"
@@ -101,10 +100,9 @@ export default function TicketTableRow(props: TicketTableRowProps) {
           <Label color={priorityLabelColor}>{ticket.priority}</Label>
         </TableCell>
 
-        <TableCell>
+        <TableCell sx={{ minWidth: 180 }}>
           <Link
             variant="subtitle2"
-            noWrap
             component={RouterLink}
             href={`/projects/${ticket.project.id}`}
             underline="none"
