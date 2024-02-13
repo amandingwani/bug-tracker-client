@@ -51,7 +51,6 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
       <TableRow hover tabIndex={-1}>
         <TableCell component="th" scope="row">
           <Link
-            noWrap
             textTransform={'capitalize'}
             component={RouterLink}
             href={`/projects/${project.id}`}
