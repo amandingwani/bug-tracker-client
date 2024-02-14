@@ -7,6 +7,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useResponsive } from 'src/hooks/use-responsive';
 import Popover from '@mui/material/Popover';
 
 import Iconify from 'src/components/iconify';
@@ -33,6 +34,7 @@ export default function TicketsTableToolbar({
   setFilterData,
   onNewTicketClick,
 }: TicketsTableToolbarProps) {
+  const isXs = useResponsive('only', 'xs');
   const [openFilter, setOpenFilter] = useState(false);
 
   const handleOpenFilter = () => {
@@ -56,7 +58,7 @@ export default function TicketsTableToolbar({
         direction="row"
         alignItems="center"
         divider={<Divider orientation="vertical" flexItem />}
-        spacing={2}
+        spacing={{ xs: 1, sm: 1.5, md: 2 }}
       >
         <OutlinedInput
           value={filterName}
@@ -73,6 +75,7 @@ export default function TicketsTableToolbar({
         />
 
         <TicketsFilters
+          isXs={isXs}
           openFilter={openFilter}
           onOpenFilter={handleOpenFilter}
           onCloseFilter={handleCloseFilter}
@@ -80,14 +83,31 @@ export default function TicketsTableToolbar({
           setFilterData={setFilterData}
         />
       </Stack>
-      <Button
-        onClick={onNewTicketClick}
-        variant="contained"
-        color="inherit"
-        startIcon={<Iconify icon="eva:plus-fill" />}
-      >
-        New Ticket
-      </Button>
+      {isXs ? (
+        <IconButton
+          aria-label="New Ticket"
+          onClick={onNewTicketClick}
+          size="medium"
+          sx={{
+            backgroundColor: '#000000',
+            borderRadius: 1,
+            '&:hover': {
+              bgcolor: '#000000',
+            },
+          }}
+        >
+          <Iconify icon="eva:plus-fill" sx={{ color: '#ffffff' }} />
+        </IconButton>
+      ) : (
+        <Button
+          onClick={onNewTicketClick}
+          variant="contained"
+          color="inherit"
+          startIcon={<Iconify icon="eva:plus-fill" />}
+        >
+          New Ticket
+        </Button>
+      )}
     </Toolbar>
   );
 }

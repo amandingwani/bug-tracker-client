@@ -10,6 +10,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import { alpha } from '@mui/material/styles';
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
@@ -29,6 +30,7 @@ import { FilterData, OWNER_OPTIONS, ASSIGNEE_OPTIONS, defaultFilterData } from '
 // ----------------------------------------------------------------------
 
 interface TicketsFiltersProps {
+  isXs: boolean;
   openFilter: boolean;
   onOpenFilter?: React.MouseEventHandler<HTMLButtonElement>;
   onCloseFilter: () => void;
@@ -37,6 +39,7 @@ interface TicketsFiltersProps {
 }
 
 export default function TicketsFilters({
+  isXs,
   openFilter,
   onOpenFilter,
   onCloseFilter,
@@ -177,14 +180,30 @@ export default function TicketsFilters({
 
   return (
     <>
-      <Button
-        disableRipple
-        color="inherit"
-        endIcon={<Iconify icon="ic:round-filter-list" />}
-        onClick={onOpenFilter}
-      >
-        Filters&nbsp;
-      </Button>
+      {isXs ? (
+        <IconButton
+          disableRipple
+          color="inherit"
+          onClick={onOpenFilter}
+          sx={{
+            borderRadius: 1,
+            '&:hover': {
+              bgcolor: (theme) => alpha(theme.palette.text.secondary, 0.16),
+            },
+          }}
+        >
+          <Iconify icon="ic:round-filter-list" />
+        </IconButton>
+      ) : (
+        <Button
+          disableRipple
+          color="inherit"
+          endIcon={<Iconify icon="ic:round-filter-list" />}
+          onClick={onOpenFilter}
+        >
+          Filters&nbsp;
+        </Button>
+      )}
 
       <Drawer
         anchor="right"
