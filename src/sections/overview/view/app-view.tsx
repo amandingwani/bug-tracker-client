@@ -3,6 +3,7 @@ import { alpha, useTheme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import AppCurrentVisits from '../app-current-visits';
 import AppWidgetSummary from '../app-widget-summary';
@@ -19,6 +20,7 @@ import { getDashboardData, type DashboardData } from '../utils';
 
 export default function AppView() {
   const theme = useTheme();
+  const isXs = useResponsive('only', 'xs');
   const user = useAppSelector(selectUser);
   const welcomeBackMsg = useAppSelector(selectWelcomeBackMsg);
 
@@ -125,7 +127,7 @@ export default function AppView() {
     />
   );
 
-  const appWidgetSkeleton = <Skeleton variant="rounded" height={164}></Skeleton>;
+  const appWidgetSkeleton = <Skeleton variant="rounded" height={isXs ? 100 : 164}></Skeleton>;
   const appChartSkeleton = <Skeleton variant="rounded" height={492}></Skeleton>;
 
   return (
