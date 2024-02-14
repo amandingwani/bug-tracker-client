@@ -1,13 +1,16 @@
+import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 import Skeleton from '@mui/material/Skeleton';
 import Grid from '@mui/material/Grid';
+import Typography from '@mui/material/Typography';
 
 import { Ticket, TicketStatusMap } from 'src/redux/types';
 
 import TicketDetails from '../ticket-details';
 import TicketInfoWidget from '../ticket-info-widget';
 import Iconify from 'src/components/iconify';
-import { Box, SxProps, Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -43,6 +46,19 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
 
   return (
     <Grid container spacing={3} sx={{ justifyContent: 'space-between', ...sx }}>
+      <Grid item xs={12} sm={12} md={12} lg={12} sx={{ pt: 2 }}>
+        {ticket ? (
+          <Card>
+            <CardContent>
+              <Typography variant="h5" component="div">
+                {ticket.title}
+              </Typography>
+            </CardContent>
+          </Card>
+        ) : (
+          <Skeleton variant="rounded" height={70} />
+        )}
+      </Grid>
       <Grid item xs={12} sm={6} md={4} sx={{ pt: 2 }}>
         {ticket ? renderType : infoWidgetSkeleton}
       </Grid>

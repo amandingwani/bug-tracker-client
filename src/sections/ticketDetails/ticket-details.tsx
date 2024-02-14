@@ -117,7 +117,7 @@ export default function TicketDetails({ title, ticket }: Props) {
       {ticket && (
         <>
           <CardHeader
-            title={'Ticket : ' + ticket.title}
+            title={'Ticket Details'}
             action={
               <ExpandMore
                 expand={expanded}
