@@ -78,7 +78,7 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }: 
   });
 
   return (
-    <Card {...other}>
+    <Card sx={{ height: 492 }} {...other}>
       <CardHeader title={title} subheader={subheader} sx={{ mb: 5 }} />
 
       <StyledChart

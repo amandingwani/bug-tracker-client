@@ -108,6 +108,9 @@ export default function AppView() {
     />
   );
 
+  const appWidgetSkeleton = <Skeleton variant="rounded" height={164}></Skeleton>;
+  const appChartSkeleton = <Skeleton variant="rounded" height={492}></Skeleton>;
+
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -118,47 +121,31 @@ export default function AppView() {
       {dashboardData && (
         <Grid container spacing={3}>
           <Grid xs={12} sm={6} md={3}>
-            {loading ? <Skeleton variant="rounded">{renderUrgent}</Skeleton> : renderUrgent}
+            {loading ? appWidgetSkeleton : renderUrgent}
           </Grid>
 
           <Grid xs={12} sm={6} md={3}>
-            {loading ? <Skeleton variant="rounded">{renderHigh}</Skeleton> : renderHigh}
+            {loading ? appWidgetSkeleton : renderHigh}
           </Grid>
 
           <Grid xs={12} sm={6} md={3}>
-            {loading ? (
-              <Skeleton variant="rounded">{renderActiveTickets}</Skeleton>
-            ) : (
-              renderActiveTickets
-            )}
+            {loading ? appWidgetSkeleton : renderActiveTickets}
           </Grid>
 
           <Grid xs={12} sm={6} md={3}>
-            {loading ? (
-              <Skeleton variant="rounded">{renderActiveProjects}</Skeleton>
-            ) : (
-              renderActiveProjects
-            )}
+            {loading ? appWidgetSkeleton : renderActiveProjects}
           </Grid>
 
           <Grid xs={12} md={6} lg={4}>
-            {loading ? <Skeleton variant="rounded">{renderTypeChart}</Skeleton> : renderTypeChart}
+            {loading ? appChartSkeleton : renderTypeChart}
           </Grid>
 
           <Grid xs={12} md={6} lg={4}>
-            {loading ? (
-              <Skeleton variant="rounded">{renderPriorityChart}</Skeleton>
-            ) : (
-              renderPriorityChart
-            )}
+            {loading ? appChartSkeleton : renderPriorityChart}
           </Grid>
 
           <Grid xs={12} md={6} lg={4}>
-            {loading ? (
-              <Skeleton variant="rounded">{renderStatusChart}</Skeleton>
-            ) : (
-              renderStatusChart
-            )}
+            {loading ? appChartSkeleton : renderStatusChart}
           </Grid>
         </Grid>
       )}
