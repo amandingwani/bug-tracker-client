@@ -47,7 +47,17 @@ export default function Header({
       )}
 
       <Box sx={{ mr: 1 }}>
-        <Typography variant="h4" color={'text.primary'}>
+        <Typography
+          variant="h4"
+          color={'text.primary'}
+          sx={{
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            display: '-webkit-box',
+            WebkitLineClamp: '1',
+            WebkitBoxOrient: 'vertical',
+          }}
+        >
           {page.header}
         </Typography>
       </Box>
