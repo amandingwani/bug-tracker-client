@@ -125,30 +125,20 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
       </Box>
       <CustomTabPanel value={tabValue} index={0}>
         {loading ? (
-          <Skeleton variant="rounded">
-            <ProjectDetails title="Project Details" project={project} />
-          </Skeleton>
+          <Skeleton variant="rounded" height={450} sx={{ mt: 4 }}></Skeleton>
         ) : (
           <ProjectDetails title="Project Details" project={project} />
         )}
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={1}>
         {loading ? (
-          <Skeleton variant="rounded">
-            <ProjectDetails title="Project Details" project={project} />
-          </Skeleton>
+          <Skeleton variant="rounded" height={450} sx={{ mt: 4 }}></Skeleton>
         ) : (
           project && <UsersView project={project} />
         )}
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={2}>
-        {loading ? (
-          <Skeleton variant="rounded">
-            <ProjectDetails title="Project Details" project={project} />
-          </Skeleton>
-        ) : (
-          project && <TicketsView project={project} sx={{ mt: 4 }} />
-        )}
+        <TicketsView project={project} sx={{ mt: 4 }} projectView={true} />
       </CustomTabPanel>
     </Container>
   );

@@ -38,6 +38,7 @@ import TableEmpty from 'src/components/table-empty';
 // ----------------------------------------------------------------------
 
 interface TicketsPageProps {
+  projectView: boolean;
   project?: Project;
   sx?: SxProps<Theme>;
 }
@@ -55,7 +56,7 @@ export default function TicketsPage(props: TicketsPageProps) {
   const [selectedTicket, setSelectedTicket] = useState<Ticket | undefined>(undefined);
 
   const [filterData, setFilterData] = useState<FilterData>(
-    props.project ? { ...defaultFilterData, assignee: 'All' } : defaultFilterData
+    props.projectView ? { ...defaultFilterData, assignee: 'All' } : defaultFilterData
   );
 
   const [page, setPage] = useState(0);
@@ -134,11 +135,13 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   let allTickets: Ticket[] = [];
 
-  if (props.project?.tickets) {
-    allTickets = props.project.tickets;
-  } else {
-    const allProjects = [...projects.createdProjects, ...projects.otherProjects];
-    allTickets = allProjects.map((project) => [...project.tickets]).flat();
+  if (!projectsLoading) {
+    if (props.project?.tickets) {
+      allTickets = props.project.tickets;
+    } else {
+      const allProjects = [...projects.createdProjects, ...projects.otherProjects];
+      allTickets = allProjects.map((project) => [...project.tickets]).flat();
+    }
   }
 
   const noTickets = allTickets.length === 0;

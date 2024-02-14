@@ -53,7 +53,7 @@ export default function TicketsPage() {
         <Breadcrumbs aria-label="breadcrumb" separator="›">
           {breadcrumbs}
         </Breadcrumbs>
-        <TicketsView sx={{ mt: 2 }} />
+        <TicketsView sx={{ mt: 2 }} projectView={false} />
       </Container>
     </>
   );
