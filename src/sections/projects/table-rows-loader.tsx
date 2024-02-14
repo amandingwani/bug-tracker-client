@@ -6,7 +6,7 @@ import TableCell from '@mui/material/TableCell';
 
 export default function TableRowsLoader({ rowsNum }: { rowsNum: number }) {
   return [...Array(rowsNum)].map((row, index) => (
-    <TableRow key={index}>
+    <TableRow key={index} sx={{ height: 77 }}>
       <TableCell component="th" scope="row">
         <Skeleton animation="wave" variant="text" />
       </TableCell>
