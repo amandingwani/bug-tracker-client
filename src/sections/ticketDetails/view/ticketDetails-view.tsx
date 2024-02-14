@@ -38,44 +38,23 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
   );
   const renderDetails = <TicketDetails title="Ticket Details" ticket={ticket} />;
 
+  const infoWidgetSkeleton = <Skeleton variant="rounded" height={144}></Skeleton>;
+  const detailsSkeleton = <Skeleton variant="rounded" height={500}></Skeleton>;
+
   return (
     <Grid container spacing={3} sx={{ justifyContent: 'space-between', ...sx }}>
-      <Grid item xs={12} sm={6} md={3} sx={{ pb: 2, pt: 2 }}>
-        {ticket ? (
-          renderType
-        ) : (
-          <Skeleton variant="rounded" width={'100%'}>
-            {renderType}
-          </Skeleton>
-        )}
+      <Grid item xs={12} sm={6} md={4} sx={{ pb: 2, pt: 2 }}>
+        {ticket ? renderType : infoWidgetSkeleton}
       </Grid>
       <Grid item xs={12} sm={6} md={4} sx={{ pb: 2, pt: 2 }}>
-        {ticket ? (
-          renderPriority
-        ) : (
-          <Skeleton variant="rounded" width={'100%'}>
-            {renderPriority}
-          </Skeleton>
-        )}
+        {ticket ? renderPriority : infoWidgetSkeleton}
       </Grid>
       <Grid item xs={12} sm={6} md={4} sx={{ pb: 2, pt: 2 }}>
-        {ticket ? (
-          renderStatus
-        ) : (
-          <Skeleton variant="rounded" width={'100%'}>
-            {renderStatus}
-          </Skeleton>
-        )}
+        {ticket ? renderStatus : infoWidgetSkeleton}
       </Grid>
 
       <Grid item xs={12} sm={12} md={12} lg={12}>
-        {ticket ? (
-          renderDetails
-        ) : (
-          <Skeleton variant="rounded" width="100%">
-            <Box sx={{ pt: '40%' }}></Box>
-          </Skeleton>
-        )}
+        {ticket ? renderDetails : detailsSkeleton}
       </Grid>
     </Grid>
   );

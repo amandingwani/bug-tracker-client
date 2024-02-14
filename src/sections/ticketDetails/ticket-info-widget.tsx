@@ -29,9 +29,11 @@ export default function AppWidgetSummary({
       component={Stack}
       spacing={3}
       direction="row"
+      height={144}
+      display={'flex'}
+      alignItems={'center'}
       sx={{
         px: 3,
-        py: 5,
         borderRadius: 2,
         ...sx,
       }}
@@ -39,7 +41,7 @@ export default function AppWidgetSummary({
     >
       {icon && <Box sx={{ width: 64, height: 64 }}>{icon}</Box>}
 
-      <Stack spacing={0.5}>
+      <Stack spacing={0.5} direction={'column'}>
         <Typography variant="subtitle2" sx={{ color: 'text.disabled' }}>
           {title}
         </Typography>
