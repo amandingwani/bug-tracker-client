@@ -30,8 +30,7 @@ export default function TicketDetailsPage() {
 
   const ticket = project?.tickets.find((t) => t.id === tId);
 
-  let headerString: string | null = null;
-  if (ticket) headerString = `${ticket.project.name} : ${ticket.title}`;
+  const headerString = 'Ticket';
 
   const breadcrumbs = [
     <Link
