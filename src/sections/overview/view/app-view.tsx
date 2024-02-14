@@ -10,6 +10,8 @@ import { useAppSelector } from 'src/redux/hooks';
 import { selectUser, selectWelcomeBackMsg } from 'src/redux/slices/authSlice';
 import { selectProjects } from 'src/redux/slices/projectsSlice';
 
+import Iconify from 'src/components/iconify';
+import SvgColor from 'src/components/svg-color';
 import { getDashboardData, type DashboardData } from '../utils';
 
 // ----------------------------------------------------------------------
@@ -36,7 +38,7 @@ export default function AppView() {
       title="Urgent Priority Tickets"
       total={dashboardData?.ticketPriorityCount.URGENT}
       color="error"
-      icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
+      icon={<Iconify icon="tabler:urgent" width={50} />}
     />
   );
 
@@ -45,8 +47,12 @@ export default function AppView() {
       title="High Priority Tickets"
       total={dashboardData?.ticketPriorityCount.HIGH}
       color="warning"
-      icon={<img alt="icon" src="/assets/icons/glass/ic_glass_users.png" />}
+      icon={<Iconify icon="iconoir:priority-high" width={48} />}
     />
+  );
+
+  const icon = (name: string) => (
+    <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 44, height: 44 }} />
   );
 
   const renderActiveTickets = (
@@ -54,7 +60,7 @@ export default function AppView() {
       title="Active Tickets"
       total={dashboardData?.activeTickets}
       color="warning"
-      icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
+      icon={icon('ic_tickets')}
     />
   );
 
@@ -63,7 +69,7 @@ export default function AppView() {
       title="Active Projects"
       total={dashboardData?.activeProjects}
       color="primary"
-      icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
+      icon={icon('ic_projects')}
     />
   );
 
