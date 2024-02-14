@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { styled } from '@mui/material/styles';
+import { styled, alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
 import CardHeader from '@mui/material/CardHeader';
@@ -89,6 +89,10 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
       sx={{
         display: 'flex',
         alignItems: 'center',
+        borderRadius: 1,
+        '&:hover': {
+          bgcolor: (theme) => alpha(theme.palette.text.secondary, 0.16),
+        },
       }}
     >
       <Iconify icon="ic:round-home" />

@@ -11,6 +11,7 @@ import { RouterLink } from 'src/routes/components';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Iconify from 'src/components/iconify';
+import { alpha } from '@mui/material/styles';
 
 // ----------------------------------------------------------------------
 
@@ -28,6 +29,10 @@ export default function TicketsPage() {
       sx={{
         display: 'flex',
         alignItems: 'center',
+        borderRadius: 1,
+        '&:hover': {
+          bgcolor: (theme) => alpha(theme.palette.text.secondary, 0.16),
+        },
       }}
     >
       <Iconify icon="ic:round-home" />

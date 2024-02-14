@@ -1,5 +1,6 @@
 import { useState } from 'react';
 
+import { alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
@@ -71,6 +72,10 @@ export default function ProjectsPage() {
       sx={{
         display: 'flex',
         alignItems: 'center',
+        borderRadius: 1,
+        '&:hover': {
+          bgcolor: (theme) => alpha(theme.palette.text.secondary, 0.16),
+        },
       }}
     >
       <Iconify icon="ic:round-home" />
