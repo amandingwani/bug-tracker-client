@@ -43,13 +43,13 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
 
   return (
     <Grid container spacing={3} sx={{ justifyContent: 'space-between', ...sx }}>
-      <Grid item xs={12} sm={6} md={4} sx={{ pb: 2, pt: 2 }}>
+      <Grid item xs={12} sm={6} md={4} sx={{ pt: 2 }}>
         {ticket ? renderType : infoWidgetSkeleton}
       </Grid>
-      <Grid item xs={12} sm={6} md={4} sx={{ pb: 2, pt: 2 }}>
+      <Grid item xs={12} sm={6} md={4} sx={{ pt: 2 }}>
         {ticket ? renderPriority : infoWidgetSkeleton}
       </Grid>
-      <Grid item xs={12} sm={6} md={4} sx={{ pb: 2, pt: 2 }}>
+      <Grid item xs={12} sm={6} md={4} sx={{ pt: 2 }}>
         {ticket ? renderStatus : infoWidgetSkeleton}
       </Grid>
 

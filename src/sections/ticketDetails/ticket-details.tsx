@@ -187,7 +187,7 @@ function Details({ ticket }: { ticket: Ticket }) {
         {description}
       </Typography>
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <InfoWidget
           title="Ticket author"
           value={author.firstName + ' ' + author.lastName}
