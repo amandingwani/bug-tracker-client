@@ -29,7 +29,7 @@ export default function AppWidgetSummary({
       component={Stack}
       spacing={3}
       direction="row"
-      height={144}
+      height={{ xs: 100, sm: 144 }}
       display={'flex'}
       alignItems={'center'}
       sx={{

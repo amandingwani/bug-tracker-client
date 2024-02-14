@@ -210,7 +210,7 @@ function Details({ project }: { project: Project }) {
         {description}
       </Typography>
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <InfoWidget
           title="Status"
           value={ProjectStatusMap[status]}
