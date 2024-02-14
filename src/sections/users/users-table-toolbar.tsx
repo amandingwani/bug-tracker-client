@@ -3,8 +3,10 @@ import Stack from '@mui/material/Stack';
 import Toolbar from '@mui/material/Toolbar';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
+import { useResponsive } from 'src/hooks/use-responsive';
 
 import Iconify from 'src/components/iconify';
+import IconButton from '@mui/material/IconButton';
 
 // ----------------------------------------------------------------------
 
@@ -19,6 +21,8 @@ export default function UsersTableToolbar({
   onFilterName,
   onAddUserClick,
 }: UsersTableToolbarProps) {
+  const isXs = useResponsive('only', 'xs');
+
   return (
     <Toolbar
       sx={{
@@ -43,16 +47,32 @@ export default function UsersTableToolbar({
           }
         />
       </Stack>
-      {onAddUserClick && (
-        <Button
-          onClick={onAddUserClick}
-          variant="contained"
-          color="inherit"
-          startIcon={<Iconify icon="eva:plus-fill" />}
-        >
-          Add User
-        </Button>
-      )}
+      {onAddUserClick &&
+        (isXs ? (
+          <IconButton
+            aria-label="Add User"
+            onClick={onAddUserClick}
+            size="medium"
+            sx={{
+              backgroundColor: '#000000',
+              borderRadius: 1,
+              '&:hover': {
+                bgcolor: '#000000',
+              },
+            }}
+          >
+            <Iconify icon="eva:plus-fill" sx={{ color: '#ffffff' }} />
+          </IconButton>
+        ) : (
+          <Button
+            onClick={onAddUserClick}
+            variant="contained"
+            color="inherit"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+          >
+            Add User
+          </Button>
+        ))}
     </Toolbar>
   );
 }
