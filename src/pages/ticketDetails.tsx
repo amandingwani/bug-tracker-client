@@ -59,6 +59,13 @@ export default function TicketDetailsPage() {
       key="2"
       color="inherit"
       href={`/projects/${project?.id}`}
+      sx={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitLineClamp: '1',
+        WebkitBoxOrient: 'vertical',
+      }}
     >
       {project?.name}
     </Link>,

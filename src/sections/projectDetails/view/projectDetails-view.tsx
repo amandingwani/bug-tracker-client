@@ -100,7 +100,17 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
     <Link component={RouterLink} underline="hover" key="2" color="inherit" href="/projects">
       Projects
     </Link>,
-    <Typography key="2" color="text.primary">
+    <Typography
+      key="2"
+      color="text.primary"
+      sx={{
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitLineClamp: '1',
+        WebkitBoxOrient: 'vertical',
+      }}
+    >
       {project?.name}
     </Typography>,
   ];
