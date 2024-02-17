@@ -50,6 +50,9 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
         {ticket ? (
           <Card>
             <CardContent>
+              <Typography variant="subtitle2" sx={{ color: 'text.disabled' }} gutterBottom>
+                Ticket Title
+              </Typography>
               <Typography variant="h5" component="div">
                 {ticket.title}
               </Typography>
