@@ -4,7 +4,6 @@ import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
 
 // import { projects } from 'src/_mock/projects';
 
@@ -34,6 +33,7 @@ import CreateOrEditTicket from '../createOrEditTicket';
 import { FilterData, defaultFilterData } from '../types';
 import { SxProps, Theme } from '@mui/material/styles';
 import TableEmpty from 'src/components/table-empty';
+import TablePaginationCustom from 'src/components/table-pagination-custom';
 
 // ----------------------------------------------------------------------
 
@@ -264,13 +264,11 @@ export default function TicketsPage(props: TicketsPageProps) {
         </Scrollbar>
 
         {dataFiltered.length > 5 && (
-          <TablePagination
+          <TablePaginationCustom
             page={page}
-            component="div"
             count={dataFiltered.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
-            rowsPerPageOptions={[5, 10, 25]}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         )}

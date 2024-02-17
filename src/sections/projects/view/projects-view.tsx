@@ -6,7 +6,6 @@ import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
@@ -33,6 +32,7 @@ import { FilterData, defaultFilterData } from '../types';
 import { RouterLink } from 'src/routes/components';
 import Iconify from 'src/components/iconify';
 import TableEmpty from 'src/components/table-empty';
+import TablePaginationCustom from 'src/components/table-pagination-custom';
 
 // ----------------------------------------------------------------------
 
@@ -242,13 +242,11 @@ export default function ProjectsPage() {
         </Scrollbar>
 
         {dataFiltered.length > 5 && (
-          <TablePagination
+          <TablePaginationCustom
             page={page}
-            component="div"
             count={dataFiltered.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
-            rowsPerPageOptions={[5, 10, 25]}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         )}

@@ -1,12 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import Card from '@mui/material/Card';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
-import TablePagination from '@mui/material/TablePagination';
-
-// import { projects } from 'src/_mock/projects';
 
 import Scrollbar from 'src/components/scrollbar';
 
@@ -28,6 +25,7 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Contributor } from 'src/redux/types';
 
 import AlertDialog from 'src/components/alertDialog';
+import TablePaginationCustom from 'src/components/table-pagination-custom';
 import AddUser from '../addUser';
 import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
 
@@ -194,13 +192,11 @@ export default function UsersTable(props: Props) {
         </Scrollbar>
 
         {dataFiltered.length > 5 && (
-          <TablePagination
+          <TablePaginationCustom
             page={page}
-            component="div"
             count={dataFiltered.length}
             rowsPerPage={rowsPerPage}
             onPageChange={handleChangePage}
-            rowsPerPageOptions={[5, 10, 25]}
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         )}
