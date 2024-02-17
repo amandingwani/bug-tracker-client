@@ -46,7 +46,7 @@ export default function UsersTableRow(props: UsersTableRowProps) {
 
   return (
     <>
-      <TableRow hover tabIndex={-1}>
+      <TableRow hover tabIndex={-1} sx={{ height: 77 }}>
         <TableCell component="th" scope="row">
           {user.lastName ? user.firstName + ' ' + user.lastName : user.firstName}
         </TableCell>
