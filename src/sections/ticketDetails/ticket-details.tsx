@@ -199,7 +199,7 @@ function Details({ ticket }: { ticket: Ticket }) {
 
         <InfoWidget
           title="Ticket assignee"
-          value={assignee?.firstName + ' ' + assignee?.lastName}
+          value={assignee ? assignee.firstName + ' ' + assignee.lastName : 'Unassigned'}
           icon={<Iconify icon="majesticons:user-line" sx={{ width: 64, height: 64 }} />}
           sx={{
             backgroundColor: alpha(theme.palette.grey[500], 0.2),
