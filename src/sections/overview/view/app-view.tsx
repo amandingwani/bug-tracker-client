@@ -41,10 +41,7 @@ export default function AppView() {
     <AppWidgetSummary
       title="Urgent Priority Tickets"
       total={dashboardData?.ticketPriorityCount.URGENT}
-      sx={{
-        // backgroundColor: 'error.lighter',
-        backgroundColor: alpha('#ff0000', 0.15),
-      }}
+      color={alpha('#ff0000', 0.15)}
       icon={<Iconify icon="tabler:urgent" width={50} />}
     />
   );
@@ -53,9 +50,7 @@ export default function AppView() {
     <AppWidgetSummary
       title="High Priority Tickets"
       total={dashboardData?.ticketPriorityCount.HIGH}
-      sx={{
-        backgroundColor: alpha('#FFF5CC', 0.7),
-      }}
+      color={alpha('#FFF5CC', 0.7)}
       icon={<Iconify icon="iconoir:priority-high" width={48} />}
     />
   );
@@ -68,9 +63,7 @@ export default function AppView() {
     <AppWidgetSummary
       title="Active Tickets"
       total={dashboardData?.activeTickets}
-      sx={{
-        backgroundColor: alpha('#CAFDF5', 0.7),
-      }}
+      color={alpha('#CAFDF5', 0.7)}
       icon={icon('ic_tickets')}
     />
   );
@@ -79,9 +72,7 @@ export default function AppView() {
     <AppWidgetSummary
       title="Active Projects"
       total={dashboardData?.activeProjects}
-      sx={{
-        backgroundColor: alpha('#EFD6FF', 0.7),
-      }}
+      color={alpha('#EFD6FF', 0.7)}
       icon={icon('ic_projects')}
     />
   );

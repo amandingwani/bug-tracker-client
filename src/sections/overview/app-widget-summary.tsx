@@ -1,4 +1,5 @@
 import { SxProps, Theme } from '@mui/material';
+import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -22,12 +23,12 @@ export default function AppWidgetSummary({
   title,
   total,
   icon,
-  color = 'primary',
+  color = '#ffffff',
   sx,
   ...other
 }: AppWidgetSummaryProps) {
   return (
-    <Card sx={{ ...sx }}>
+    <Card sx={{ ...sx, backgroundColor: color }}>
       <CardActionArea component={RouterLink} href={`/projects`}>
         <CardContent sx={{ display: 'flex', alignItems: 'center', height: { xs: 100, sm: 164 } }}>
           <Stack
