@@ -92,12 +92,34 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
-          {ticket.author.firstName + ' ' + ticket.author.lastName}
+          <Typography
+            variant="inherit"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {ticket.author.firstName + ' ' + ticket.author.lastName}
+          </Typography>
         </TableCell>
         <TableCell sx={{ minWidth: 150 }}>
-          {ticket.assignee
-            ? ticket.assignee.firstName + ' ' + ticket.assignee.lastName
-            : 'Unassigned'}
+          <Typography
+            variant="inherit"
+            sx={{
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: '2',
+              WebkitBoxOrient: 'vertical',
+            }}
+          >
+            {ticket.assignee
+              ? ticket.assignee.firstName + ' ' + ticket.assignee.lastName
+              : 'Unassigned'}
+          </Typography>
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>{TicketStatusMap[ticket.status]}</TableCell>
