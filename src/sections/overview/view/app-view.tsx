@@ -43,6 +43,7 @@ export default function AppView() {
       total={dashboardData?.ticketPriorityCount.URGENT}
       color={alpha('#ff0000', 0.15)}
       icon={<Iconify icon="tabler:urgent" width={50} />}
+      href="/tickets?filter=urgent"
     />
   );
 
@@ -52,6 +53,7 @@ export default function AppView() {
       total={dashboardData?.ticketPriorityCount.HIGH}
       color={alpha('#FFF5CC', 0.7)}
       icon={<Iconify icon="iconoir:priority-high" width={48} />}
+      href="/tickets?filter=high"
     />
   );
 
@@ -65,6 +67,7 @@ export default function AppView() {
       total={dashboardData?.activeTickets}
       color={alpha('#CAFDF5', 0.7)}
       icon={icon('ic_tickets')}
+      href="/tickets"
     />
   );
 
@@ -74,6 +77,7 @@ export default function AppView() {
       total={dashboardData?.activeProjects}
       color={alpha('#EFD6FF', 0.7)}
       icon={icon('ic_projects')}
+      href="/projects?filter=active"
     />
   );
 

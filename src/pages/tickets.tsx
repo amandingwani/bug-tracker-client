@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
 
 import Container from '@mui/material/Container';
 import { TicketsView } from 'src/sections/tickets/view';
@@ -18,6 +19,7 @@ import { alpha } from '@mui/material/styles';
 export default function TicketsPage() {
   const titleString = 'Tickets';
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
 
   const breadcrumbs = [
     <Link
@@ -58,7 +60,7 @@ export default function TicketsPage() {
         <Breadcrumbs aria-label="breadcrumb" separator="›">
           {breadcrumbs}
         </Breadcrumbs>
-        <TicketsView sx={{ mt: 2 }} projectView={false} />
+        <TicketsView sx={{ mt: 2 }} projectView={false} filter={searchParams.get('filter')} />
       </Container>
     </>
   );

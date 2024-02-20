@@ -33,6 +33,7 @@ interface TicketsPageProps {
   projectView: boolean;
   project?: Project;
   sx?: SxProps<Theme>;
+  filter?: string | null;
 }
 
 export default function TicketsPage(props: TicketsPageProps) {
@@ -47,8 +48,37 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [selectedTicket, setSelectedTicket] = useState<Ticket | undefined>(undefined);
 
+  const ticketsPageFilter: FilterData = {
+    ...defaultFilterData,
+    priority: { URGENT: true, HIGH: true, NORMAL: true, LOW: true },
+  };
+
+  if (props.filter) {
+    switch (props.filter) {
+      case 'urgent':
+        ticketsPageFilter.priority = {
+          URGENT: true,
+          HIGH: false,
+          NORMAL: false,
+          LOW: false,
+        };
+        break;
+      case 'high':
+        ticketsPageFilter.priority = {
+          URGENT: false,
+          HIGH: true,
+          NORMAL: false,
+          LOW: false,
+        };
+        break;
+
+      default:
+        break;
+    }
+  }
+
   const [filterData, setFilterData] = useState<FilterData>(
-    props.projectView ? { ...defaultFilterData, assignee: 'All' } : defaultFilterData
+    props.projectView ? { ...defaultFilterData, assignee: 'All' } : ticketsPageFilter
   );
 
   const [page, setPage] = useState(0);

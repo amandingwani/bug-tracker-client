@@ -17,6 +17,7 @@ interface AppWidgetSummaryProps {
   sx?: SxProps<Theme>;
   icon: string | React.ReactNode;
   color?: string;
+  href: string;
 }
 
 export default function AppWidgetSummary({
@@ -25,11 +26,12 @@ export default function AppWidgetSummary({
   icon,
   color = '#ffffff',
   sx,
+  href,
   ...other
 }: AppWidgetSummaryProps) {
   return (
     <Card sx={{ ...sx, backgroundColor: color }}>
-      <CardActionArea component={RouterLink} href={`/projects`}>
+      <CardActionArea component={RouterLink} href={href}>
         <CardContent sx={{ display: 'flex', alignItems: 'center', height: { xs: 100, sm: 164 } }}>
           <Stack
             spacing={3}
