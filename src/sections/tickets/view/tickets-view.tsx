@@ -5,8 +5,6 @@ import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableContainer from '@mui/material/TableContainer';
 
-// import { projects } from 'src/_mock/projects';
-
 import Scrollbar from 'src/components/scrollbar';
 
 import TableNoData from '../table-no-data';
@@ -15,13 +13,7 @@ import TicketsTableHead from '../tickets-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import TicketsTableToolbar from '../tickets-table-toolbar';
 import TableRowsLoader from '../table-rows-loader';
-import {
-  emptyRows,
-  applyFilter,
-  getComparator,
-  filterTicketsAssignedToMe,
-  filterTicketsCreatedByMe,
-} from '../utils';
+import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import { selectProjects, deleteTicketThunk } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
