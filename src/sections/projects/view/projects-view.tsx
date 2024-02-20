@@ -36,7 +36,11 @@ import TablePaginationCustom from 'src/components/table-pagination-custom';
 
 // ----------------------------------------------------------------------
 
-export default function ProjectsPage() {
+interface ProjectsPageProps {
+  filter?: string | null;
+}
+
+export default function ProjectsPage(props: ProjectsPageProps) {
   const dispatch = useAppDispatch();
 
   const projects = useAppSelector(selectProjects);
@@ -58,7 +62,32 @@ export default function ProjectsPage() {
 
   const [selectedProject, setSelectedProject] = useState<ProjectUpdate | null>(null);
 
-  const [filterData, setFilterData] = useState<FilterData>(defaultFilterData);
+  const projectsPageFilter: FilterData = {
+    ...defaultFilterData,
+    status: {
+      OPEN: true,
+      IN_PROGRESS: true,
+      ON_HOLD: true,
+      COMPLETED: true,
+      CANCELED: true,
+      TESTING: true,
+      DEPLOYED: true,
+    },
+  };
+
+  if (props.filter === 'active') {
+    projectsPageFilter.status = {
+      OPEN: true,
+      IN_PROGRESS: true,
+      ON_HOLD: false,
+      COMPLETED: false,
+      CANCELED: false,
+      TESTING: true,
+      DEPLOYED: true,
+    };
+  }
+
+  const [filterData, setFilterData] = useState<FilterData>(projectsPageFilter);
 
   const [openAlert, setOpenAlert] = useState(false);
 

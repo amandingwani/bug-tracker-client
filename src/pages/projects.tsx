@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useSearchParams } from 'react-router-dom';
 
 import { ProjectsView } from 'src/sections/projects/view';
 
@@ -11,6 +12,7 @@ import { useAppDispatch } from 'src/redux/hooks';
 export default function ProjectsPage() {
   const titleString = 'Projects';
   const dispatch = useAppDispatch();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     dispatch(updateHeader(titleString));
@@ -24,7 +26,7 @@ export default function ProjectsPage() {
         <title> {titleString} | Bug Ninja </title>
       </Helmet>
 
-      <ProjectsView />
+      <ProjectsView filter={searchParams.get('filter')} />
     </>
   );
 }

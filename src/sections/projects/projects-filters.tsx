@@ -50,7 +50,7 @@ export default function ProjectsFilters({
     watch,
     reset,
     control,
-  } = useForm<FilterData>({ defaultValues: defaultFilterValues });
+  } = useForm<FilterData>({ defaultValues: filterData });
 
   const onSubmit: SubmitHandler<FilterData> = (data) => {
     setFilterData(data);
