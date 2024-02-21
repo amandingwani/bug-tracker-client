@@ -211,6 +211,8 @@ export default function CreateOrEditTicket({
                   id="title"
                   label="Ticket Title"
                   variant="outlined"
+                  multiline
+                  minRows={1}
                   error={!!errors.title}
                   helperText={errors.title?.message}
                   inputRef={titleInputRef}
