@@ -1,34 +1,57 @@
 import Paper from '@mui/material/Paper';
-import TableRow from '@mui/material/TableRow';
-import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 
 // ----------------------------------------------------------------------
 
-export default function TableEmpty({
-  heading,
-  msg,
-  colSpan,
-}: {
+type msgAndHeading = {
   heading: string;
   msg: string;
-  colSpan: number;
-}) {
-  return (
-    <TableRow>
-      <TableCell align="center" colSpan={colSpan} sx={{ py: 3 }}>
-        <Paper
-          sx={{
-            textAlign: 'center',
-          }}
-        >
-          <Typography variant="h6" paragraph>
-            {heading}
-          </Typography>
+  query?: never;
+};
 
-          <Typography variant="body2">{msg}</Typography>
-        </Paper>
-      </TableCell>
-    </TableRow>
+type Query = { query: string; heading?: never; msg?: never };
+
+type TableEmptyProps = msgAndHeading | Query;
+
+export default function TableEmpty({ heading, msg, query }: TableEmptyProps) {
+  let mainContent: JSX.Element;
+
+  if (query) {
+    mainContent = (
+      <>
+        <Typography variant="h6" paragraph>
+          Not found
+        </Typography>
+
+        <Typography variant="body2">
+          No results found for &nbsp;
+          <strong>&quot;{query}&quot;</strong>.
+          <br /> Try checking for typos or using complete words.
+          <br /> Or try adjusting filters.
+        </Typography>
+      </>
+    );
+  } else {
+    mainContent = (
+      <>
+        <Typography variant="h6" paragraph>
+          {heading}
+        </Typography>
+
+        <Typography variant="body2">{msg}</Typography>
+      </>
+    );
+  }
+
+  return (
+    <Paper
+      sx={{
+        textAlign: 'center',
+        py: 3,
+        px: 2,
+      }}
+    >
+      {mainContent}
+    </Paper>
   );
 }

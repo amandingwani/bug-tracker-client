@@ -7,7 +7,6 @@ import TableContainer from '@mui/material/TableContainer';
 
 import Scrollbar from 'src/components/scrollbar';
 
-import TableNoData from '../table-no-data';
 import TicketTableRow from '../tickets-table-row';
 import TicketsTableHead from '../tickets-table-head';
 import TableEmptyRows from '../table-empty-rows';
@@ -26,6 +25,7 @@ import { FilterData, defaultFilterData } from '../types';
 import { SxProps, Theme } from '@mui/material/styles';
 import TableEmpty from 'src/components/table-empty';
 import TablePaginationCustom from 'src/components/table-pagination-custom';
+import Divider from '@mui/material/Divider';
 
 // ----------------------------------------------------------------------
 
@@ -201,6 +201,84 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  let mainContent = (
+    <Scrollbar>
+      <TableContainer sx={{ overflow: 'unset' }}>
+        <Table sx={{ minWidth: 800 }} stickyHeader>
+          <TicketsTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleSort}
+            headLabel={[
+              { id: 'id', label: 'ID', align: 'center' },
+              { id: 'title', label: 'Title' },
+              { id: 'author', label: 'Author' },
+              { id: 'assignee', label: 'Assignee' },
+              { id: 'status', label: 'Status' },
+              { id: 'type', label: 'Type' },
+              { id: 'priority', label: 'Priority' },
+              { id: 'project', label: 'Project' },
+              { id: 'createdAt', label: 'Created On', minWidth: 120 },
+              { id: '', align: 'right' },
+            ]}
+          />
+          {projectsLoading ? (
+            <TableBody>
+              <TableRowsLoader rowsNum={5} />
+            </TableBody>
+          ) : (
+            <TableBody>
+              {dataFiltered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: Ticket) => (
+                  <TicketTableRow
+                    key={row.id}
+                    ticket={row}
+                    setOpenDrawer={setOpenDrawer}
+                    setSelectedTicket={setSelectedTicket}
+                    handleAlertClickOpen={handleAlertClickOpen}
+                  />
+                ))}
+
+              <TableEmptyRows
+                height={77}
+                emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
+              />
+            </TableBody>
+          )}
+        </Table>
+      </TableContainer>
+    </Scrollbar>
+  );
+
+  let divider = false;
+  if (!projectsLoading) {
+    if (notFound) {
+      mainContent = <TableEmpty query={filterName} />;
+      divider = true;
+    } else {
+      if (noTickets) {
+        mainContent = (
+          <TableEmpty
+            heading="Great news! No pending tickets at the moment."
+            msg="Start by creating new tickets or check back later."
+          />
+        );
+        divider = true;
+      } else {
+        if (dataFiltered.length === 0) {
+          mainContent = (
+            <TableEmpty
+              heading="No tickets found."
+              msg="Adjust filters to discover matching tickets or check back later."
+            />
+          );
+          divider = true;
+        }
+      }
+    }
+  }
+
   return (
     <Card sx={props.sx}>
       <CreateOrEditTicket
@@ -219,71 +297,8 @@ export default function TicketsPage(props: TicketsPageProps) {
           onNewTicketClick={onNewTicketClick}
         />
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 800 }} stickyHeader>
-              <TicketsTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleSort}
-                headLabel={[
-                  { id: 'id', label: 'ID', align: 'center' },
-                  { id: 'title', label: 'Title' },
-                  { id: 'author', label: 'Author' },
-                  { id: 'assignee', label: 'Assignee' },
-                  { id: 'status', label: 'Status' },
-                  { id: 'type', label: 'Type' },
-                  { id: 'priority', label: 'Priority' },
-                  { id: 'project', label: 'Project' },
-                  { id: 'createdAt', label: 'Created On', minWidth: 120 },
-                  { id: '', align: 'right' },
-                ]}
-              />
-              {projectsLoading ? (
-                <TableBody>
-                  <TableRowsLoader rowsNum={5} />
-                </TableBody>
-              ) : (
-                <TableBody>
-                  {dataFiltered
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row: Ticket) => (
-                      <TicketTableRow
-                        key={row.id}
-                        ticket={row}
-                        setOpenDrawer={setOpenDrawer}
-                        setSelectedTicket={setSelectedTicket}
-                        handleAlertClickOpen={handleAlertClickOpen}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={77}
-                    emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
-                  />
-
-                  {!noTickets && dataFiltered.length === 0 && !notFound && (
-                    <TableEmpty
-                      heading="No tickets found."
-                      msg="Adjust filters to discover matching tickets or check back later."
-                      colSpan={10}
-                    />
-                  )}
-
-                  {noTickets && !notFound && (
-                    <TableEmpty
-                      heading="Great news! No pending tickets at the moment."
-                      msg="Start by creating new tickets or check back later."
-                      colSpan={10}
-                    />
-                  )}
-
-                  {notFound && <TableNoData query={filterName} />}
-                </TableBody>
-              )}
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+        {divider && <Divider variant="middle" />}
+        {mainContent}
 
         {dataFiltered.length > 5 && (
           <TablePaginationCustom

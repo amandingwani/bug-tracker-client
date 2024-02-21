@@ -7,19 +7,13 @@ import TableContainer from '@mui/material/TableContainer';
 
 import Scrollbar from 'src/components/scrollbar';
 
-import TableNoData from '../table-no-data';
 import UsersTableRow from '../users-table-row';
 import UsersTableHead from '../users-table-head';
 import TableEmptyRows from '../table-empty-rows';
 import UsersTableToolbar from '../users-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
-import {
-  removeContributorThunk,
-  selectReqStatus,
-  selectError,
-  setReqStatus,
-} from 'src/redux/slices/projectsSlice';
+import { removeContributorThunk, selectReqStatus } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { Project, Contributor } from 'src/redux/types';
@@ -28,6 +22,8 @@ import AlertDialog from 'src/components/alertDialog';
 import TablePaginationCustom from 'src/components/table-pagination-custom';
 import AddUser from '../addUser';
 import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
+import Divider from '@mui/material/Divider';
+import TableNoData from '../table-no-data';
 
 // ----------------------------------------------------------------------
 
@@ -141,6 +137,51 @@ export default function UsersTable(props: Props) {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  let mainContent = (
+    <Scrollbar>
+      <TableContainer sx={{ overflow: 'unset' }}>
+        <Table sx={{ minWidth: 600 }}>
+          <UsersTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleSort}
+            headLabel={[
+              { id: 'name', label: 'User Name' },
+              { id: 'email', label: 'Email' },
+              { id: 'status', label: 'Status' },
+              { id: '', align: 'right' },
+            ]}
+          />
+          <TableBody>
+            {dataFiltered
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((row: Contributor) => (
+                <UsersTableRow
+                  key={row.id}
+                  user={row}
+                  actionAllowed={user!.id === props.project.owner.id && user!.id !== row.id}
+                  setOpenDrawer={setOpenDrawer}
+                  setSelectedUser={setSelectedUser}
+                  handleAlertClickOpen={handleAlertClickOpen}
+                />
+              ))}
+
+            <TableEmptyRows height={77} emptyRows={emptyRows(page, rowsPerPage, users.length)} />
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Scrollbar>
+  );
+
+  if (notFound) {
+    mainContent = (
+      <>
+        <Divider variant="middle" />
+        <TableNoData query={filterName} />
+      </>
+    );
+  }
+
   return (
     <Card sx={{ mt: 4 }}>
       <AddUser openDrawer={openDrawer} onCloseDrawer={onCloseDrawer} projectId={props.project.id} />
@@ -152,44 +193,7 @@ export default function UsersTable(props: Props) {
           onAddUserClick={user?.id === props.project.owner.id ? onAddUserClick : undefined}
         />
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 600 }}>
-              <UsersTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleSort}
-                headLabel={[
-                  { id: 'name', label: 'User Name' },
-                  { id: 'email', label: 'Email' },
-                  { id: 'status', label: 'Status' },
-                  { id: '', align: 'right' },
-                ]}
-              />
-              <TableBody>
-                {dataFiltered
-                  .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                  .map((row: Contributor) => (
-                    <UsersTableRow
-                      key={row.id}
-                      user={row}
-                      actionAllowed={user!.id === props.project.owner.id && user!.id !== row.id}
-                      setOpenDrawer={setOpenDrawer}
-                      setSelectedUser={setSelectedUser}
-                      handleAlertClickOpen={handleAlertClickOpen}
-                    />
-                  ))}
-
-                <TableEmptyRows
-                  height={77}
-                  emptyRows={emptyRows(page, rowsPerPage, users.length)}
-                />
-
-                {notFound && <TableNoData query={filterName} />}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+        {mainContent}
 
         {dataFiltered.length > 5 && (
           <TablePaginationCustom

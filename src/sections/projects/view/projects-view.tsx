@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { alpha } from '@mui/material/styles';
 import Card from '@mui/material/Card';
+import Divider from '@mui/material/Divider';
 import Table from '@mui/material/Table';
 import Container from '@mui/material/Container';
 import TableBody from '@mui/material/TableBody';
@@ -10,11 +11,8 @@ import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
 
-// import { projects } from 'src/_mock/projects';
-
 import Scrollbar from 'src/components/scrollbar';
 
-import TableNoData from '../table-no-data';
 import ProjectTableRow from '../project-table-row';
 import ProjectsTableHead from '../projects-table-head';
 import TableEmptyRows from '../table-empty-rows';
@@ -188,6 +186,76 @@ export default function ProjectsPage(props: ProjectsPageProps) {
 
   const notFound = !dataFiltered.length && !!filterName;
 
+  let mainContent = (
+    <Scrollbar>
+      <TableContainer sx={{ overflow: 'unset' }}>
+        <Table sx={{ minWidth: 600 }}>
+          <ProjectsTableHead
+            order={order}
+            orderBy={orderBy}
+            onRequestSort={handleSort}
+            headLabel={[
+              { id: 'name', label: 'Project Name' },
+              { id: 'owner', label: 'Owner' },
+              { id: 'status', label: 'Status' },
+              { id: 'createdAt', label: 'Created On', minWidth: 120 },
+              { id: '', align: 'right' },
+            ]}
+          />
+          {projectsLoading ? (
+            <TableBody>
+              <TableRowsLoader rowsNum={5} />
+            </TableBody>
+          ) : (
+            <TableBody>
+              {dataFiltered
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((row: Project) => (
+                  <ProjectTableRow
+                    key={row.id}
+                    project={row}
+                    setOpenDrawer={setOpenDrawer}
+                    setSelectedProject={setSelectedProject}
+                    handleAlertClickOpen={handleAlertClickOpen}
+                  />
+                ))}
+
+              <TableEmptyRows
+                height={77}
+                emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
+              />
+            </TableBody>
+          )}
+        </Table>
+      </TableContainer>
+    </Scrollbar>
+  );
+
+  let divider = false;
+  if (!projectsLoading) {
+    if (notFound) {
+      mainContent = <TableEmpty query={filterName} />;
+      divider = true;
+    } else {
+      if (noProjects) {
+        mainContent = (
+          <TableEmpty heading="Your project list is empty." msg="Ready to start something new?" />
+        );
+        divider = true;
+      } else {
+        if (dataFiltered.length === 0) {
+          mainContent = (
+            <TableEmpty
+              heading="No projects found!"
+              msg="Adjust filters to discover matching projects."
+            />
+          );
+          divider = true;
+        }
+      }
+    }
+  }
+
   return (
     <Container maxWidth="xl">
       <CreateOrEditProject
@@ -209,66 +277,8 @@ export default function ProjectsPage(props: ProjectsPageProps) {
           setFilterData={setFilterData}
         />
 
-        <Scrollbar>
-          <TableContainer sx={{ overflow: 'unset' }}>
-            <Table sx={{ minWidth: 600 }}>
-              <ProjectsTableHead
-                order={order}
-                orderBy={orderBy}
-                onRequestSort={handleSort}
-                headLabel={[
-                  { id: 'name', label: 'Project Name' },
-                  { id: 'owner', label: 'Owner' },
-                  { id: 'status', label: 'Status' },
-                  { id: 'createdAt', label: 'Created On', minWidth: 120 },
-                  { id: '', align: 'right' },
-                ]}
-              />
-              {projectsLoading ? (
-                <TableBody>
-                  <TableRowsLoader rowsNum={5} />
-                </TableBody>
-              ) : (
-                <TableBody>
-                  {dataFiltered
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row: Project) => (
-                      <ProjectTableRow
-                        key={row.id}
-                        project={row}
-                        setOpenDrawer={setOpenDrawer}
-                        setSelectedProject={setSelectedProject}
-                        handleAlertClickOpen={handleAlertClickOpen}
-                      />
-                    ))}
-
-                  <TableEmptyRows
-                    height={77}
-                    emptyRows={emptyRows(page, rowsPerPage, dataFiltered.length)}
-                  />
-
-                  {!noProjects && dataFiltered.length === 0 && !notFound && (
-                    <TableEmpty
-                      heading="No projects found!"
-                      msg="Adjust filters to discover matching projects."
-                      colSpan={6}
-                    />
-                  )}
-
-                  {noProjects && !notFound && (
-                    <TableEmpty
-                      heading="Your project list is empty."
-                      msg="Ready to start something new?"
-                      colSpan={6}
-                    />
-                  )}
-
-                  {notFound && <TableNoData query={filterName} />}
-                </TableBody>
-              )}
-            </Table>
-          </TableContainer>
-        </Scrollbar>
+        {divider && <Divider variant="middle" />}
+        {mainContent}
 
         {dataFiltered.length > 5 && (
           <TablePaginationCustom
