@@ -22,6 +22,7 @@ export default function TableNoData({ query }: { query: string }) {
             No results found for &nbsp;
             <strong>&quot;{query}&quot;</strong>.
             <br /> Try checking for typos or using complete words.
+            <br /> Or try adjusting filters.
           </Typography>
         </Paper>
       </TableCell>
