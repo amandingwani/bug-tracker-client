@@ -91,6 +91,10 @@ export default function TicketTableRow(props: TicketTableRowProps) {
           </Link>
         </TableCell>
 
+        <TableCell>
+          <Label color={priorityLabelColor}>{ticket.priority}</Label>
+        </TableCell>
+
         <TableCell sx={{ minWidth: 150 }}>
           <Typography
             variant="inherit"
@@ -124,10 +128,6 @@ export default function TicketTableRow(props: TicketTableRowProps) {
 
         <TableCell sx={{ minWidth: 150 }}>{TicketStatusMap[ticket.status]}</TableCell>
         <TableCell>{ticket.type}</TableCell>
-
-        <TableCell>
-          <Label color={priorityLabelColor}>{ticket.priority}</Label>
-        </TableCell>
 
         <TableCell sx={{ minWidth: 180 }}>
           <Link

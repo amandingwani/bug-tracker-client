@@ -13,16 +13,16 @@ export default function TableRowsLoader({ rowsNum }: { rowsNum: number }) {
       <TableCell sx={{ width: 300 }}>
         <Skeleton animation="wave" variant="text" />
       </TableCell>
-      <TableCell sx={{ width: 150 }}>
-        <Skeleton animation="wave" variant="text" />
-      </TableCell>
-      <TableCell sx={{ width: 150 }}>
-        <Skeleton animation="wave" variant="text" />
-      </TableCell>
-      <TableCell sx={{ width: 150 }}>
-        <Skeleton animation="wave" variant="text" />
-      </TableCell>
       <TableCell>
+        <Skeleton animation="wave" variant="text" />
+      </TableCell>
+      <TableCell sx={{ width: 150 }}>
+        <Skeleton animation="wave" variant="text" />
+      </TableCell>
+      <TableCell sx={{ width: 150 }}>
+        <Skeleton animation="wave" variant="text" />
+      </TableCell>
+      <TableCell sx={{ width: 150 }}>
         <Skeleton animation="wave" variant="text" />
       </TableCell>
       <TableCell>

@@ -212,11 +212,11 @@ export default function TicketsPage(props: TicketsPageProps) {
             headLabel={[
               { id: 'id', label: 'ID', align: 'center' },
               { id: 'title', label: 'Title' },
+              { id: 'priority', label: 'Priority' },
               { id: 'author', label: 'Author' },
               { id: 'assignee', label: 'Assignee' },
               { id: 'status', label: 'Status' },
               { id: 'type', label: 'Type' },
-              { id: 'priority', label: 'Priority' },
               { id: 'project', label: 'Project' },
               { id: 'createdAt', label: 'Created On', minWidth: 120 },
               { id: '', align: 'right' },
