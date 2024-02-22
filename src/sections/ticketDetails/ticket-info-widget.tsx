@@ -1,4 +1,4 @@
-import { SxProps, Theme } from '@mui/material';
+import { SxProps, Theme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -20,7 +20,7 @@ export default function AppWidgetSummary({
   title,
   value,
   icon,
-  color = 'primary',
+  color = '#ffffff',
   sx,
   ...other
 }: AppWidgetSummaryProps) {
@@ -35,6 +35,7 @@ export default function AppWidgetSummary({
       sx={{
         px: 3,
         borderRadius: 2,
+        backgroundColor: color,
         ...sx,
       }}
       {...other}

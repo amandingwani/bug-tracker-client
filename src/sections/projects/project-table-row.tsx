@@ -10,11 +10,11 @@ import { RouterLink } from 'src/routes/components';
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import { Project, ProjectStatusMap, ProjectUpdate } from 'src/redux/types';
-import { LabelColor } from 'src/components/label/labelSubTypes';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { Link } from '@mui/material';
+import { getProjectStatusLabelColor } from 'src/utils/getColor';
 
 // ----------------------------------------------------------------------
 
@@ -42,34 +42,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
 
   const project = props.project;
 
-  let statusLabelColor: LabelColor;
-  switch (project.status) {
-    case 'OPEN':
-      statusLabelColor = 'success';
-      break;
-    case 'IN_PROGRESS':
-      statusLabelColor = 'info';
-      break;
-    case 'ON_HOLD':
-      statusLabelColor = 'warning';
-      break;
-    case 'COMPLETED':
-      statusLabelColor = 'success';
-      break;
-    case 'CANCELED':
-      statusLabelColor = 'error';
-      break;
-    case 'TESTING':
-      statusLabelColor = 'secondary';
-      break;
-    case 'DEPLOYED':
-      statusLabelColor = 'primary';
-      break;
-
-    default:
-      statusLabelColor = 'default';
-      break;
-  }
+  const statusLabelColor = getProjectStatusLabelColor(project.status);
 
   return (
     <>

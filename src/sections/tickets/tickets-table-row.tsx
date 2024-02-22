@@ -11,11 +11,15 @@ import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 import { TicketStatusMap, Ticket } from 'src/redux/types';
-import { LabelColor } from 'src/components/label/labelSubTypes';
 import { Link } from '@mui/material';
 import { AllowedAction } from 'src/components/itemPopoverMenu/types';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
+import {
+  getTicketPriorityLabelColor,
+  getTicketStatusLabelColor,
+  getTicketTypeLabelColor,
+} from 'src/utils/getColor';
 
 // ----------------------------------------------------------------------
 
@@ -57,46 +61,6 @@ export default function TicketTableRow(props: TicketTableRowProps) {
     setOpen(null);
   };
 
-  let priorityLabelColor: LabelColor;
-  switch (ticket.priority) {
-    case 'HIGH':
-      priorityLabelColor = 'warning';
-      break;
-    case 'URGENT':
-      priorityLabelColor = 'error';
-      break;
-    case 'NORMAL':
-      priorityLabelColor = 'info';
-      break;
-    case 'LOW':
-      priorityLabelColor = 'success';
-      break;
-
-    default:
-      priorityLabelColor = 'default';
-      break;
-  }
-
-  let statusLabelColor: LabelColor;
-  switch (ticket.status) {
-    case 'OPEN':
-      statusLabelColor = 'warning';
-      break;
-    case 'IN_PROGRESS':
-      statusLabelColor = 'info';
-      break;
-    case 'TO_BE_TESTED':
-      statusLabelColor = 'secondary';
-      break;
-    case 'CLOSED':
-      statusLabelColor = 'success';
-      break;
-
-    default:
-      statusLabelColor = 'default';
-      break;
-  }
-
   return (
     <>
       <TableRow hover tabIndex={-1} sx={{ height: 77 }}>
@@ -128,7 +92,7 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         </TableCell>
 
         <TableCell>
-          <Label color={priorityLabelColor}>{ticket.priority}</Label>
+          <Label color={getTicketPriorityLabelColor(ticket.priority)}>{ticket.priority}</Label>
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
@@ -163,10 +127,12 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
-          <Label color={statusLabelColor}>{TicketStatusMap[ticket.status]}</Label>
+          <Label color={getTicketStatusLabelColor(ticket.status)}>
+            {TicketStatusMap[ticket.status]}
+          </Label>
         </TableCell>
         <TableCell>
-          <Label color={ticket.type === 'BUG' ? 'error' : 'success'}>{ticket.type}</Label>
+          <Label color={getTicketTypeLabelColor(ticket.type)}>{ticket.type}</Label>
         </TableCell>
 
         <TableCell sx={{ minWidth: 180 }}>

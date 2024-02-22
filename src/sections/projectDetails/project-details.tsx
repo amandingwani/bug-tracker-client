@@ -200,9 +200,34 @@ function Details({ project }: { project: Project }) {
   const theme = useTheme();
   const { id, name, description, owner, status, createdAt } = project;
 
-  let statusLabelColor: LabelColor = 'success';
-  if (project.status === 'CANCELED') statusLabelColor = 'error';
-  else if (project.status === 'ON_HOLD') statusLabelColor = 'warning';
+  let statusLabelColor: LabelColor;
+  switch (project.status) {
+    case 'OPEN':
+      statusLabelColor = 'success';
+      break;
+    case 'IN_PROGRESS':
+      statusLabelColor = 'info';
+      break;
+    case 'ON_HOLD':
+      statusLabelColor = 'warning';
+      break;
+    case 'COMPLETED':
+      statusLabelColor = 'success';
+      break;
+    case 'CANCELED':
+      statusLabelColor = 'error';
+      break;
+    case 'TESTING':
+      statusLabelColor = 'secondary';
+      break;
+    case 'DEPLOYED':
+      statusLabelColor = 'primary';
+      break;
+
+    default:
+      statusLabelColor = 'info';
+      break;
+  }
 
   return (
     <Stack direction="column" alignItems="left" spacing={2} pl={1}>
@@ -227,7 +252,7 @@ function Details({ project }: { project: Project }) {
           icon={<Iconify icon="grommet-icons:user-admin" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },
-            backgroundColor: alpha(theme.palette.grey[500], 0.2),
+            backgroundColor: alpha(theme.palette.primary.light, 0.2),
           }}
         />
       </Stack>

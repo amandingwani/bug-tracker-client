@@ -194,7 +194,7 @@ function Details({ ticket }: { ticket: Ticket }) {
           icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },
-            backgroundColor: alpha(theme.palette.grey[500], 0.2),
+            backgroundColor: alpha(theme.palette.primary.light, 0.2),
           }}
         />
 
@@ -204,7 +204,7 @@ function Details({ ticket }: { ticket: Ticket }) {
           icon={<Iconify icon="majesticons:user-line" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },
-            backgroundColor: alpha(theme.palette.grey[500], 0.2),
+            backgroundColor: alpha(theme.palette.primary.light, 0.2),
           }}
         />
       </Stack>
