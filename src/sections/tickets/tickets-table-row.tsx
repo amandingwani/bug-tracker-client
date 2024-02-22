@@ -57,9 +57,45 @@ export default function TicketTableRow(props: TicketTableRowProps) {
     setOpen(null);
   };
 
-  let priorityLabelColor: LabelColor = 'default';
-  if (ticket.priority === 'URGENT') priorityLabelColor = 'error';
-  else if (ticket.priority === 'HIGH') priorityLabelColor = 'warning';
+  let priorityLabelColor: LabelColor;
+  switch (ticket.priority) {
+    case 'HIGH':
+      priorityLabelColor = 'warning';
+      break;
+    case 'URGENT':
+      priorityLabelColor = 'error';
+      break;
+    case 'NORMAL':
+      priorityLabelColor = 'info';
+      break;
+    case 'LOW':
+      priorityLabelColor = 'success';
+      break;
+
+    default:
+      priorityLabelColor = 'default';
+      break;
+  }
+
+  let statusLabelColor: LabelColor;
+  switch (ticket.status) {
+    case 'OPEN':
+      statusLabelColor = 'warning';
+      break;
+    case 'IN_PROGRESS':
+      statusLabelColor = 'info';
+      break;
+    case 'TO_BE_TESTED':
+      statusLabelColor = 'secondary';
+      break;
+    case 'CLOSED':
+      statusLabelColor = 'success';
+      break;
+
+    default:
+      statusLabelColor = 'default';
+      break;
+  }
 
   return (
     <>
@@ -126,8 +162,12 @@ export default function TicketTableRow(props: TicketTableRowProps) {
           </Typography>
         </TableCell>
 
-        <TableCell sx={{ minWidth: 150 }}>{TicketStatusMap[ticket.status]}</TableCell>
-        <TableCell>{ticket.type}</TableCell>
+        <TableCell sx={{ minWidth: 150 }}>
+          <Label color={statusLabelColor}>{TicketStatusMap[ticket.status]}</Label>
+        </TableCell>
+        <TableCell>
+          <Label color={ticket.type === 'BUG' ? 'error' : 'success'}>{ticket.type}</Label>
+        </TableCell>
 
         <TableCell sx={{ minWidth: 180 }}>
           <Link

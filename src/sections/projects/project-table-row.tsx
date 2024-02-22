@@ -42,9 +42,34 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
 
   const project = props.project;
 
-  let statusLabelColor: LabelColor = 'success';
-  if (project.status === 'CANCELED') statusLabelColor = 'error';
-  else if (project.status === 'ON_HOLD') statusLabelColor = 'warning';
+  let statusLabelColor: LabelColor;
+  switch (project.status) {
+    case 'OPEN':
+      statusLabelColor = 'success';
+      break;
+    case 'IN_PROGRESS':
+      statusLabelColor = 'info';
+      break;
+    case 'ON_HOLD':
+      statusLabelColor = 'warning';
+      break;
+    case 'COMPLETED':
+      statusLabelColor = 'success';
+      break;
+    case 'CANCELED':
+      statusLabelColor = 'error';
+      break;
+    case 'TESTING':
+      statusLabelColor = 'secondary';
+      break;
+    case 'DEPLOYED':
+      statusLabelColor = 'primary';
+      break;
+
+    default:
+      statusLabelColor = 'default';
+      break;
+  }
 
   return (
     <>
