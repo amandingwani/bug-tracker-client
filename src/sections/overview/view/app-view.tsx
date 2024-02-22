@@ -15,6 +15,11 @@ import { selectProjects } from 'src/redux/slices/projectsSlice';
 import Iconify from 'src/components/iconify';
 import SvgColor from 'src/components/svg-color';
 import { getDashboardData, type DashboardData } from '../utils';
+import {
+  getTicketPriorityLabelColor,
+  getTicketStatusLabelColor,
+  getTicketTypeLabelColor,
+} from 'src/utils/getColor';
 
 // ----------------------------------------------------------------------
 
@@ -89,6 +94,10 @@ export default function AppView() {
           { label: 'BUG', value: dashboardData?.ticketTypeCount.BUG },
           { label: 'TASK', value: dashboardData?.ticketTypeCount.TASK },
         ],
+        colors: [
+          alpha(theme.palette[getTicketTypeLabelColor('BUG')].main, 0.9),
+          alpha(theme.palette[getTicketTypeLabelColor('TASK')].main, 0.9),
+        ],
       }}
     />
   );
@@ -103,7 +112,12 @@ export default function AppView() {
           { label: 'NORMAL', value: dashboardData?.ticketPriorityCount.NORMAL },
           { label: 'LOW', value: dashboardData?.ticketPriorityCount.LOW },
         ],
-        colors: ['#ff0000', '#ffd700', '#00ffff', '#87cefa'],
+        colors: [
+          alpha(theme.palette[getTicketPriorityLabelColor('URGENT')].main, 0.9),
+          alpha(theme.palette[getTicketPriorityLabelColor('HIGH')].main, 0.9),
+          alpha(theme.palette[getTicketPriorityLabelColor('NORMAL')].main, 0.9),
+          alpha(theme.palette[getTicketPriorityLabelColor('LOW')].main, 0.9),
+        ],
       }}
     />
   );
@@ -117,6 +131,11 @@ export default function AppView() {
           { label: 'IN PROGRESS', value: dashboardData?.ticketStatusCount.IN_PROGRESS },
           { label: 'TO BE TESTED', value: dashboardData?.ticketStatusCount.TO_BE_TESTED },
           // { label: 'CLOSED', value: dashboardData?.ticketStatusCount.CLOSED },
+        ],
+        colors: [
+          alpha(theme.palette[getTicketStatusLabelColor('OPEN')].main, 0.9),
+          alpha(theme.palette[getTicketStatusLabelColor('IN_PROGRESS')].main, 0.9),
+          alpha(theme.palette[getTicketStatusLabelColor('TO_BE_TESTED')].main, 0.9),
         ],
       }}
     />
