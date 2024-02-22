@@ -216,6 +216,7 @@ function Details({ project }: { project: Project }) {
           value={ProjectStatusMap[status]}
           icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
           sx={{
+            width: { xs: undefined, sm: 350 },
             backgroundColor: alpha(theme.palette[statusLabelColor].main, 0.2),
           }}
         />
@@ -225,6 +226,7 @@ function Details({ project }: { project: Project }) {
           value={owner.firstName + ' ' + owner.lastName}
           icon={<Iconify icon="grommet-icons:user-admin" sx={{ width: 64, height: 64 }} />}
           sx={{
+            width: { xs: undefined, sm: 350 },
             backgroundColor: alpha(theme.palette.grey[500], 0.2),
           }}
         />
