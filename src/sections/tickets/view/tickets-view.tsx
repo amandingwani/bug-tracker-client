@@ -219,7 +219,7 @@ export default function TicketsPage(props: TicketsPageProps) {
               { id: 'type', label: 'Type' },
               { id: 'project', label: 'Project' },
               { id: 'createdAt', label: 'Created On', minWidth: 120 },
-              { id: '', align: 'right' },
+              { id: '', align: 'right', noSort: true },
             ]}
           />
           {projectsLoading ? (

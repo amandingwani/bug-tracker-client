@@ -199,7 +199,7 @@ export default function ProjectsPage(props: ProjectsPageProps) {
               { id: 'owner', label: 'Owner' },
               { id: 'status', label: 'Status' },
               { id: 'createdAt', label: 'Created On', minWidth: 120 },
-              { id: '', align: 'right' },
+              { id: '', align: 'right', noSort: true },
             ]}
           />
           {projectsLoading ? (
