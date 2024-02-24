@@ -41,7 +41,7 @@ export default function UsersTable(props: Props) {
 
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
 
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState<keyof Contributor | 'name'>('name');
 
   const [filterName, setFilterName] = useState('');
 
@@ -91,12 +91,13 @@ export default function UsersTable(props: Props) {
     setSelectedUser(null);
   };
 
-  const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
+  const handleSort = (
+    _event: React.MouseEvent<HTMLSpanElement>,
+    id: keyof Contributor | 'name'
+  ) => {
     const isAsc = orderBy === id && order === 'asc';
-    if (id !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    }
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(id);
   };
 
   const handleChangePage = (
@@ -148,7 +149,7 @@ export default function UsersTable(props: Props) {
             headLabel={[
               { id: 'name', label: 'User Name' },
               { id: 'email', label: 'Email' },
-              { id: 'status', label: 'Status' },
+              { id: 'registered', label: 'Status' },
               { id: '', align: 'right', noSort: true },
             ]}
           />

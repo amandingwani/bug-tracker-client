@@ -16,43 +16,55 @@ export function emptyRows(page: number, rowsPerPage: number, arrayLength: number
   return page ? Math.max(0, (1 + page) * rowsPerPage - arrayLength) : 0;
 }
 
-function descendingComparator(a: any, b: any, orderBy: string) {
-  if (a[orderBy] === null) {
-    return 1;
-  }
-  if (b[orderBy] === null) {
-    return -1;
-  }
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
+// descending comparator: a < b => +1 , a > b => -1
+function descendingComparator(a: Contributor, b: Contributor, orderBy: keyof Contributor | 'name') {
+  if (orderBy === 'name') {
+    const aName = a.firstName + a.lastName;
+    const bName = b.firstName + b.lastName;
+    return -aName.localeCompare(bName);
+  } else {
+    if (a[orderBy] === null) {
+      return 1;
+    }
+    if (b[orderBy] === null) {
+      return -1;
+    }
+    if (orderBy === "email") {
+      return -a[orderBy].localeCompare(b[orderBy]);
+    }
+    if (orderBy === "registered") {
+      if (b[orderBy] < a[orderBy]) {
+        return 1;
+      }
+      if (b[orderBy] > a[orderBy]) {
+        return -1;
+      }
+    }
   }
   return 0;
 }
 export function getComparator(order: 'asc' | 'desc', orderBy: string) {
   return order === 'desc'
-    ? (a: any, b: any) => descendingComparator(a, b, orderBy)
-    : (a: any, b: any) => -descendingComparator(a, b, orderBy);
+    ? (a: Contributor, b: Contributor) => descendingComparator(a, b, orderBy)
+    : (a: Contributor, b: Contributor) => -descendingComparator(a, b, orderBy);
 }
 
 type ApplyFilterProps = {
-  inputData: any,
+  inputData: Contributor[],
   comparator: ReturnType<typeof getComparator>
   filterName: string,
 }
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
-  const stabilizedThis = inputData.map((el: any, index: number) => [el, index]);
+  const stabilizedThis = inputData.map((value: Contributor, index: number): [Contributor, number] => [value, index]);
 
-  stabilizedThis.sort((a: any, b: any) => {
+  stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
     if (order !== 0) return order;
     return a[1] - b[1];
   });
 
-  inputData = stabilizedThis.map((el: any) => el[0]);
+  inputData = stabilizedThis.map((el) => el[0]);
 
   if (filterName) {
     inputData = inputData.filter(

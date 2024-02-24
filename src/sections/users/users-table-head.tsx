@@ -5,6 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
 import { visuallyHidden } from './utils';
+import { Contributor } from 'src/redux/types';
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +13,10 @@ interface UsersTableHeadProps {
   order: 'asc' | 'desc';
   orderBy: string;
   headLabel: Array<any>;
-  onRequestSort: (_event: React.MouseEvent<HTMLSpanElement>, id: string) => void;
+  onRequestSort: (
+    _event: React.MouseEvent<HTMLSpanElement>,
+    id: keyof Contributor | 'name'
+  ) => void;
 }
 
 export default function UsersTableHead({
@@ -21,9 +25,10 @@ export default function UsersTableHead({
   headLabel,
   onRequestSort,
 }: UsersTableHeadProps) {
-  const onSort = (property: string) => (event: React.MouseEvent<HTMLSpanElement>) => {
-    onRequestSort(event, property);
-  };
+  const onSort =
+    (property: keyof Contributor | 'name') => (event: React.MouseEvent<HTMLSpanElement>) => {
+      onRequestSort(event, property);
+    };
 
   return (
     <TableHead>
