@@ -182,8 +182,6 @@ export default function ProjectsPage(props: ProjectsPageProps) {
     filterName,
   });
 
-  console.log({ dataFiltered });
-
   const notFound = !dataFiltered.length && !!filterName;
 
   let mainContent = (

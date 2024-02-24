@@ -5,23 +5,24 @@ import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
 import { visuallyHidden } from './utils';
+import { Ticket } from 'src/redux/types';
 
 // ----------------------------------------------------------------------
 
-interface ProjectTableHeadProps {
+interface TicketsTableHeadProps {
   order: 'asc' | 'desc';
   orderBy: string;
   headLabel: Array<any>;
-  onRequestSort: (_event: React.MouseEvent<HTMLSpanElement>, id: string) => void;
+  onRequestSort: (_event: React.MouseEvent<HTMLSpanElement>, id: keyof Ticket) => void;
 }
 
-export default function ProjectTableHead({
+export default function TicketsTableHead({
   order,
   orderBy,
   headLabel,
   onRequestSort,
-}: ProjectTableHeadProps) {
-  const onSort = (property: string) => (event: React.MouseEvent<HTMLSpanElement>) => {
+}: TicketsTableHeadProps) {
+  const onSort = (property: keyof Ticket) => (event: React.MouseEvent<HTMLSpanElement>) => {
     onRequestSort(event, property);
   };
 

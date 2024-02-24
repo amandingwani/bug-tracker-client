@@ -24,6 +24,7 @@ function descendingComparator(a: Project, b: Project, orderBy: keyof Project) {
   if (b[orderBy] === null) {
     return -1;
   }
+  // case insensitive comparision
   if (orderBy === "name") {
     return -a[orderBy].localeCompare(b[orderBy]);
   }

@@ -85,7 +85,7 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 
-  const [orderBy, setOrderBy] = useState('createdAt');
+  const [orderBy, setOrderBy] = useState<keyof Ticket>('createdAt');
 
   const [filterName, setFilterName] = useState('');
 
@@ -122,12 +122,10 @@ export default function TicketsPage(props: TicketsPageProps) {
     setSelectedTicket(undefined);
   };
 
-  const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
+  const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: keyof Ticket) => {
     const isAsc = orderBy === id && order === 'asc';
-    if (id !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    }
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(id);
   };
 
   const handleChangePage = (
