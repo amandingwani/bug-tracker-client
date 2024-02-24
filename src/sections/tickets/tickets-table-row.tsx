@@ -69,7 +69,7 @@ export default function TicketTableRow(props: TicketTableRowProps) {
             {ticket.id}
           </Typography>
         </TableCell>
-        <TableCell sx={{ minWidth: 300 }}>
+        <TableCell sx={{ minWidth: 250, width: { xs: 250, sm: 250, md: 300, lg: 350, xl: 400 } }}>
           <Link
             variant="subtitle2"
             component={RouterLink}
