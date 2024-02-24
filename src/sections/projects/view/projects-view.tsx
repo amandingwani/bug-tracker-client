@@ -50,7 +50,7 @@ export default function ProjectsPage(props: ProjectsPageProps) {
 
   const [order, setOrder] = useState<'asc' | 'desc'>('desc');
 
-  const [orderBy, setOrderBy] = useState('createdAt');
+  const [orderBy, setOrderBy] = useState<keyof Project>('createdAt');
 
   const [filterName, setFilterName] = useState('');
 
@@ -140,12 +140,10 @@ export default function ProjectsPage(props: ProjectsPageProps) {
   // status filter
   projectsToDisplay = projectsToDisplay.filter((p) => filterData.status[p.status]);
 
-  const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: string) => {
+  const handleSort = (_event: React.MouseEvent<HTMLSpanElement>, id: keyof Project) => {
     const isAsc = orderBy === id && order === 'asc';
-    if (id !== '') {
-      setOrder(isAsc ? 'desc' : 'asc');
-      setOrderBy(id);
-    }
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(id);
   };
 
   const handleChangePage = (
@@ -183,6 +181,8 @@ export default function ProjectsPage(props: ProjectsPageProps) {
     comparator: getComparator(order, orderBy),
     filterName,
   });
+
+  console.log({ dataFiltered });
 
   const notFound = !dataFiltered.length && !!filterName;
 

@@ -5,6 +5,7 @@ import TableCell from '@mui/material/TableCell';
 import TableSortLabel from '@mui/material/TableSortLabel';
 
 import { visuallyHidden } from './utils';
+import { Project } from 'src/redux/types';
 
 // ----------------------------------------------------------------------
 
@@ -12,7 +13,7 @@ interface ProjectTableHeadProps {
   order: 'asc' | 'desc';
   orderBy: string;
   headLabel: Array<any>;
-  onRequestSort: (_event: React.MouseEvent<HTMLSpanElement>, id: string) => void;
+  onRequestSort: (_event: React.MouseEvent<HTMLSpanElement>, id: keyof Project) => void;
 }
 
 export default function ProjectTableHead({
@@ -21,7 +22,7 @@ export default function ProjectTableHead({
   headLabel,
   onRequestSort,
 }: ProjectTableHeadProps) {
-  const onSort = (property: string) => (event: React.MouseEvent<HTMLSpanElement>) => {
+  const onSort = (property: keyof Project) => (event: React.MouseEvent<HTMLSpanElement>) => {
     onRequestSort(event, property);
   };
 
