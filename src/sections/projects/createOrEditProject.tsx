@@ -56,13 +56,26 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
   } = useForm<ProjectCreateInput>();
 
   const onSubmit: SubmitHandler<ProjectCreateInput> = (data) => {
-    console.log(data);
     setLoading(true);
     if (!selectedProject) {
       dispatch(createAndLoadProject(data, setLoading, onCloseDrawer, reset));
     } else {
       dispatch(
-        updateAndLoadProject({ id: selectedProject.id, ...data }, setLoading, onCloseDrawer, reset)
+        updateAndLoadProject(
+          { id: selectedProject.id, ...data },
+          () => {
+            setLoading(false);
+            onCloseDrawer();
+            reset({
+              name: '',
+              description: '',
+              status: 'OPEN',
+            });
+          },
+          () => {
+            setLoading(false);
+          }
+        )
       );
     }
   };

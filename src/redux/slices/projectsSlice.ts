@@ -262,27 +262,28 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
     }
 }
 
-export const updateAndLoadProject = (data: ProjectUpdate, setLoading: React.Dispatch<React.SetStateAction<boolean>>, closeDrawer: () => void, reset: UseFormReset<ProjectCreateInput>): AppThunk => {
+export const updateAndLoadProject = (data: ProjectUpdate, onSuccess?: () => void, onError?: () => void): AppThunk => {
     return async (dispatch, getState) => {
         try {
+            dispatch(setReqStatus({ name: 'updateAndLoadProject', status: 'loading' }));
             const user = getState().auth.user;
             if (user?.id === -1) {
+                dispatch(setReqStatus({ name: 'updateAndLoadProject', status: 'succeeded' }));
                 dispatch(updateProject(data))
             } else {
                 const project = await updateProjectApi(data)
+                dispatch(setReqStatus({ name: 'updateAndLoadProject', status: 'succeeded' }));
                 dispatch(updateProject(project))
             }
+            dispatch(setReqStatus({ name: '', status: 'idle' }));
             dispatch(updateAndShowNotification({ severity: 'success', message: 'Project updated!' }))
-            setLoading(false)
-            closeDrawer();
-            reset({
-                name: '',
-                description: '',
-                status: 'OPEN'
-            })
+            if (onSuccess)
+                onSuccess();
         } catch (error) {
-            setLoading(false)
+            dispatch(setReqStatus({ name: 'updateAndLoadProject', status: 'failed' }));
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))
+            if (onError)
+                onError();
         }
     }
 }
