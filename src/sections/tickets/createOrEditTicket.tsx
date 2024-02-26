@@ -142,9 +142,20 @@ export default function CreateOrEditTicket({
             projectId: data.project.id,
             assigneeId: data.assignee.id === -1 ? null : data.assignee.id,
           },
-          setLoading,
-          onCloseDrawer,
-          reset
+          () => {
+            setLoading(false);
+            onCloseDrawer();
+            reset({
+              title: '',
+              description: '',
+              status: 'OPEN',
+              type: 'BUG',
+              priority: 'NORMAL',
+            });
+          },
+          () => {
+            setLoading(false);
+          }
         )
       );
     }
