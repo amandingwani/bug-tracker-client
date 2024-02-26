@@ -122,7 +122,7 @@ export default function CreateOrEditTicket({
             status: data.status,
             type: data.type,
             projectId: data.project.id,
-            assigneeId: data.assignee.id === -1 ? null : data.assignee.id,
+            assigneeId: data.assignee.id === unassignedUser.id ? null : data.assignee.id,
           },
           setLoading,
           onCloseDrawer,
@@ -140,7 +140,7 @@ export default function CreateOrEditTicket({
             status: data.status,
             type: data.type,
             projectId: data.project.id,
-            assigneeId: data.assignee.id === -1 ? null : data.assignee.id,
+            assigneeId: data.assignee.id === unassignedUser.id ? null : data.assignee.id,
           },
           () => {
             setLoading(false);

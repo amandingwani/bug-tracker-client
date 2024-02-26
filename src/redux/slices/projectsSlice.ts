@@ -19,6 +19,7 @@ import { updateAndShowNotification } from './notificationSlice'
 import { generateAddProjectApiResponse, projects } from 'src/_mock/projects'
 import { faker } from '@faker-js/faker'
 import { generateAddTicketPartialApiResponse } from 'src/_mock/tickets'
+import { demoUser } from '../constants'
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -213,7 +214,7 @@ export const createAndLoadProject = (data: ProjectCreateInput, setLoading: React
         try {
             const user = getState().auth.user;
             let project: Project;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 project = generateAddProjectApiResponse(data);
             } else {
                 project = await createProject(data)
@@ -238,8 +239,9 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
     return async (dispatch, getState) => {
         try {
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 const ticket = generateAddTicketPartialApiResponse(data);
+                console.log({ ticket })
                 dispatch(demoSetCreatedTicket(ticket))
             } else {
                 const ticket = await createTicket(data)
@@ -267,7 +269,7 @@ export const updateAndLoadProject = (data: ProjectUpdate, onSuccess?: () => void
         try {
             dispatch(setReqStatus({ name: 'updateAndLoadProject', status: 'loading' }));
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 dispatch(setReqStatus({ name: 'updateAndLoadProject', status: 'succeeded' }));
                 dispatch(updateProject(data))
             } else {
@@ -293,7 +295,7 @@ export const updateAndLoadTicket = (data: UpdateTicketApiData, onSuccess?: () =>
         try {
             dispatch(setReqStatus({ name: 'updateAndLoadTicket', status: 'loading' }));
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 dispatch(setReqStatus({ name: 'updateAndLoadTicket', status: 'succeeded' }));
                 dispatch(demoUpdateTicket(data))
             } else {
@@ -317,7 +319,7 @@ export const deleteTicketThunk = (ticket: { id: number, project: { id: number } 
         try {
             dispatch(setReqStatus({ name: 'deleteTicket', status: 'loading' }));
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 dispatch(setReqStatus({ name: 'deleteTicket', status: 'succeeded' }));
                 dispatch(deleteTicket({ id: ticket.id, project: { id: ticket.project.id } }))
             } else {
@@ -341,7 +343,7 @@ export const deleteProjectThunk = (projectId: number, onSuccess?: () => void): A
         try {
             dispatch(setReqStatus({ name: 'deleteProject', status: 'loading' }));
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 dispatch(setReqStatus({ name: 'deleteProject', status: 'succeeded' }));
                 dispatch(deleteProject({ id: projectId }))
             } else {
@@ -365,7 +367,7 @@ export const addContributorThunk = (data: AddContributor, onSuccess?: () => void
         try {
             dispatch(setReqStatus({ name: 'addContributor', status: 'loading' }));
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 dispatch(setReqStatus({ name: 'addContributor', status: 'succeeded' }));
                 dispatch(demoAddContributor(data))
             } else {
@@ -391,7 +393,7 @@ export const removeContributorThunk = (data: AddContributor, onSuccess?: () => v
         try {
             dispatch(setReqStatus({ name: 'removeContributor', status: 'loading' }));
             const user = getState().auth.user;
-            if (user?.id === -1) {
+            if (user?.id === demoUser.id) {
                 dispatch(setReqStatus({ name: 'removeContributor', status: 'succeeded' }));
                 dispatch(demoRemoveContributor(data))
             } else {

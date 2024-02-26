@@ -22,6 +22,7 @@ import navConfig from './config-navigation';
 import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import { selectUser, logout } from 'src/redux/slices/authSlice';
 import Iconify from 'src/components/iconify';
+import { demoUser } from 'src/redux/constants';
 
 // ----------------------------------------------------------------------
 
@@ -152,7 +153,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       <Box sx={{ flexGrow: 1 }} />
 
       {/* demo mode */}
-      {user?.id === -1 && renderDemoReminder}
+      {user?.id === demoUser.id && renderDemoReminder}
     </Scrollbar>
   );
 

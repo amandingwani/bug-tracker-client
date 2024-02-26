@@ -8,8 +8,8 @@ export const unassignedUser = {
 };
 
 export const demoUser: UserState = {
-    id: -1,
-    google_id_sub: '-1',
+    id: -2,
+    google_id_sub: '-2',
     email: 'demouser@gmail.com',
     firstName: 'Joanne',
     lastName: 'Walker',
