@@ -15,7 +15,7 @@ import {
   TicketTypeArr,
 } from 'src/redux/types';
 import { useAppDispatch } from 'src/redux/hooks';
-import { updateAndLoadTicket } from 'src/redux/slices/projectsSlice';
+import { updateAndLoadProject, updateAndLoadTicket } from 'src/redux/slices/projectsSlice';
 
 type ActionMenuBaseProps = {
   open: boolean;
@@ -40,19 +40,27 @@ type ActionMenuProps =
       >;
       project?: never;
     })
-  | (ActionMenuBaseProps & { ticket?: never; project: Project });
+  | (ActionMenuBaseProps & {
+      ticket?: never;
+      project: Project;
+      fieldLoadingObj: {
+        status: boolean;
+      };
+      setFieldLoadingObj: React.Dispatch<
+        React.SetStateAction<{
+          status: boolean;
+        }>
+      >;
+    });
 
 export default function ActionMenu(props: ActionMenuProps) {
   const dispatch = useAppDispatch();
 
-  // const [fieldLoading, setFieldLoading] = useState<boolean>(false);
   const field = props.anchorEl?.getAttribute('data-field');
   const menuItems: {
     label: string;
     value: ProjectStatus | TicketPriority | TicketStatus | TicketType;
   }[] = [];
-
-  // const menuItems: { label: string; onClick: React.MouseEventHandler<HTMLLIElement> }[] = [];
 
   const onSubmit = (
     event: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -102,6 +110,25 @@ export default function ActionMenu(props: ActionMenuProps) {
           }
         )
       );
+    } else if (props.project && field === 'status') {
+      if (value === props.project.status) return;
+      props.setFieldLoadingObj({ ...props.fieldLoadingObj, status: true });
+      dispatch(
+        updateAndLoadProject(
+          {
+            id: props.project.id,
+            name: props.project.name,
+            description: props.project.description ?? '',
+            status: value as ProjectStatus,
+          },
+          () => {
+            props.setFieldLoadingObj({ ...props.fieldLoadingObj, status: false });
+          },
+          () => {
+            props.setFieldLoadingObj({ ...props.fieldLoadingObj, status: false });
+          }
+        )
+      );
     }
   };
 
@@ -128,11 +155,6 @@ export default function ActionMenu(props: ActionMenuProps) {
   const handleClose = () => {
     props.setAnchorEl(null);
   };
-
-  // if (anchorEl) {
-  //   // handleClose();
-  //   setFieldLoading(true);
-  // }
 
   return (
     <Menu

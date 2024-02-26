@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import Skeleton from '@mui/material/Skeleton';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -13,8 +16,8 @@ import { Project, ProjectStatusMap, ProjectUpdate } from 'src/redux/types';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
-import { Link } from '@mui/material';
 import { getProjectStatusLabelColor } from 'src/utils/getColor';
+import ActionMenu from 'src/components/action-menu';
 
 // ----------------------------------------------------------------------
 
@@ -38,6 +41,19 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
 
   const handleCloseMenu = () => {
     setOpen(null);
+  };
+
+  // #############################################################################################
+  // Action Menu = Menu to change status on click of the respective element
+  const [fieldLoadingObj, setFieldLoadingObj] = useState<{
+    status: boolean;
+  }>({ status: false });
+  const anyFieldLoading = fieldLoadingObj.status;
+  const [ActionMenuAnchorEl, setActionMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const ActionMenuOpen = Boolean(ActionMenuAnchorEl);
+  const handleActionMenuClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (anyFieldLoading) return;
+    setActionMenuAnchorEl(event.currentTarget);
   };
 
   const project = props.project;
@@ -78,7 +94,18 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
-          <Label color={statusLabelColor}>{ProjectStatusMap[project.status]}</Label>
+          {fieldLoadingObj.status ? (
+            <Skeleton animation="wave" variant="text" />
+          ) : (
+            <Box data-field={'status'} data-pid={project.id} onClick={handleActionMenuClick}>
+              <Label
+                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+                color={statusLabelColor}
+              >
+                {ProjectStatusMap[project.status]}
+              </Label>
+            </Box>
+          )}
         </TableCell>
 
         <TableCell>{new Date(project.createdAt).toLocaleString()}</TableCell>
@@ -98,6 +125,15 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         setOpenDrawer={props.setOpenDrawer}
         setSelectedProject={props.setSelectedProject}
         handleAlertClickOpen={props.handleAlertClickOpen}
+      />
+
+      <ActionMenu
+        open={ActionMenuOpen}
+        anchorEl={ActionMenuAnchorEl}
+        setAnchorEl={setActionMenuAnchorEl}
+        project={project}
+        fieldLoadingObj={fieldLoadingObj}
+        setFieldLoadingObj={setFieldLoadingObj}
       />
     </>
   );
