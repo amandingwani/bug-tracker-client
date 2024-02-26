@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import { alpha, styled, useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
@@ -10,13 +10,12 @@ import CardHeader from '@mui/material/CardHeader';
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Collapse from '@mui/material/Collapse';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Label from 'src/components/label';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 import AlertDialog from 'src/components/alertDialog/alertDialog';
 import CreateOrEditProject from '../projects/createOrEditProject';
+import ActionMenu from 'src/components/action-menu';
 
 import { useRouter } from 'src/routes/hooks';
 
@@ -25,13 +24,10 @@ import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
 import {
   deleteProjectThunk,
   selectReqStatus,
-  selectError,
-  setReqStatus,
   removeContributorThunk,
   removeOtherProject,
 } from 'src/redux/slices/projectsSlice';
 import { selectUser } from 'src/redux/slices/authSlice';
-import { updateAndShowNotification } from 'src/redux/slices/notificationSlice';
 import InfoWidget from 'src/sections/ticketDetails/ticket-info-widget';
 
 // ----------------------------------------------------------------------
@@ -106,6 +102,19 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
     setOpenDrawer(false);
   };
 
+  // #############################################################################################
+  // Action Menu = Menu to change priority, status or type on click of the respective element
+  const [fieldLoadingObj, setFieldLoadingObj] = useState<{
+    status: boolean;
+  }>({ status: false });
+  const anyFieldLoading = fieldLoadingObj.status;
+  const [ActionMenuAnchorEl, setActionMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const ActionMenuOpen = Boolean(ActionMenuAnchorEl);
+  const handleActionMenuClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (anyFieldLoading) return;
+    setActionMenuAnchorEl(event.currentTarget);
+  };
+
   return (
     <Card sx={{ mt: 4 }}>
       {project && (
@@ -121,6 +130,15 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
             }}
           />
 
+          <ActionMenu
+            open={ActionMenuOpen}
+            anchorEl={ActionMenuAnchorEl}
+            setAnchorEl={setActionMenuAnchorEl}
+            project={project}
+            fieldLoadingObj={fieldLoadingObj}
+            setFieldLoadingObj={setFieldLoadingObj}
+          />
+
           <CardHeader
             title={project.name}
             // sx={expanded ? {} : { paddingBottom: 3 }}
@@ -129,7 +147,12 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
           <CardContent>
             <Scrollbar>
-              <Details project={project} />
+              <Details
+                project={project}
+                isOwner={isOwner}
+                statusLoading={fieldLoadingObj.status}
+                handleActionMenuClick={handleActionMenuClick}
+              />
             </Scrollbar>
           </CardContent>
           {isOwner ? (
@@ -196,7 +219,17 @@ export default function ProjectDetails({ title, project }: AppInnerProps) {
 
 // ----------------------------------------------------------------------
 
-function Details({ project }: { project: Project }) {
+function Details({
+  project,
+  isOwner,
+  statusLoading,
+  handleActionMenuClick,
+}: {
+  project: Project;
+  isOwner: boolean;
+  statusLoading: boolean;
+  handleActionMenuClick: (event: MouseEvent<HTMLDivElement>) => void;
+}) {
   const theme = useTheme();
   const { id, name, description, owner, status, createdAt } = project;
 
@@ -239,6 +272,8 @@ function Details({ project }: { project: Project }) {
         <InfoWidget
           title="Status"
           value={ProjectStatusMap[status]}
+          valueLoading={statusLoading}
+          handleActionMenuClick={isOwner ? handleActionMenuClick : undefined}
           icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },

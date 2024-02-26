@@ -1,3 +1,4 @@
+import { useState, MouseEvent } from 'react';
 import { alpha, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -8,6 +9,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { Ticket, TicketStatusMap } from 'src/redux/types';
+import ActionMenu from 'src/components/action-menu';
 
 import TicketDetails from '../ticket-details';
 import TicketInfoWidget from '../ticket-info-widget';
@@ -18,16 +20,47 @@ import {
   getTicketStatusLabelColor,
   getTicketTypeLabelColor,
 } from 'src/utils/getColor';
+import { useAppSelector } from 'src/redux/hooks';
+import { selectUser } from 'src/redux/slices/authSlice';
 
 // ----------------------------------------------------------------------
 
 export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx: SxProps<Theme> }) {
   const theme = useTheme();
+  const user = useAppSelector(selectUser);
+
+  let editAllowed = false;
+  // user can be author or assignee or project owner to edit
+  if (
+    user?.id === ticket?.author.id ||
+    user?.id === ticket?.project.owner.id ||
+    user?.id === ticket?.assignee?.id
+  ) {
+    editAllowed = true;
+  }
+
+  // #############################################################################################
+  // Action Menu = Menu to change priority, status or type on click of the respective element
+  const [fieldLoadingObj, setFieldLoadingObj] = useState<{
+    priority: boolean;
+    status: boolean;
+    type: boolean;
+  }>({ priority: false, status: false, type: false });
+  const anyFieldLoading =
+    fieldLoadingObj.priority || fieldLoadingObj.status || fieldLoadingObj.type;
+  const [ActionMenuAnchorEl, setActionMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const ActionMenuOpen = Boolean(ActionMenuAnchorEl);
+  const handleActionMenuClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (anyFieldLoading) return;
+    setActionMenuAnchorEl(event.currentTarget);
+  };
 
   const renderType = (
     <TicketInfoWidget
       title="Type"
       value={ticket?.type}
+      valueLoading={fieldLoadingObj.type}
+      handleActionMenuClick={editAllowed ? handleActionMenuClick : undefined}
       color={
         ticket ? alpha(theme.palette[getTicketTypeLabelColor(ticket.type)].main, 0.1) : undefined
       }
@@ -38,6 +71,8 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
     <TicketInfoWidget
       title="Priority"
       value={ticket?.priority}
+      valueLoading={fieldLoadingObj.priority}
+      handleActionMenuClick={editAllowed ? handleActionMenuClick : undefined}
       color={
         ticket
           ? alpha(theme.palette[getTicketPriorityLabelColor(ticket.priority)].main, 0.1)
@@ -50,6 +85,8 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
     <TicketInfoWidget
       title="Status"
       value={ticket ? TicketStatusMap[ticket.status] : undefined}
+      valueLoading={fieldLoadingObj.status}
+      handleActionMenuClick={editAllowed ? handleActionMenuClick : undefined}
       color={
         ticket
           ? alpha(theme.palette[getTicketStatusLabelColor(ticket.status)].main, 0.1)
@@ -101,6 +138,17 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
       <Grid item xs={12} sm={12} md={12} lg={12}>
         {ticket ? renderDetails : detailsSkeleton}
       </Grid>
+
+      {ticket && (
+        <ActionMenu
+          open={ActionMenuOpen}
+          anchorEl={ActionMenuAnchorEl}
+          setAnchorEl={setActionMenuAnchorEl}
+          ticket={ticket}
+          fieldLoadingObj={fieldLoadingObj}
+          setFieldLoadingObj={setFieldLoadingObj}
+        />
+      )}
     </Grid>
   );
 }
