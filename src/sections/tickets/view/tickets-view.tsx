@@ -166,9 +166,6 @@ export default function TicketsPage(props: TicketsPageProps) {
 
   const noTickets = allTickets.length === 0;
 
-  // const ticketsAssignedToMe: Ticket[] = filterTicketsAssignedToMe(allTickets, user?.id);
-  // const ticketsCreatedByMe: Ticket[] = filterTicketsCreatedByMe(allTickets, user?.id);
-
   let ticketsToDisplay: Ticket[] = [];
 
   if (user) {

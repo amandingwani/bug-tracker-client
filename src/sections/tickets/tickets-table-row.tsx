@@ -1,5 +1,9 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Link from '@mui/material/Link';
+import Skeleton from '@mui/material/Skeleton';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
@@ -11,7 +15,6 @@ import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
 import ItemPopoverMenu from 'src/components/itemPopoverMenu';
 import { TicketStatusMap, Ticket } from 'src/redux/types';
-import { Link } from '@mui/material';
 import { AllowedAction } from 'src/components/itemPopoverMenu/types';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
@@ -20,6 +23,7 @@ import {
   getTicketStatusLabelColor,
   getTicketTypeLabelColor,
 } from 'src/utils/getColor';
+import ActionMenu from 'src/components/action-menu';
 
 // ----------------------------------------------------------------------
 
@@ -61,6 +65,22 @@ export default function TicketTableRow(props: TicketTableRowProps) {
     setOpen(null);
   };
 
+  // #############################################################################################
+  // Action Menu = Menu to change priority, status or type on click of the respective element
+  const [fieldLoadingObj, setFieldLoadingObj] = useState<{
+    priority: boolean;
+    status: boolean;
+    type: boolean;
+  }>({ priority: false, status: false, type: false });
+  const anyFieldLoading =
+    fieldLoadingObj.priority || fieldLoadingObj.status || fieldLoadingObj.type;
+  const [ActionMenuAnchorEl, setActionMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const ActionMenuOpen = Boolean(ActionMenuAnchorEl);
+  const handleActionMenuClick = (event: MouseEvent<HTMLDivElement>) => {
+    if (anyFieldLoading) return;
+    setActionMenuAnchorEl(event.currentTarget);
+  };
+
   return (
     <>
       <TableRow hover tabIndex={-1} sx={{ height: 77 }}>
@@ -92,7 +112,18 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         </TableCell>
 
         <TableCell>
-          <Label color={getTicketPriorityLabelColor(ticket.priority)}>{ticket.priority}</Label>
+          {fieldLoadingObj.priority ? (
+            <Skeleton animation="wave" variant="text" />
+          ) : (
+            <Box data-field={'priority'} onClick={handleActionMenuClick}>
+              <Label
+                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+                color={getTicketPriorityLabelColor(ticket.priority)}
+              >
+                {ticket.priority}
+              </Label>
+            </Box>
+          )}
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
@@ -127,12 +158,33 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
-          <Label color={getTicketStatusLabelColor(ticket.status)}>
-            {TicketStatusMap[ticket.status]}
-          </Label>
+          {fieldLoadingObj.status ? (
+            <Skeleton animation="wave" variant="text" />
+          ) : (
+            <Box data-field={'status'} onClick={handleActionMenuClick}>
+              <Label
+                color={getTicketStatusLabelColor(ticket.status)}
+                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+              >
+                {TicketStatusMap[ticket.status]}
+              </Label>
+            </Box>
+          )}
         </TableCell>
+
         <TableCell>
-          <Label color={getTicketTypeLabelColor(ticket.type)}>{ticket.type}</Label>
+          {fieldLoadingObj.type ? (
+            <Skeleton animation="wave" variant="text" />
+          ) : (
+            <Box data-field={'type'} onClick={handleActionMenuClick}>
+              <Label
+                color={getTicketTypeLabelColor(ticket.type)}
+                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+              >
+                {ticket.type}
+              </Label>
+            </Box>
+          )}
         </TableCell>
 
         <TableCell sx={{ minWidth: 180 }}>
@@ -174,6 +226,15 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         setOpenDrawer={props.setOpenDrawer}
         setSelectedTicket={props.setSelectedTicket}
         handleAlertClickOpen={props.handleAlertClickOpen}
+      />
+
+      <ActionMenu
+        open={ActionMenuOpen}
+        anchorEl={ActionMenuAnchorEl}
+        setAnchorEl={setActionMenuAnchorEl}
+        ticket={ticket}
+        fieldLoadingObj={fieldLoadingObj}
+        setFieldLoadingObj={setFieldLoadingObj}
       />
     </>
   );

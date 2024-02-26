@@ -77,7 +77,7 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
                   <Typography variant="subtitle2" sx={{ color: 'text.disabled' }} gutterBottom>
                     Ticket Title
                   </Typography>
-                  <Typography variant="h5" component="div">
+                  <Typography variant="h4" component="div">
                     {ticket.title}
                   </Typography>
                 </Stack>
