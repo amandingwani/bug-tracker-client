@@ -48,6 +48,7 @@ export default function TicketTableRow(props: TicketTableRowProps) {
     delete: false,
   };
 
+  // a user who has delete permissions will always have edit permissions
   // user can be author or project owner to delete
   if (user?.id === props.ticket.author.id || user?.id === props.ticket.project.owner.id)
     allowedAction.delete = true;
@@ -117,7 +118,13 @@ export default function TicketTableRow(props: TicketTableRowProps) {
           ) : (
             <Box data-field={'priority'} onClick={handleActionMenuClick}>
               <Label
-                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+                sx={{
+                  cursor: allowedAction.edit
+                    ? anyFieldLoading
+                      ? 'default'
+                      : 'pointer'
+                    : 'default',
+                }}
                 color={getTicketPriorityLabelColor(ticket.priority)}
               >
                 {ticket.priority}
@@ -164,7 +171,13 @@ export default function TicketTableRow(props: TicketTableRowProps) {
             <Box data-field={'status'} onClick={handleActionMenuClick}>
               <Label
                 color={getTicketStatusLabelColor(ticket.status)}
-                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+                sx={{
+                  cursor: allowedAction.edit
+                    ? anyFieldLoading
+                      ? 'default'
+                      : 'pointer'
+                    : 'default',
+                }}
               >
                 {TicketStatusMap[ticket.status]}
               </Label>
@@ -179,7 +192,13 @@ export default function TicketTableRow(props: TicketTableRowProps) {
             <Box data-field={'type'} onClick={handleActionMenuClick}>
               <Label
                 color={getTicketTypeLabelColor(ticket.type)}
-                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+                sx={{
+                  cursor: allowedAction.edit
+                    ? anyFieldLoading
+                      ? 'default'
+                      : 'pointer'
+                    : 'default',
+                }}
               >
                 {ticket.type}
               </Label>
@@ -228,14 +247,16 @@ export default function TicketTableRow(props: TicketTableRowProps) {
         handleAlertClickOpen={props.handleAlertClickOpen}
       />
 
-      <ActionMenu
-        open={ActionMenuOpen}
-        anchorEl={ActionMenuAnchorEl}
-        setAnchorEl={setActionMenuAnchorEl}
-        ticket={ticket}
-        fieldLoadingObj={fieldLoadingObj}
-        setFieldLoadingObj={setFieldLoadingObj}
-      />
+      {allowedAction.edit && (
+        <ActionMenu
+          open={ActionMenuOpen}
+          anchorEl={ActionMenuAnchorEl}
+          setAnchorEl={setActionMenuAnchorEl}
+          ticket={ticket}
+          fieldLoadingObj={fieldLoadingObj}
+          setFieldLoadingObj={setFieldLoadingObj}
+        />
+      )}
     </>
   );
 }

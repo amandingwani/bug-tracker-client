@@ -99,7 +99,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
           ) : (
             <Box data-field={'status'} data-pid={project.id} onClick={handleActionMenuClick}>
               <Label
-                sx={{ cursor: anyFieldLoading ? 'default' : 'pointer' }}
+                sx={{ cursor: isOwner ? (anyFieldLoading ? 'default' : 'pointer') : 'default' }}
                 color={statusLabelColor}
               >
                 {ProjectStatusMap[project.status]}
@@ -127,14 +127,16 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         handleAlertClickOpen={props.handleAlertClickOpen}
       />
 
-      <ActionMenu
-        open={ActionMenuOpen}
-        anchorEl={ActionMenuAnchorEl}
-        setAnchorEl={setActionMenuAnchorEl}
-        project={project}
-        fieldLoadingObj={fieldLoadingObj}
-        setFieldLoadingObj={setFieldLoadingObj}
-      />
+      {isOwner && (
+        <ActionMenu
+          open={ActionMenuOpen}
+          anchorEl={ActionMenuAnchorEl}
+          setAnchorEl={setActionMenuAnchorEl}
+          project={project}
+          fieldLoadingObj={fieldLoadingObj}
+          setFieldLoadingObj={setFieldLoadingObj}
+        />
+      )}
     </>
   );
 }
