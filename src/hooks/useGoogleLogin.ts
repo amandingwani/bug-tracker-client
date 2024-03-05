@@ -15,7 +15,7 @@ export default function useGoogleLogin() {
       dispatch(googleLogin(codeResponse.code))
     },
     onError: (err) => {
-      console.log(err)
+      // console.log(err)
       dispatch(updateNotification({ severity: 'error', message: err.error ?? 'Google server error' }))
       dispatch(showNotification())
     },

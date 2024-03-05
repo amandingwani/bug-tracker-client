@@ -33,7 +33,7 @@ export const deleteProject = (projectId: number) => {
         axios
             .delete('/projects', { data: { id: projectId } })
             .then((res) => {
-                console.log({ res })
+                // console.log({ res })
                 if (res.data.error) {
                     reject(res.data.error)
                 } else {
@@ -41,7 +41,7 @@ export const deleteProject = (projectId: number) => {
                 }
             })
             .catch((err) => {
-                console.log({ 'errCaught': err })
+                // console.log({ 'errCaught': err })
                 reject(err)
             });
     });
@@ -90,7 +90,7 @@ export const deleteTicket = (ticketId: number) => {
         axios
             .delete('/tickets', { data: { id: ticketId } })
             .then((res) => {
-                console.log({ res })
+                // console.log({ res })
                 if (res.data.error) {
                     reject(res.data.error)
                 } else {
@@ -98,7 +98,7 @@ export const deleteTicket = (ticketId: number) => {
                 }
             })
             .catch((err) => {
-                console.log({ 'errCaught': err })
+                // console.log({ 'errCaught': err })
                 reject(err)
             });
     });

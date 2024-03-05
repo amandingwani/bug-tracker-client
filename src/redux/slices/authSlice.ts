@@ -72,7 +72,7 @@ export const googleLogin = (code: string): AppThunk => {
             }
             dispatch(loadProjects());
         } catch (error) {
-            console.log(error)
+            // console.log(error)
             dispatch(setReqStatus({ name: 'googleLogin', status: 'failed' }));
             // dispatch(setError(error as string))
             dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }))

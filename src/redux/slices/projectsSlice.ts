@@ -241,7 +241,7 @@ export const createAndLoadTicket = (data: CreateTicketApiData, setLoading: React
             const user = getState().auth.user;
             if (user?.id === demoUser.id) {
                 const ticket = generateAddTicketPartialApiResponse(data);
-                console.log({ ticket })
+                // console.log({ ticket })
                 dispatch(demoSetCreatedTicket(ticket))
             } else {
                 const ticket = await createTicket(data)
