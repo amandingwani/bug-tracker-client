@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { Ticket } from "src/redux/types";
+import _ from 'lodash';
+import { Ticket } from 'src/redux/types';
 
 export const visuallyHidden = {
   border: 0,
@@ -39,10 +39,10 @@ export function getComparator(order: 'asc' | 'desc', orderBy: string) {
 }
 
 type ApplyFilterProps = {
-  inputData: any,
-  comparator: ReturnType<typeof getComparator>
-  filterName: string,
-}
+  inputData: any;
+  comparator: ReturnType<typeof getComparator>;
+  filterName: string;
+};
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
   inputData = _.uniqBy(inputData, 'id');

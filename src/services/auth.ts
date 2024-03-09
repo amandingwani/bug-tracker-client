@@ -4,9 +4,9 @@ import axios from 'src/config/axios';
 import { UserState } from 'src/redux/types';
 
 type loginWithGoogleReturnType = {
-  user: UserState,
-  status: HttpStatusCode
-}
+  user: UserState;
+  status: HttpStatusCode;
+};
 
 export const loginWithGoogle = (code: string) => {
   return new Promise<loginWithGoogleReturnType>((resolve, reject) => {
@@ -17,8 +17,8 @@ export const loginWithGoogle = (code: string) => {
       .then((res) => {
         resolve({
           user: res.data,
-          status: res.status
-        })
+          status: res.status,
+        });
       })
       .catch((err) => reject(err));
   });

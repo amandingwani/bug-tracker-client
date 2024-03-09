@@ -1,4 +1,4 @@
-import { Project } from "src/redux/types";
+import { Project } from 'src/redux/types';
 
 export const visuallyHidden = {
   border: 0,
@@ -25,10 +25,10 @@ function descendingComparator(a: Project, b: Project, orderBy: keyof Project) {
     return -1;
   }
   // case insensitive comparision
-  if (orderBy === "name") {
+  if (orderBy === 'name') {
     return -a[orderBy].localeCompare(b[orderBy]);
   }
-  if (orderBy === "owner") {
+  if (orderBy === 'owner') {
     const aName = a.owner.firstName + a.owner.lastName;
     const bName = b.owner.firstName + b.owner.lastName;
     return -aName.localeCompare(bName);
@@ -50,13 +50,16 @@ export function getComparator(order: 'asc' | 'desc', orderBy: keyof Project) {
 }
 
 type ApplyFilterProps = {
-  inputData: Project[],
-  comparator: ReturnType<typeof getComparator>
-  filterName: string,
-}
+  inputData: Project[];
+  comparator: ReturnType<typeof getComparator>;
+  filterName: string;
+};
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps): Project[] {
-  const stabilizedThis = inputData.map((value: Project, index: number): [Project, number] => [value, index]);
+  const stabilizedThis = inputData.map((value: Project, index: number): [Project, number] => [
+    value,
+    index,
+  ]);
 
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);

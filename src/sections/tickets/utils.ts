@@ -1,5 +1,5 @@
-import _ from "lodash";
-import { Ticket, TicketPriorityArr } from "src/redux/types";
+import _ from 'lodash';
+import { Ticket, TicketPriorityArr } from 'src/redux/types';
 
 export const visuallyHidden = {
   border: 0,
@@ -26,18 +26,18 @@ function descendingComparator(a: Ticket, b: Ticket, orderBy: keyof Ticket) {
     return -1;
   }
   // case insensitive comparision
-  if (orderBy === "title") {
+  if (orderBy === 'title') {
     return -a[orderBy].localeCompare(b[orderBy]);
   }
-  if (orderBy === "author") {
+  if (orderBy === 'author') {
     const aName = a.author.firstName + a.author.lastName;
     const bName = b.author.firstName + b.author.lastName;
     return -aName.localeCompare(bName);
   }
-  if (orderBy === "assignee") {
+  if (orderBy === 'assignee') {
     let aName: string, bName: string;
-    a.assignee ? aName = a.assignee.firstName + a.assignee.lastName : aName = 'Unassigned'
-    b.assignee ? bName = b.assignee.firstName + b.assignee.lastName : bName = 'Unassigned'
+    a.assignee ? (aName = a.assignee.firstName + a.assignee.lastName) : (aName = 'Unassigned');
+    b.assignee ? (bName = b.assignee.firstName + b.assignee.lastName) : (bName = 'Unassigned');
     return -aName.localeCompare(bName);
   }
   if (orderBy === 'priority') {
@@ -63,15 +63,18 @@ export function getComparator(order: 'asc' | 'desc', orderBy: keyof Ticket) {
 }
 
 type ApplyFilterProps = {
-  inputData: Ticket[],
-  comparator: ReturnType<typeof getComparator>
-  filterName: string,
-}
+  inputData: Ticket[];
+  comparator: ReturnType<typeof getComparator>;
+  filterName: string;
+};
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
   inputData = _.uniqBy(inputData, 'id');
 
-  const stabilizedThis = inputData.map((value: Ticket, index: number): [Ticket, number] => [value, index]);
+  const stabilizedThis = inputData.map((value: Ticket, index: number): [Ticket, number] => [
+    value,
+    index,
+  ]);
 
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);

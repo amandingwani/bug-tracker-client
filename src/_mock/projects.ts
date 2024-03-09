@@ -8,112 +8,135 @@ import { demoPartialTickets } from './tickets';
 // ----------------------------------------------------------------------
 
 type Projects = {
-  createdProjects: Project[],
-  otherProjects: Project[],
-}
+  createdProjects: Project[];
+  otherProjects: Project[];
+};
 
 const projectNameAndDesc = [
   {
     name: 'Operation CodeByte',
-    description: 'Revolutionizing byte-level operations for enhanced efficiency and precision in data processing.'
+    description:
+      'Revolutionizing byte-level operations for enhanced efficiency and precision in data processing.',
   },
   {
     name: 'Project CodeHarmony',
-    description: 'Fostering collaboration and synergy among developers through a unified coding approach.'
+    description:
+      'Fostering collaboration and synergy among developers through a unified coding approach.',
   },
   {
     name: 'Quantum Algorithm Quest',
-    description: 'Embarking on a quest to explore and implement cutting-edge quantum algorithms for next-gen computing.'
+    description:
+      'Embarking on a quest to explore and implement cutting-edge quantum algorithms for next-gen computing.',
   },
   {
     name: 'CodeCruncher Challenge',
-    description: 'A challenging coding endeavor focused on optimizing algorithms for maximum performance and speed.'
+    description:
+      'A challenging coding endeavor focused on optimizing algorithms for maximum performance and speed.',
   },
   {
     name: 'Binary Fusion Initiative',
-    description: 'Bringing together the power of binary manipulation and fusion techniques for unparalleled coding solutions.'
+    description:
+      'Bringing together the power of binary manipulation and fusion techniques for unparalleled coding solutions.',
   },
   {
     name: 'CodeCraft Chronicles',
-    description: 'Chronicling the art and science of code crafting, delving into innovative techniques and best practices.'
+    description:
+      'Chronicling the art and science of code crafting, delving into innovative techniques and best practices.',
   },
   {
     name: 'DevOps Dynamo',
-    description: 'Dynamic development and operations synergy project, streamlining workflows and enhancing deployment.'
+    description:
+      'Dynamic development and operations synergy project, streamlining workflows and enhancing deployment.',
   },
   {
     name: 'Pixel Perfect Prototype',
-    description: 'Crafting a pixel-perfect prototype with meticulous attention to detail for a flawless user experience.'
+    description:
+      'Crafting a pixel-perfect prototype with meticulous attention to detail for a flawless user experience.',
   },
   {
     name: 'ByteBlitz Brigade',
-    description: 'Assembling a brigade of coding experts for a byte-level blitz, optimizing algorithms for lightning-fast execution.'
+    description:
+      'Assembling a brigade of coding experts for a byte-level blitz, optimizing algorithms for lightning-fast execution.',
   },
   {
     name: 'Project CodeSprint',
-    description: 'A sprint-style project aimed at rapid development, testing, and deployment of critical features.'
+    description:
+      'A sprint-style project aimed at rapid development, testing, and deployment of critical features.',
   },
   {
     name: 'BugBuster Battalion',
-    description: 'Mobilizing a battalion of bug busters to identify, track, and eliminate software bugs with precision.'
+    description:
+      'Mobilizing a battalion of bug busters to identify, track, and eliminate software bugs with precision.',
   },
   {
     name: 'Neural Network Nirvana',
-    description: 'Achieving coding nirvana by exploring the realms of neural networks for advanced machine learning.'
+    description:
+      'Achieving coding nirvana by exploring the realms of neural networks for advanced machine learning.',
   },
   {
     name: 'CodeQuest Conundrum',
-    description: 'Navigating through a challenging coding conundrum, pushing the boundaries of problem-solving.'
+    description:
+      'Navigating through a challenging coding conundrum, pushing the boundaries of problem-solving.',
   },
   {
     name: 'Algorithmic Odyssey',
-    description: 'Embarking on an epic odyssey to discover and implement groundbreaking algorithms for diverse applications.'
+    description:
+      'Embarking on an epic odyssey to discover and implement groundbreaking algorithms for diverse applications.',
   },
   {
     name: 'ByteStorm Breakthrough',
-    description: 'Breaking through the coding landscape with a storm of byte-level innovations and breakthroughs.'
+    description:
+      'Breaking through the coding landscape with a storm of byte-level innovations and breakthroughs.',
   },
   {
     name: 'WebWeaver Wizardry',
-    description: 'Weaving web magic with coding wizardry to create dynamic and enchanting web applications.'
+    description:
+      'Weaving web magic with coding wizardry to create dynamic and enchanting web applications.',
   },
   {
     name: 'CodeMancer Crusade',
-    description: 'A coding crusade, merging coding mastery and magic to conquer complex programming challenges.'
+    description:
+      'A coding crusade, merging coding mastery and magic to conquer complex programming challenges.',
   },
   {
     name: 'Project BitShift',
-    description: 'Shifting the paradigm with a project focused on bit-level operations and optimizations.'
+    description:
+      'Shifting the paradigm with a project focused on bit-level operations and optimizations.',
   },
   {
     name: 'CodeSphinx Saga',
-    description: 'Unraveling the coding saga with Sphinx-like wisdom, documenting and sharing knowledge.'
+    description:
+      'Unraveling the coding saga with Sphinx-like wisdom, documenting and sharing knowledge.',
   },
   {
     name: 'ReactorCore Rampage',
-    description: 'Rampaging through coding challenges, optimizing and fortifying the core of software reactors.'
+    description:
+      'Rampaging through coding challenges, optimizing and fortifying the core of software reactors.',
   },
   {
     name: 'DataForge Dynamics',
-    description: 'Dynamic data forging project, exploring innovative ways to manipulate and enhance data.'
+    description:
+      'Dynamic data forging project, exploring innovative ways to manipulate and enhance data.',
   },
   {
     name: 'PixelPioneer Project',
-    description: 'Pioneering pixel-perfect solutions, pushing the boundaries of graphic and UI design in coding.'
+    description:
+      'Pioneering pixel-perfect solutions, pushing the boundaries of graphic and UI design in coding.',
   },
   {
     name: 'QuantumQuasar Quest',
-    description: 'Embarking on a quest to harness the power of quantum quasars for unparalleled computational speed.'
+    description:
+      'Embarking on a quest to harness the power of quantum quasars for unparalleled computational speed.',
   },
   {
     name: 'CodeNinja Nexus',
-    description: 'Navigating the coding nexus with ninja-like precision, optimizing workflows and conquering challenges.'
-  }
-]
+    description:
+      'Navigating the coding nexus with ninja-like precision, optimizing workflows and conquering challenges.',
+  },
+];
 
 const ticketSelectionArray = [0, 10, 13, 18, 22, 25];
 const generateCreatedProject = (index: number): Project => {
-
   const p: Project = {
     id: faker.number.int({ min: 1000, max: 4999 }),
     name: projectNameAndDesc[index].name,
@@ -128,10 +151,13 @@ const generateCreatedProject = (index: number): Project => {
     status: sample(ProjectStatusArr),
     contributors: sampleSize(demoContributors, 5),
     createdAt: faker.date.past({ years: 1 }).toISOString(),
-    tickets: []
+    tickets: [],
   };
 
-  const tickets = demoPartialTickets.slice(ticketSelectionArray[index], ticketSelectionArray[index + 1])
+  const tickets = demoPartialTickets.slice(
+    ticketSelectionArray[index],
+    ticketSelectionArray[index + 1]
+  );
 
   tickets.forEach((t, _i, _arr) => {
     t.author = sample([...p.contributors, p.owner]);
@@ -140,14 +166,14 @@ const generateCreatedProject = (index: number): Project => {
       id: p.id,
       name: p.name,
       contributors: p.contributors,
-      owner: p.owner
-    }
+      owner: p.owner,
+    };
   });
 
   p.tickets = tickets as Ticket[];
 
   return p;
-}
+};
 
 const createdProjects: Project[] = [...Array(5)].map((_, index) => generateCreatedProject(index));
 
@@ -159,40 +185,49 @@ const generateOtherProject = (index: number): Project => {
     description: projectNameAndDesc[index].description,
     owner: generateContributor(),
     status: sample(ProjectStatusArr),
-    contributors: [...sampleSize(demoContributors, 5), {
-      id: demoUser.id,
-      firstName: demoUser.firstName,
-      lastName: demoUser.lastName,
-      email: demoUser.email,
-      registered: true,
-    }],
+    contributors: [
+      ...sampleSize(demoContributors, 5),
+      {
+        id: demoUser.id,
+        firstName: demoUser.firstName,
+        lastName: demoUser.lastName,
+        email: demoUser.email,
+        registered: true,
+      },
+    ],
     createdAt: faker.date.past({ years: 1 }).toISOString(),
-    tickets: []
+    tickets: [],
   };
 
-  const tickets = demoPartialTickets.slice(ticketSelectionArray[index - 5] + 25, ticketSelectionArray[index + 1 - 5] + 25)
+  const tickets = demoPartialTickets.slice(
+    ticketSelectionArray[index - 5] + 25,
+    ticketSelectionArray[index + 1 - 5] + 25
+  );
 
   tickets.forEach((t, _i, _arr) => {
     t.author = sample(p.contributors);
-    t.assignee = sample([sample(p.contributors), {
-      id: demoUser.id,
-      firstName: demoUser.firstName,
-      lastName: demoUser.lastName,
-      email: demoUser.email,
-      registered: true,
-    }]);
+    t.assignee = sample([
+      sample(p.contributors),
+      {
+        id: demoUser.id,
+        firstName: demoUser.firstName,
+        lastName: demoUser.lastName,
+        email: demoUser.email,
+        registered: true,
+      },
+    ]);
     t.project = {
       id: p.id,
       name: p.name,
       contributors: p.contributors,
-      owner: p.owner
-    }
+      owner: p.owner,
+    };
   });
 
   p.tickets = tickets as Ticket[];
 
   return p;
-}
+};
 
 const otherProjects: Project[] = [...Array(5)].map((_, index) => generateOtherProject(index));
 
@@ -202,8 +237,8 @@ function capitalizeFirstLetter(string: string) {
 
 export const projects: Projects = {
   createdProjects: createdProjects,
-  otherProjects: otherProjects
-}
+  otherProjects: otherProjects,
+};
 
 export const generateAddProjectApiResponse = (data: ProjectCreateInput): Project => {
   return {
@@ -220,6 +255,6 @@ export const generateAddProjectApiResponse = (data: ProjectCreateInput): Project
     },
     contributors: [],
     createdAt: new Date().toISOString(),
-    tickets: []
-  }
-}
+    tickets: [],
+  };
+};

@@ -1,4 +1,4 @@
-import { Contributor } from "src/redux/types";
+import { Contributor } from 'src/redux/types';
 
 export const visuallyHidden = {
   border: 0,
@@ -29,10 +29,10 @@ function descendingComparator(a: Contributor, b: Contributor, orderBy: keyof Con
     if (b[orderBy] === null) {
       return -1;
     }
-    if (orderBy === "email") {
+    if (orderBy === 'email') {
       return -a[orderBy].localeCompare(b[orderBy]);
     }
-    if (orderBy === "registered") {
+    if (orderBy === 'registered') {
       if (b[orderBy] < a[orderBy]) {
         return 1;
       }
@@ -50,13 +50,15 @@ export function getComparator(order: 'asc' | 'desc', orderBy: string) {
 }
 
 type ApplyFilterProps = {
-  inputData: Contributor[],
-  comparator: ReturnType<typeof getComparator>
-  filterName: string,
-}
+  inputData: Contributor[];
+  comparator: ReturnType<typeof getComparator>;
+  filterName: string;
+};
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
-  const stabilizedThis = inputData.map((value: Contributor, index: number): [Contributor, number] => [value, index]);
+  const stabilizedThis = inputData.map(
+    (value: Contributor, index: number): [Contributor, number] => [value, index]
+  );
 
   stabilizedThis.sort((a, b) => {
     const order = comparator(a[0], b[0]);
@@ -68,7 +70,10 @@ export function applyFilter({ inputData, comparator, filterName }: ApplyFilterPr
 
   if (filterName) {
     inputData = inputData.filter(
-      (user: Contributor) => (user.lastName ? user.firstName + ' ' + user.lastName : user.firstName).toLowerCase().indexOf(filterName.toLowerCase()) !== -1
+      (user: Contributor) =>
+        (user.lastName ? user.firstName + ' ' + user.lastName : user.firstName)
+          .toLowerCase()
+          .indexOf(filterName.toLowerCase()) !== -1
     );
   }
 

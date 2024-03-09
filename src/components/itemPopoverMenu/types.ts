@@ -1,4 +1,4 @@
 export type AllowedAction = {
-    edit: boolean,
-    delete: boolean,
-}
+  edit: boolean;
+  delete: boolean;
+};
