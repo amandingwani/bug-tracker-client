@@ -148,7 +148,7 @@ export default function TicketsPage(props: TicketsPageProps) {
   };
 
   const onNewTicketClick: React.MouseEventHandler<HTMLButtonElement> = (
-    e: React.MouseEvent<HTMLButtonElement>
+    _e: React.MouseEvent<HTMLButtonElement>
   ) => {
     setOpenDrawer(true);
   };

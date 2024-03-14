@@ -27,12 +27,17 @@ const StyledChart = styled(Chart)(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
+type SeriesElement = {
+  label: string;
+  value?: number;
+};
+
 export default function AppCurrentVisits({ title, subheader, chart, ...other }: AppChartProps) {
   const theme = useTheme();
 
   const { colors, series, options } = chart;
 
-  const chartSeries = series.map((i: any) => i.value);
+  const chartSeries = series.map((i: SeriesElement) => i.value);
 
   const chartOptions = useChart({
     chart: {
@@ -41,7 +46,7 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }: 
       },
     },
     colors,
-    labels: series.map((i: any) => i.label),
+    labels: series.map((i: SeriesElement) => i.label),
     stroke: {
       colors: [theme.palette.background.paper],
     },

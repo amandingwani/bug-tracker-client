@@ -15,9 +15,8 @@ interface LogoProps {
   sx?: SxProps<Theme>;
 }
 
-// eslint-disable-next-line
 const Logo = forwardRef<HTMLAnchorElement, LogoProps>(
-  ({ disabledLink = false, withText = true, sx }, ref) => {
+  ({ disabledLink = false, withText = true, sx }, _ref) => {
     // const theme = useTheme();
 
     // const PRIMARY_LIGHT = theme.palette.primary.light;

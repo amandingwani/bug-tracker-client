@@ -95,7 +95,7 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
       icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
     />
   );
-  const renderDetails = <TicketDetails title="Ticket Details" ticket={ticket} />;
+  const renderDetails = <TicketDetails ticket={ticket} />;
 
   const infoWidgetSkeleton = <Skeleton variant="rounded" height={144}></Skeleton>;
   const detailsSkeleton = <Skeleton variant="rounded" height={500}></Skeleton>;

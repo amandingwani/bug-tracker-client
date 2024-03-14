@@ -63,7 +63,7 @@ export default function ActionMenu(props: ActionMenuProps) {
   }[] = [];
 
   const onSubmit = (
-    event: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    _event: React.MouseEvent<HTMLLIElement, MouseEvent>,
     value: ProjectStatus | TicketPriority | TicketStatus | TicketType
   ) => {
     handleClose();

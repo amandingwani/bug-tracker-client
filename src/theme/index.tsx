@@ -25,6 +25,7 @@ export default function ThemeProvider({ children }: { children: ReactNode }) {
 
   const theme = createTheme(memoizedValue);
 
+  // @ts-ignore
   theme.components = overrides(theme);
 
   return (

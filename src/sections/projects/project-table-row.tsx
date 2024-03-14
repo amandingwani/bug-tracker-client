@@ -5,7 +5,6 @@ import Link from '@mui/material/Link';
 import Skeleton from '@mui/material/Skeleton';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
 import { RouterLink } from 'src/routes/components';

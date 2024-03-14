@@ -18,7 +18,6 @@ import _ from 'lodash';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { ColorPicker } from 'src/components/color-utils';
 import {
   TicketPriorityArr,
   TicketStatusArr,
@@ -47,12 +46,8 @@ export default function TicketsFilters({
   setFilterData,
 }: TicketsFiltersProps) {
   const {
-    register,
     handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-    watch,
+    // formState: { errors },
     reset,
     control,
   } = useForm<FilterData>({ defaultValues: filterData });

@@ -166,7 +166,7 @@ export default function ProjectsPage(props: ProjectsPageProps) {
   };
 
   const onNewProjectClick: React.MouseEventHandler<HTMLButtonElement> = (
-    e: React.MouseEvent<HTMLButtonElement>
+    _e: React.MouseEvent<HTMLButtonElement>
   ) => {
     setOpenDrawer(true);
   };

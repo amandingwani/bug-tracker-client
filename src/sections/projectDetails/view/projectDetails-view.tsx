@@ -1,11 +1,6 @@
 import { useState } from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import Card from '@mui/material/Card';
+import { alpha } from '@mui/material/styles';
 import Container from '@mui/material/Container';
-import CardHeader from '@mui/material/CardHeader';
-import CardContent from '@mui/material/CardContent';
-import Collapse from '@mui/material/Collapse';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
@@ -19,7 +14,6 @@ import { Project } from 'src/redux/types';
 
 import { TicketsView } from 'src/sections/tickets/view';
 import { UsersView } from 'src/sections/users/view';
-import Scrollbar from 'src/components/scrollbar';
 import { useAppSelector } from 'src/redux/hooks';
 import { selectReqStatus } from 'src/redux/slices/projectsSlice';
 import { RouterLink } from 'src/routes/components';
@@ -28,20 +22,20 @@ import Breadcrumbs from '@mui/material/Breadcrumbs';
 
 // ----------------------------------------------------------------------
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
+// interface ExpandMoreProps extends IconButtonProps {
+//   expand: boolean;
+// }
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+// const ExpandMore = styled((props: ExpandMoreProps) => {
+//   const { expand, ...other } = props;
+//   return <IconButton {...other} />;
+// })(({ theme, expand }) => ({
+//   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+//   marginLeft: 'auto',
+//   transition: theme.transitions.create('transform', {
+//     duration: theme.transitions.duration.shortest,
+//   }),
+// }));
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -74,8 +68,6 @@ function a11yProps(index: number) {
 
 export default function ProjectDetailsPage({ project }: { project?: Project }) {
   const reqStatus = useAppSelector(selectReqStatus);
-
-  const [expanded, setExpanded] = useState(false);
 
   const [tabValue, setTabValue] = useState(2);
 
@@ -117,12 +109,8 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
 
   const loading = reqStatus.name === 'loadProjects' && reqStatus.status === 'loading';
 
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+  const handleTabChange = (_event: React.SyntheticEvent, newValue: number) => {
     setTabValue(newValue);
-  };
-
-  const handleExpandClick = () => {
-    setExpanded(!expanded);
   };
 
   return (
@@ -141,7 +129,7 @@ export default function ProjectDetailsPage({ project }: { project?: Project }) {
         {loading ? (
           <Skeleton variant="rounded" height={450} sx={{ mt: 4 }}></Skeleton>
         ) : (
-          <ProjectDetails title="Project Details" project={project} />
+          <ProjectDetails project={project} />
         )}
       </CustomTabPanel>
       <CustomTabPanel value={tabValue} index={1}>

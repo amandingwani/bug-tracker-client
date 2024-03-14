@@ -14,6 +14,6 @@ export const generateContributor = (): Contributor => {
   return c;
 };
 
-export const demoContributors: Contributor[] = [...Array(24)].map((_, index) =>
+export const demoContributors: Contributor[] = [...Array(24)].map((_, _index) =>
   generateContributor()
 );

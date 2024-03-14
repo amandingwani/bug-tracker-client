@@ -53,7 +53,7 @@ export const autoLogin = (): AppThunk => {
         localStorage.setItem('BUG_NINJA_USER', JSON.stringify(userData));
         dispatch(loadProjects());
       })
-      .catch((error) => {
+      .catch((_error) => {
         // console.log(error)
       });
   };

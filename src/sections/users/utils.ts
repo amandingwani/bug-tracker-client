@@ -43,7 +43,7 @@ function descendingComparator(a: Contributor, b: Contributor, orderBy: keyof Con
   }
   return 0;
 }
-export function getComparator(order: 'asc' | 'desc', orderBy: string) {
+export function getComparator(order: 'asc' | 'desc', orderBy: keyof Contributor | 'name') {
   return order === 'desc'
     ? (a: Contributor, b: Contributor) => descendingComparator(a, b, orderBy)
     : (a: Contributor, b: Contributor) => -descendingComparator(a, b, orderBy);

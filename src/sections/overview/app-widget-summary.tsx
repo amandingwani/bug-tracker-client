@@ -1,5 +1,4 @@
 import { SxProps, Theme } from '@mui/material';
-import { alpha } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';

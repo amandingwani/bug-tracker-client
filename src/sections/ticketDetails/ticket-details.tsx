@@ -48,11 +48,10 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 interface Props {
-  title: string;
   ticket?: Ticket;
 }
 
-export default function TicketDetails({ title, ticket }: Props) {
+export default function TicketDetails({ ticket }: Props) {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -179,7 +178,7 @@ export default function TicketDetails({ title, ticket }: Props) {
 
 function Details({ ticket }: { ticket: Ticket }) {
   const theme = useTheme();
-  const { id, title, description, author, assignee, createdAt, project } = ticket;
+  const { id, description, author, assignee, createdAt, project } = ticket;
 
   return (
     <Stack direction="column" alignItems="left" spacing={2} pl={1}>

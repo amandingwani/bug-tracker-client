@@ -11,7 +11,7 @@ type ScrollbarProps = {
   sx?: BoxProps['sx'];
 } & HTMLAttributes<HTMLDivElement>;
 
-const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({ children, sx, ...other }, ref) => {
+const scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({ children, sx, ...other }, ref) => {
   const userAgent = typeof navigator === 'undefined' ? 'SSR' : navigator.userAgent;
 
   const mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
@@ -40,5 +40,5 @@ const Scrollbar = forwardRef<HTMLDivElement, ScrollbarProps>(({ children, sx, ..
   );
 });
 
-const memoScrollbar = memo(Scrollbar);
+const memoScrollbar = memo(scrollbar);
 export default memoScrollbar;

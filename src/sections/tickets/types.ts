@@ -1,5 +1,3 @@
-import { DefaultValues } from 'react-hook-form';
-
 export const OWNER_OPTIONS = ['All', 'Me', 'Other users'] as const;
 export type OwnerOptions = (typeof OWNER_OPTIONS)[number];
 

@@ -120,7 +120,7 @@ export default function UsersTable(props: Props) {
   };
 
   const onAddUserClick: React.MouseEventHandler<HTMLButtonElement> = (
-    e: React.MouseEvent<HTMLButtonElement>
+    _e: React.MouseEvent<HTMLButtonElement>
   ) => {
     setOpenDrawer(true);
   };

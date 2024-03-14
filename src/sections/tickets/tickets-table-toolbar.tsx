@@ -2,17 +2,13 @@ import { useState } from 'react';
 import Button from '@mui/material/Button';
 import Divider from '@mui/material/Divider';
 import Stack from '@mui/material/Stack';
-import Tooltip from '@mui/material/Tooltip';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import { useResponsive } from 'src/hooks/use-responsive';
-import Popover from '@mui/material/Popover';
 
 import Iconify from 'src/components/iconify';
-import Checkbox from '@mui/material/Checkbox';
-import { Typography } from '@mui/material';
 
 import TicketsFilters from './tickets-filters';
 import { FilterData } from './types';

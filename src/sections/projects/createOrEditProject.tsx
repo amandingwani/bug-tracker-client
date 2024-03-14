@@ -3,20 +3,9 @@ import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
 import Button from '@mui/material/Button';
-import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Input from '@mui/material/Input';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormLabel from '@mui/material/FormLabel';
-import IconButton from '@mui/material/IconButton';
 import FormControl from '@mui/material/FormControl';
-import Autocomplete from '@mui/material/Autocomplete';
-import OutlinedInput from '@mui/material/OutlinedInput';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormHelperText from '@mui/material/FormHelperText';
 import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
@@ -94,7 +83,7 @@ export default function CreateOrEditProject({ openDrawer, onCloseDrawer, selecte
     setValue('name', selectedProject?.name ?? '');
     setValue('description', selectedProject?.description ?? '');
     setValue('status', selectedProject?.status ?? 'OPEN');
-  }, [selectedProject]);
+  }, [selectedProject, setValue]);
 
   const renderContent = (
     <Scrollbar

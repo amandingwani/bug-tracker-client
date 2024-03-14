@@ -18,7 +18,6 @@ import _ from 'lodash';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import { ColorPicker } from 'src/components/color-utils';
 import { ProjectStatusArr, ProjectStatusMap } from 'src/redux/types';
 import { FilterData, OWNER_OPTIONS, defaultFilterValues } from './types';
 
@@ -42,12 +41,8 @@ export default function ProjectsFilters({
   setFilterData,
 }: ProjectsFiltersProps) {
   const {
-    register,
     handleSubmit,
-    formState: { errors },
-    setValue,
-    getValues,
-    watch,
+    // formState: { errors },
     reset,
     control,
   } = useForm<FilterData>({ defaultValues: filterData });

@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState, AppThunk } from 'src/redux/store';
 import type {
   AddContributor,
@@ -9,7 +9,6 @@ import type {
   ProjectUpdate,
   Ticket,
   TicketCreateInput,
-  TicketUpdate,
 } from '../types';
 import {
   getProjects,
@@ -352,6 +351,7 @@ export const updateAndLoadTicket = (
     } catch (error) {
       dispatch(setReqStatus({ name: 'updateAndLoadTicket', status: 'failed' }));
       dispatch(updateAndShowNotification({ severity: 'error', message: 'Internal Server Error' }));
+      if (onError) onError();
     }
   };
 };

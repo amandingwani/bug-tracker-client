@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import Drawer from '@mui/material/Drawer';
@@ -8,18 +8,13 @@ import TextField from '@mui/material/TextField';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useForm, SubmitHandler } from 'react-hook-form';
 
 import Scrollbar from 'src/components/scrollbar';
 
-import { useAppDispatch, useAppSelector } from 'src/redux/hooks';
-import {
-  addContributorThunk,
-  selectReqStatus,
-  selectError,
-  setReqStatus,
-} from 'src/redux/slices/projectsSlice';
-import { AddContributor, Contributor, Email } from 'src/redux/types';
+import { useAppDispatch } from 'src/redux/hooks';
+import { addContributorThunk } from 'src/redux/slices/projectsSlice';
+import { Email } from 'src/redux/types';
 import Button from '@mui/material/Button';
 import { isEmailDomainAllowed } from './utils';
 
@@ -34,7 +29,7 @@ export default function AddUser({ openDrawer, onCloseDrawer, projectId }: Props)
 
   const dispatch = useAppDispatch();
 
-  const WIDTH = '80%';
+  // const WIDTH = '80%';
 
   const {
     register,

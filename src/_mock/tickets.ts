@@ -430,11 +430,13 @@ export const generateAddTicketPartialApiResponse = (data: CreateTicketApiData): 
       email: demoUser.email,
       registered: true,
     },
+    // @ts-ignore
     assignee: data.assigneeId
       ? {
           id: data.assigneeId,
         }
       : undefined,
+    // @ts-ignore
     project: {
       id: data.projectId,
     },

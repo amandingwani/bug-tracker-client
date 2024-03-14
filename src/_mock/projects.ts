@@ -231,9 +231,9 @@ const generateOtherProject = (index: number): Project => {
 
 const otherProjects: Project[] = [...Array(5)].map((_, index) => generateOtherProject(index));
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+// function capitalizeFirstLetter(string: string) {
+//   return string.charAt(0).toUpperCase() + string.slice(1);
+// }
 
 export const projects: Projects = {
   createdProjects: createdProjects,

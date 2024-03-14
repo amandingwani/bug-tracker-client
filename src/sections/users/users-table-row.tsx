@@ -8,7 +8,7 @@ import MenuItem from '@mui/material/MenuItem';
 
 import Label from 'src/components/label';
 import Iconify from 'src/components/iconify';
-import { Contributor, ProjectStatusMap, ProjectUpdate } from 'src/redux/types';
+import { Contributor } from 'src/redux/types';
 import { LabelColor } from 'src/components/label/labelSubTypes';
 
 // ----------------------------------------------------------------------

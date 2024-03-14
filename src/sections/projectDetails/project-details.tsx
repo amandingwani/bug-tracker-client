@@ -1,5 +1,5 @@
 import { useState, MouseEvent } from 'react';
-import { alpha, styled, useTheme } from '@mui/material/styles';
+import { alpha, useTheme } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -9,7 +9,6 @@ import CardHeader from '@mui/material/CardHeader';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import { LabelColor } from 'src/components/label/labelSubTypes';
@@ -32,27 +31,26 @@ import InfoWidget from 'src/sections/ticketDetails/ticket-info-widget';
 
 // ----------------------------------------------------------------------
 
-interface ExpandMoreProps extends IconButtonProps {
-  expand: boolean;
-}
+// interface ExpandMoreProps extends IconButtonProps {
+//   expand: boolean;
+// }
 
-const ExpandMore = styled((props: ExpandMoreProps) => {
-  const { expand, ...other } = props;
-  return <IconButton {...other} />;
-})(({ theme, expand }) => ({
-  transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-  marginLeft: 'auto',
-  transition: theme.transitions.create('transform', {
-    duration: theme.transitions.duration.shortest,
-  }),
-}));
+// const ExpandMore = styled((props: ExpandMoreProps) => {
+//   const { expand, ...other } = props;
+//   return <IconButton {...other} />;
+// })(({ theme, expand }) => ({
+//   transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+//   marginLeft: 'auto',
+//   transition: theme.transitions.create('transform', {
+//     duration: theme.transitions.duration.shortest,
+//   }),
+// }));
 
-interface AppInnerProps {
-  title: string;
+interface ProjectDetailsProps {
   project?: Project;
 }
 
-export default function ProjectDetails({ title, project }: AppInnerProps) {
+export default function ProjectDetails({ project }: ProjectDetailsProps) {
   const dispatch = useAppDispatch();
 
   const router = useRouter();
@@ -231,7 +229,7 @@ function Details({
   handleActionMenuClick: (event: MouseEvent<HTMLDivElement>) => void;
 }) {
   const theme = useTheme();
-  const { id, name, description, owner, status, createdAt } = project;
+  const { id, description, owner, status, createdAt } = project;
 
   let statusLabelColor: LabelColor;
   switch (project.status) {
