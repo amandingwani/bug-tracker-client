@@ -1,8 +1,8 @@
-import { sample } from 'lodash';
-import { faker } from '@faker-js/faker';
+import sample from 'lodash/sample';
 import { Ticket, TicketPriorityArr, TicketStatusArr, TicketType } from 'src/redux/types';
 import { CreateTicketApiData } from 'src/services/projects';
 import { demoUser } from 'src/redux/constants';
+import { getRandomInt } from 'src/utils/random';
 
 const ticketTitleAndDesc: { title: string; description: string; type: TicketType }[] = [
   {
@@ -402,21 +402,104 @@ const ticketTitleAndDesc: { title: string; description: string; type: TicketType
   },
 ];
 
+const recentDates = [
+  '2023-10-07T18:45:52.864Z',
+  '2023-04-19T05:14:04.509Z',
+  '2023-08-25T01:35:22.330Z',
+  '2023-08-24T12:18:49.937Z',
+  '2023-03-26T20:34:33.750Z',
+  '2023-05-30T17:15:28.594Z',
+  '2023-08-01T13:34:01.632Z',
+  '2024-01-07T07:28:58.681Z',
+  '2023-11-16T09:25:43.072Z',
+  '2023-11-06T18:06:24.036Z',
+  '2024-01-16T21:36:12.137Z',
+  '2023-07-17T22:52:07.892Z',
+  '2023-09-15T07:29:41.654Z',
+  '2023-04-13T11:12:37.675Z',
+  '2023-10-29T07:25:48.447Z',
+  '2023-04-14T11:45:51.452Z',
+  '2023-04-19T17:01:51.078Z',
+  '2024-03-14T01:21:17.442Z',
+  '2023-04-04T11:48:38.257Z',
+  '2023-05-02T19:34:32.697Z',
+  '2023-11-26T10:56:07.009Z',
+  '2023-04-09T21:09:25.947Z',
+  '2023-06-11T21:49:54.945Z',
+  '2024-01-03T05:05:43.894Z',
+  '2024-02-15T05:31:08.871Z',
+  '2023-05-15T19:46:10.923Z',
+  '2023-10-29T17:54:59.600Z',
+  '2024-02-27T21:18:26.558Z',
+  '2023-04-04T11:39:07.651Z',
+  '2024-02-21T13:23:22.113Z',
+  '2024-03-15T02:54:13.852Z',
+  '2023-05-04T19:16:00.001Z',
+  '2024-01-10T12:20:05.086Z',
+  '2023-05-29T20:23:22.181Z',
+  '2023-12-26T19:22:38.620Z',
+  '2023-07-08T05:29:03.132Z',
+  '2023-12-07T06:10:55.157Z',
+  '2023-12-13T11:41:53.220Z',
+  '2023-04-26T21:59:31.696Z',
+  '2023-07-01T13:17:03.180Z',
+  '2023-09-22T02:48:34.637Z',
+  '2023-11-16T12:28:23.547Z',
+  '2024-01-04T09:47:59.400Z',
+  '2024-03-15T15:19:39.472Z',
+  '2023-09-25T00:11:43.531Z',
+  '2023-10-20T08:58:16.742Z',
+  '2023-05-22T23:33:34.657Z',
+  '2024-01-06T04:02:00.695Z',
+  '2023-07-26T11:33:14.659Z',
+  '2023-04-13T04:49:04.761Z',
+  '2023-09-11T14:48:44.763Z',
+  '2023-09-02T19:42:59.361Z',
+  '2023-08-28T17:56:00.261Z',
+  '2023-09-12T09:21:55.829Z',
+  '2023-06-07T03:47:59.256Z',
+  '2023-05-11T12:17:28.966Z',
+  '2024-03-12T07:59:59.780Z',
+  '2024-03-01T20:16:50.783Z',
+  '2023-10-01T18:39:42.215Z',
+  '2023-06-01T05:32:02.001Z',
+  '2023-12-03T22:23:06.453Z',
+  '2023-04-23T08:29:21.023Z',
+  '2023-07-19T09:09:22.276Z',
+  '2024-02-21T01:01:30.478Z',
+  '2023-12-19T12:58:07.844Z',
+  '2023-10-29T00:21:37.124Z',
+  '2024-01-14T21:15:15.558Z',
+  '2023-04-26T10:42:09.102Z',
+  '2023-09-23T12:37:13.046Z',
+  '2024-02-23T07:06:46.008Z',
+  '2023-09-02T10:54:10.052Z',
+  '2023-11-13T06:17:55.740Z',
+  '2024-01-15T08:21:43.707Z',
+  '2023-06-06T13:05:55.549Z',
+  '2023-07-24T15:12:15.413Z',
+  '2024-03-13T13:40:01.126Z',
+  '2023-08-31T02:27:18.629Z',
+  '2023-08-25T11:56:58.574Z',
+  '2023-06-21T16:37:42.855Z',
+  '2023-04-06T15:11:10.955Z',
+];
+
 export const demoPartialTickets: Partial<Ticket>[] = [...Array(ticketTitleAndDesc.length)].map(
   (_, index) => ({
-    id: faker.number.int({ min: 1000, max: 8999 }),
+    id: getRandomInt(1000, 8999),
     title: ticketTitleAndDesc[index].title,
     description: ticketTitleAndDesc[index].description,
     type: ticketTitleAndDesc[index].type,
     priority: sample(TicketPriorityArr),
     status: sample(TicketStatusArr),
-    createdAt: faker.date.recent({ days: 360 }).toISOString(),
+    createdAt: recentDates[index],
   })
 );
 
 export const generateAddTicketPartialApiResponse = (data: CreateTicketApiData): Ticket => {
   return {
-    id: faker.number.int({ min: 9000, max: 9999 }),
+    id: getRandomInt(9000, 9999),
     title: data.title,
     description: data.description,
     type: data.type,

@@ -6,13 +6,13 @@ import { useAppSelector } from 'src/redux/hooks';
 import { selectUser } from 'src/redux/slices/authSlice';
 import { UserState } from 'src/redux/types';
 
-export const IndexPage = lazy(() => import('src/pages/app'));
-export const ProjectsPage = lazy(() => import('src/pages/projects'));
-export const ProjectDetailsPage = lazy(() => import('src/pages/projectDetails'));
-export const TicketsPage = lazy(() => import('src/pages/tickets'));
-export const TicketDetailsPage = lazy(() => import('src/pages/ticketDetails'));
-export const LoginPage = lazy(() => import('src/pages/login'));
-export const Page404 = lazy(() => import('src/pages/page-not-found'));
+const IndexPage = lazy(() => import('src/pages/app'));
+const ProjectsPage = lazy(() => import('src/pages/projects'));
+const ProjectDetailsPage = lazy(() => import('src/pages/projectDetails'));
+const TicketsPage = lazy(() => import('src/pages/tickets'));
+const TicketDetailsPage = lazy(() => import('src/pages/ticketDetails'));
+const LoginPage = lazy(() => import('src/pages/login'));
+const Page404 = lazy(() => import('src/pages/page-not-found'));
 
 // ----------------------------------------------------------------------
 

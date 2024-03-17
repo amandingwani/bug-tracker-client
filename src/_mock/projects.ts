@@ -1,9 +1,10 @@
-import { sample, sampleSize } from 'lodash';
-import { faker } from '@faker-js/faker';
+import sample from 'lodash/sample';
+import sampleSize from 'lodash/sampleSize';
 import { Project, ProjectCreateInput, ProjectStatusArr, Ticket } from 'src/redux/types';
 import { demoUser } from 'src/redux/constants';
 import { demoContributors, generateContributor } from './contributor';
 import { demoPartialTickets } from './tickets';
+import { getRandomInt } from 'src/utils/random';
 
 // ----------------------------------------------------------------------
 
@@ -136,9 +137,21 @@ const projectNameAndDesc = [
 ];
 
 const ticketSelectionArray = [0, 10, 13, 18, 22, 25];
+const pastOneYearDates = [
+  '2023-05-04T15:36:00.500Z',
+  '2023-08-04T21:08:43.384Z',
+  '2023-12-31T15:33:02.594Z',
+  '2024-02-15T10:35:00.286Z',
+  '2023-11-22T02:36:26.992Z',
+  '2023-05-20T17:20:51.596Z',
+  '2023-07-17T21:45:02.074Z',
+  '2023-07-23T22:54:15.104Z',
+  '2023-04-22T15:56:06.168Z',
+  '2024-02-19T11:34:48.793Z',
+];
 const generateCreatedProject = (index: number): Project => {
   const p: Project = {
-    id: faker.number.int({ min: 1000, max: 4999 }),
+    id: getRandomInt(1000, 4999),
     name: projectNameAndDesc[index].name,
     description: projectNameAndDesc[index].description,
     owner: {
@@ -150,7 +163,7 @@ const generateCreatedProject = (index: number): Project => {
     },
     status: sample(ProjectStatusArr),
     contributors: sampleSize(demoContributors, 5),
-    createdAt: faker.date.past({ years: 1 }).toISOString(),
+    createdAt: pastOneYearDates[index],
     tickets: [],
   };
 
@@ -180,7 +193,7 @@ const createdProjects: Project[] = [...Array(5)].map((_, index) => generateCreat
 const generateOtherProject = (index: number): Project => {
   index = index + 5;
   const p: Project = {
-    id: faker.number.int({ min: 5000, max: 8999 }),
+    id: getRandomInt(5000, 8999),
     name: projectNameAndDesc[index].name,
     description: projectNameAndDesc[index].description,
     owner: generateContributor(),
@@ -195,7 +208,7 @@ const generateOtherProject = (index: number): Project => {
         registered: true,
       },
     ],
-    createdAt: faker.date.past({ years: 1 }).toISOString(),
+    createdAt: pastOneYearDates[index],
     tickets: [],
   };
 
@@ -242,7 +255,7 @@ export const projects: Projects = {
 
 export const generateAddProjectApiResponse = (data: ProjectCreateInput): Project => {
   return {
-    id: faker.number.int({ min: 9000, max: 9999 }),
+    id: getRandomInt(9000, 9999),
     name: data.name,
     description: data.description,
     status: data.status,

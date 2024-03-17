@@ -1,4 +1,4 @@
-import _ from 'lodash';
+import uniqBy from 'lodash/uniqBy';
 import { Ticket, TicketPriorityArr } from 'src/redux/types';
 
 export const visuallyHidden = {
@@ -69,7 +69,7 @@ type ApplyFilterProps = {
 };
 
 export function applyFilter({ inputData, comparator, filterName }: ApplyFilterProps) {
-  inputData = _.uniqBy(inputData, 'id');
+  inputData = uniqBy(inputData, 'id');
 
   const stabilizedThis = inputData.map((value: Ticket, index: number): [Ticket, number] => [
     value,

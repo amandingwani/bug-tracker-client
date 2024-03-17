@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import Container from '@mui/material/Container';
 import { alpha, useTheme } from '@mui/material/styles';
 import Skeleton from '@mui/material/Skeleton';
@@ -5,7 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { useResponsive } from 'src/hooks/use-responsive';
 
-import AppCurrentVisits from '../app-current-visits';
+const AppCurrentVisits = lazy(() => import('../app-current-visits'));
 import AppWidgetSummary from '../app-widget-summary';
 
 import { useAppSelector } from 'src/redux/hooks';
@@ -86,63 +87,70 @@ export default function AppView() {
     />
   );
 
+  const appChartSkeleton = <Skeleton variant="rounded" height={492}></Skeleton>;
+
   const renderTypeChart = (
-    <AppCurrentVisits
-      title="Tickets by Type"
-      chart={{
-        series: [
-          { label: 'BUG', value: dashboardData?.ticketTypeCount.BUG },
-          { label: 'TASK', value: dashboardData?.ticketTypeCount.TASK },
-        ],
-        colors: [
-          alpha(theme.palette[getTicketTypeLabelColor('BUG')].main, 0.9),
-          alpha(theme.palette[getTicketTypeLabelColor('TASK')].main, 0.9),
-        ],
-      }}
-    />
+    <Suspense fallback={appChartSkeleton}>
+      <AppCurrentVisits
+        title="Tickets by Type"
+        chart={{
+          series: [
+            { label: 'BUG', value: dashboardData?.ticketTypeCount.BUG },
+            { label: 'TASK', value: dashboardData?.ticketTypeCount.TASK },
+          ],
+          colors: [
+            alpha(theme.palette[getTicketTypeLabelColor('BUG')].main, 0.9),
+            alpha(theme.palette[getTicketTypeLabelColor('TASK')].main, 0.9),
+          ],
+        }}
+      />
+    </Suspense>
   );
 
   const renderPriorityChart = (
-    <AppCurrentVisits
-      title="Tickets by Priority"
-      chart={{
-        series: [
-          { label: 'URGENT', value: dashboardData?.ticketPriorityCount.URGENT },
-          { label: 'HIGH', value: dashboardData?.ticketPriorityCount.HIGH },
-          { label: 'NORMAL', value: dashboardData?.ticketPriorityCount.NORMAL },
-          { label: 'LOW', value: dashboardData?.ticketPriorityCount.LOW },
-        ],
-        colors: [
-          alpha(theme.palette[getTicketPriorityLabelColor('URGENT')].main, 0.9),
-          alpha(theme.palette[getTicketPriorityLabelColor('HIGH')].main, 0.9),
-          alpha(theme.palette[getTicketPriorityLabelColor('NORMAL')].main, 0.9),
-          alpha(theme.palette[getTicketPriorityLabelColor('LOW')].main, 0.9),
-        ],
-      }}
-    />
+    <Suspense fallback={appChartSkeleton}>
+      <AppCurrentVisits
+        title="Tickets by Priority"
+        chart={{
+          series: [
+            { label: 'URGENT', value: dashboardData?.ticketPriorityCount.URGENT },
+            { label: 'HIGH', value: dashboardData?.ticketPriorityCount.HIGH },
+            { label: 'NORMAL', value: dashboardData?.ticketPriorityCount.NORMAL },
+            { label: 'LOW', value: dashboardData?.ticketPriorityCount.LOW },
+          ],
+          colors: [
+            alpha(theme.palette[getTicketPriorityLabelColor('URGENT')].main, 0.9),
+            alpha(theme.palette[getTicketPriorityLabelColor('HIGH')].main, 0.9),
+            alpha(theme.palette[getTicketPriorityLabelColor('NORMAL')].main, 0.9),
+            alpha(theme.palette[getTicketPriorityLabelColor('LOW')].main, 0.9),
+          ],
+        }}
+      />
+    </Suspense>
   );
 
   const renderStatusChart = (
-    <AppCurrentVisits
-      title="Tickets by Status"
-      chart={{
-        series: [
-          { label: 'OPEN', value: dashboardData?.ticketStatusCount.OPEN },
-          { label: 'IN PROGRESS', value: dashboardData?.ticketStatusCount.IN_PROGRESS },
-          { label: 'TO BE TESTED', value: dashboardData?.ticketStatusCount.TO_BE_TESTED },
-          // { label: 'CLOSED', value: dashboardData?.ticketStatusCount.CLOSED },
-        ],
-        colors: [
-          alpha(theme.palette[getTicketStatusLabelColor('OPEN')].main, 0.9),
-          alpha(theme.palette[getTicketStatusLabelColor('IN_PROGRESS')].main, 0.9),
-          alpha(theme.palette[getTicketStatusLabelColor('TO_BE_TESTED')].main, 0.9),
-        ],
-      }}
-    />
+    <Suspense fallback={appChartSkeleton}>
+      <AppCurrentVisits
+        title="Tickets by Status"
+        chart={{
+          series: [
+            { label: 'OPEN', value: dashboardData?.ticketStatusCount.OPEN },
+            { label: 'IN PROGRESS', value: dashboardData?.ticketStatusCount.IN_PROGRESS },
+            { label: 'TO BE TESTED', value: dashboardData?.ticketStatusCount.TO_BE_TESTED },
+            // { label: 'CLOSED', value: dashboardData?.ticketStatusCount.CLOSED },
+          ],
+          colors: [
+            alpha(theme.palette[getTicketStatusLabelColor('OPEN')].main, 0.9),
+            alpha(theme.palette[getTicketStatusLabelColor('IN_PROGRESS')].main, 0.9),
+            alpha(theme.palette[getTicketStatusLabelColor('TO_BE_TESTED')].main, 0.9),
+          ],
+        }}
+      />
+    </Suspense>
   );
 
   const appWidgetSkeleton = <Skeleton variant="rounded" height={isXs ? 100 : 164}></Skeleton>;
-  const appChartSkeleton = <Skeleton variant="rounded" height={492}></Skeleton>;
 
   return (
     <Container maxWidth="xl">

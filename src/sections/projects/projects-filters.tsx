@@ -14,7 +14,7 @@ import { alpha } from '@mui/material/styles';
 
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 
-import _ from 'lodash';
+import capitalize from 'lodash/capitalize';
 
 import Iconify from 'src/components/iconify';
 import Scrollbar from 'src/components/scrollbar';
@@ -81,7 +81,7 @@ export default function ProjectsFilters({
               <FormControlLabel
                 key={item}
                 control={<Checkbox {...field} checked={field.value} />}
-                label={_.capitalize(ProjectStatusMap[item])}
+                label={capitalize(ProjectStatusMap[item])}
               />
             )}
             name={

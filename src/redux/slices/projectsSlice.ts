@@ -26,9 +26,9 @@ import {
 import { UseFormReset } from 'react-hook-form';
 import { updateAndShowNotification } from './notificationSlice';
 import { generateAddProjectApiResponse, projects } from 'src/_mock/projects';
-import { faker } from '@faker-js/faker';
 import { generateAddTicketPartialApiResponse } from 'src/_mock/tickets';
 import { demoUser } from '../constants';
+import { getRandomInt } from 'src/utils/random';
 
 // Define the initial state using that type
 const initialState: ProjectsState = {
@@ -128,7 +128,7 @@ export const projectsSlice = createSlice({
       const project = state.createdProjects.find((p) => p.id === action.payload.id);
       if (project) {
         project.contributors.push({
-          id: faker.number.int({ min: 10000, max: 99999 }),
+          id: getRandomInt(10000, 99999),
           firstName: action.payload.email.split('@')[0],
           email: action.payload.email,
           registered: false,
