@@ -1,3 +1,15 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    { "source": "/", "destination": "/" },
+    { "source": "/projects", "destination": "/projects" },
+    { "source": "/projects/:projectId", "destination": "/projects/:projectId" },
+    {
+      "source": "/projects/:projectId/tickets/:ticketId",
+      "destination": "/projects/:projectId/tickets/:ticketId"
+    },
+    { "source": "/tickets", "destination": "/tickets" },
+    { "source": "/login", "destination": "/login" },
+    { "source": "/404", "destination": "/404" },
+    { "source": "/(.*)", "destination": "/404" }
+  ]
 }
