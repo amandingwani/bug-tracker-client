@@ -32,12 +32,15 @@ type SeriesElement = {
   value?: number;
 };
 
-export default function AppCurrentVisits({ title, subheader, chart, ...other }: AppChartProps) {
+export default function AppChart({ title, subheader, chart, ...other }: AppChartProps) {
   const theme = useTheme();
 
   const { colors, series, options } = chart;
 
-  const chartSeries = series.map((i: SeriesElement) => i.value);
+  let chartSeries: number[] = series.map((i: SeriesElement) => i.value);
+  const someIsNotZero = chartSeries.some((item) => item !== 0);
+  const isAllZero = !someIsNotZero;
+  if (isAllZero) chartSeries = [];
 
   const chartOptions = useChart({
     chart: {
@@ -77,6 +80,18 @@ export default function AppCurrentVisits({ title, subheader, chart, ...other }: 
             show: false,
           },
         },
+      },
+    },
+    noData: {
+      text: 'No data',
+      align: 'center',
+      verticalAlign: 'middle',
+      offsetX: 0,
+      offsetY: 0,
+      style: {
+        color: theme.palette.info,
+        fontSize: '14px',
+        fontFamily: theme.typography.fontFamily,
       },
     },
     ...options,

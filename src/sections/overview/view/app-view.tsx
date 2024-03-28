@@ -6,7 +6,7 @@ import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
 import { useResponsive } from 'src/hooks/use-responsive';
 
-const AppCurrentVisits = lazy(() => import('../app-current-visits'));
+const AppChart = lazy(() => import('../app-chart'));
 import AppWidgetSummary from '../app-widget-summary';
 
 import { useAppSelector } from 'src/redux/hooks';
@@ -91,7 +91,7 @@ export default function AppView() {
 
   const renderTypeChart = (
     <Suspense fallback={appChartSkeleton}>
-      <AppCurrentVisits
+      <AppChart
         title="Tickets by Type"
         chart={{
           series: [
@@ -109,7 +109,7 @@ export default function AppView() {
 
   const renderPriorityChart = (
     <Suspense fallback={appChartSkeleton}>
-      <AppCurrentVisits
+      <AppChart
         title="Tickets by Priority"
         chart={{
           series: [
@@ -131,7 +131,7 @@ export default function AppView() {
 
   const renderStatusChart = (
     <Suspense fallback={appChartSkeleton}>
-      <AppCurrentVisits
+      <AppChart
         title="Tickets by Status"
         chart={{
           series: [
