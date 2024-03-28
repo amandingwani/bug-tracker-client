@@ -178,13 +178,13 @@ export default function TicketDetails({ ticket }: Props) {
 
 function Details({ ticket }: { ticket: Ticket }) {
   const theme = useTheme();
-  const { id, description, author, assignee, createdAt, project } = ticket;
+  const { id, author, assignee, createdAt, project } = ticket;
 
   return (
     <Stack direction="column" alignItems="left" spacing={2} pl={1}>
-      <Typography variant="body2" color="text.secondary" pb={2}>
+      {/* <Typography variant="body2" color="text.secondary" pb={2}>
         {description}
-      </Typography>
+      </Typography> */}
 
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <InfoWidget

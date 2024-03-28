@@ -112,7 +112,7 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
                 </Box>
                 <Stack direction={'column'} alignContent={'center'}>
                   <Typography variant="subtitle2" sx={{ color: 'text.disabled' }} gutterBottom>
-                    Ticket Title
+                    Title
                   </Typography>
                   <Typography variant="h4" component="div">
                     {ticket.title}
@@ -125,6 +125,34 @@ export default function TicketDetailsPage({ ticket, sx }: { ticket?: Ticket; sx:
           <Skeleton variant="rounded" height={70} />
         )}
       </Grid>
+
+      <Grid item xs={12} sm={12} md={12} lg={12} sx={{ pt: 2 }}>
+        {ticket ? (
+          <Card sx={{ backgroundColor: alpha(theme.palette.primary.light, 0.17) }}>
+            <CardContent>
+              <Stack direction={'row'} alignContent={'center'} spacing={3}>
+                <Box sx={{ width: 64, height: 64 }}>
+                  <Iconify
+                    icon="fluent:text-description-32-filled"
+                    sx={{ width: 64, height: 64 }}
+                  />
+                </Box>
+                <Stack direction={'column'} alignContent={'center'}>
+                  <Typography variant="subtitle2" sx={{ color: 'text.disabled' }} gutterBottom>
+                    Description
+                  </Typography>
+                  <Typography variant="h6" component="div">
+                    {ticket.description}
+                  </Typography>
+                </Stack>
+              </Stack>
+            </CardContent>
+          </Card>
+        ) : (
+          <Skeleton variant="rounded" height={70} />
+        )}
+      </Grid>
+
       <Grid item xs={12} sm={6} md={4} sx={{ pt: 2 }}>
         {ticket ? renderType : infoWidgetSkeleton}
       </Grid>
