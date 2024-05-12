@@ -7,6 +7,8 @@ import { RouterLink } from 'src/routes/components';
 
 import Logo from 'src/components/logo';
 
+import illustration_404Url from 'src/assets/illustrations/illustration_404.svg';
+
 // ----------------------------------------------------------------------
 
 export default function NotFoundView() {
@@ -55,7 +57,7 @@ export default function NotFoundView() {
 
           <Box
             component="img"
-            src="src/assets/illustrations/illustration_404.svg"
+            src={illustration_404Url}
             sx={{
               mx: 'auto',
               height: 260,

@@ -24,6 +24,8 @@ import { selectUser, logout } from 'src/redux/slices/authSlice';
 import Iconify from 'src/components/iconify';
 import { demoUser } from 'src/redux/constants';
 
+import illustration_avatarUrl from 'src/assets/illustrations/illustration_avatar.png';
+
 // ----------------------------------------------------------------------
 
 interface NavProps {
@@ -86,7 +88,7 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
         <Box
           component="img"
-          src="src/assets/illustrations/illustration_avatar.png"
+          src={illustration_avatarUrl}
           sx={{ width: 100, position: 'absolute', top: -50 }}
         />
 

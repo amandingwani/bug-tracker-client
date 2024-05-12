@@ -22,6 +22,9 @@ import {
   getTicketTypeLabelColor,
 } from 'src/utils/getColor';
 
+import ic_projectsUrl from 'src/assets/icons/navbar/ic_projects.svg';
+import ic_ticketsUrl from 'src/assets/icons/navbar/ic_tickets.svg';
+
 // ----------------------------------------------------------------------
 
 export default function AppView() {
@@ -63,16 +66,14 @@ export default function AppView() {
     />
   );
 
-  const icon = (name: string) => (
-    <SvgColor src={`src/assets/icons/navbar/${name}.svg`} sx={{ width: 44, height: 44 }} />
-  );
+  const icon = (imgUrl: string) => <SvgColor src={imgUrl} sx={{ width: 44, height: 44 }} />;
 
   const renderActiveTickets = (
     <AppWidgetSummary
       title="Active Tickets"
       total={dashboardData?.activeTickets}
       color={alpha('#CAFDF5', 0.7)}
-      icon={icon('ic_tickets')}
+      icon={icon(ic_ticketsUrl)}
       href="/tickets"
     />
   );
@@ -82,7 +83,7 @@ export default function AppView() {
       title="Active Projects"
       total={dashboardData?.activeProjects}
       color={alpha('#EFD6FF', 0.7)}
-      icon={icon('ic_projects')}
+      icon={icon(ic_projectsUrl)}
       href="/projects?filter=active"
     />
   );

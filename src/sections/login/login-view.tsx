@@ -20,6 +20,9 @@ import { useResponsive } from 'src/hooks/use-responsive';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 
+import overlayImg4Url from 'src/assets/background/overlay_4.jpg';
+import overlayImg5Url from 'src/assets/background/overlay_5.jpg';
+
 // ----------------------------------------------------------------------
 
 export default function LoginView() {
@@ -232,7 +235,7 @@ export default function LoginView() {
         sm={4}
         md={8}
         sx={{
-          backgroundImage: 'url(src/assets/background/overlay_5.jpg)',
+          backgroundImage: `url(${overlayImg5Url})`,
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -248,7 +251,7 @@ export default function LoginView() {
       sx={{
         ...bgGradient({
           color: alpha(theme.palette.background.default, 0.8),
-          imgUrl: 'src/assets/background/overlay_4.jpg',
+          imgUrl: overlayImg4Url,
         }),
         height: 1,
       }}
