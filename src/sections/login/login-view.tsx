@@ -232,7 +232,7 @@ export default function LoginView() {
         sm={4}
         md={8}
         sx={{
-          backgroundImage: 'url(/assets/background/overlay_5.jpg)',
+          backgroundImage: 'url(src/assets/background/overlay_5.jpg)',
           backgroundRepeat: 'no-repeat',
           backgroundColor: (t) =>
             t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
@@ -248,7 +248,7 @@ export default function LoginView() {
       sx={{
         ...bgGradient({
           color: alpha(theme.palette.background.default, 0.8),
-          imgUrl: '/assets/background/overlay_4.jpg',
+          imgUrl: 'src/assets/background/overlay_4.jpg',
         }),
         height: 1,
       }}

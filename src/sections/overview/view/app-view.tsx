@@ -64,7 +64,7 @@ export default function AppView() {
   );
 
   const icon = (name: string) => (
-    <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 44, height: 44 }} />
+    <SvgColor src={`src/assets/icons/navbar/${name}.svg`} sx={{ width: 44, height: 44 }} />
   );
 
   const renderActiveTickets = (

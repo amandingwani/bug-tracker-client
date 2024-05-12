@@ -14,5 +14,5 @@ export const demoUser: UserState = {
   firstName: 'Joanne',
   lastName: 'Walker',
   createdAt: '1998-01-17T16:11:48.164Z',
-  picture: '/assets/images/avatars/avatar_1.jpg',
+  picture: 'src/assets/images/avatars/avatar_1.jpg',
 };
