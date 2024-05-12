@@ -1,7 +1,11 @@
-import { AUTH_COOKIE_DOMAIN } from "src/config/env";
+import { AUTH_COOKIE_DOMAIN } from 'src/config/env';
 
 export const deleteCookie = (cookieName: string) => {
-  document.cookie = cookieName + '=; domain=' + AUTH_COOKIE_DOMAIN + '; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+  document.cookie =
+    cookieName +
+    '=; domain=' +
+    AUTH_COOKIE_DOMAIN +
+    '; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
 };
 
 export const getCookie = (cookieName: string) => {

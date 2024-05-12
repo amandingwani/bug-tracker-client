@@ -5,7 +5,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "prettier . --check && vite --host",
+    "dev": "npm run prettier && vite --host",
     "tsc:check": "tsc --noEmit",
     "build": "npm run tsc:check && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
