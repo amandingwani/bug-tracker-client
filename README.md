@@ -4,9 +4,7 @@
 
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 
-## Node Version
-
-v18.19.1
+[![node: v18.19.1](https://img.shields.io/badge/node-v18.19.1-blue.svg?style=flat-square)](https://nodejs.org/en)
 
 ## Environment Variables
 
