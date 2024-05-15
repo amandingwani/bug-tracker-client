@@ -19,6 +19,7 @@ export function useAutoLogin() {
       : null;
     if (localStorageUser) {
       if (checkCookie('token')) {
+        // set user in redux store
         dispatch(setUser(localStorageUser));
         dispatch(loadProjects());
         // load the pageHeader (in case page was refreshed)
@@ -28,7 +29,11 @@ export function useAutoLogin() {
         // case: localStorageUser exists but token expired, Solution: logout properly
         dispatch(logout());
       }
-    } else dispatch(autoLogin());
+    } else {
+      if (checkCookie('token')) {
+        dispatch(autoLogin());
+      }
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
