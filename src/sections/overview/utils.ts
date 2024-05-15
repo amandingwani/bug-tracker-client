@@ -56,11 +56,11 @@ export function getDashboardData(projects: ProjectsState, userId: number): Dashb
       data.activeProjects += 1;
     p.tickets.forEach((t) => {
       if (t.assignee?.id === userId) {
-        if (t.type === 'TASK') data.ticketTypeCount.TASK += 1;
-        else data.ticketTypeCount.BUG += 1;
-
         if (t.status !== 'CLOSED') {
           data.activeTickets += 1;
+
+          if (t.type === 'TASK') data.ticketTypeCount.TASK += 1;
+          else data.ticketTypeCount.BUG += 1;
 
           if (t.priority === 'URGENT') data.ticketPriorityCount.URGENT += 1;
           else if (t.priority === 'HIGH') data.ticketPriorityCount.HIGH += 1;
