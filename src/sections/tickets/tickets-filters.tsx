@@ -240,6 +240,7 @@ export default function TicketsFilters({
 
         <form onSubmit={handleSubmit(onSubmit)}>
           <Box
+            pb={{ xs: 7, sm: 7, md: 0, lg: 0, xl: 0 }}
             sx={{
               height: '92vh',
               display: 'flex',
