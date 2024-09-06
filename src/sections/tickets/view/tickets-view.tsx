@@ -311,7 +311,7 @@ export default function TicketsPage(props: TicketsPageProps) {
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}
-        title="Delete ticket ?"
+        title="Delete ticket?"
         message="Ticket will be permanently deleted."
       />
     </Card>

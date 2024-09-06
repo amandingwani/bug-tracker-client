@@ -294,7 +294,7 @@ export default function ProjectsPage(props: ProjectsPageProps) {
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}
-        title="Delete project ?"
+        title="Delete project?"
         message="The project and all tickets under it will be permanently deleted"
       />
     </Container>

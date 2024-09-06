@@ -165,7 +165,7 @@ export default function TicketDetails({ ticket }: Props) {
         open={openAlert}
         handleClose={handleAlertClose}
         handleAction={handlePermanentDelete}
-        title="Delete ticket ?"
+        title="Delete ticket?"
         message="Ticket will be permanently deleted."
       />
 

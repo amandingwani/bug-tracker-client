@@ -195,7 +195,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           open={openAlert}
           handleClose={handleAlertClose}
           handleAction={handlePermanentDelete}
-          title="Delete project ?"
+          title="Delete project?"
           message="The project and all tickets under it will be permanently deleted"
         />
       ) : (
@@ -204,7 +204,7 @@ export default function ProjectDetails({ project }: ProjectDetailsProps) {
           open={openAlert}
           handleClose={handleAlertClose}
           handleAction={handleLeaveProject}
-          title="Leave project ?"
+          title="Leave project?"
           message="You will lose access to this project and all tickets under it"
           actionButtonString="Leave"
         />
