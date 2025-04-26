@@ -89,7 +89,7 @@ export default function ProjectTableRow(props: ProjectTableRowProps) {
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>
-          {project.owner.firstName + ' ' + project.owner.lastName}
+          {project.owner.firstName + (project.owner.lastName ? ' ' + project.owner.lastName : '')}
         </TableCell>
 
         <TableCell sx={{ minWidth: 150 }}>

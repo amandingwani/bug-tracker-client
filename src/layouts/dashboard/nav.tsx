@@ -65,7 +65,9 @@ export default function Nav({ openNav, onCloseNav }: NavProps) {
       <Avatar src={user.picture} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{user.firstName + ' ' + user.lastName}</Typography>
+        <Typography variant="subtitle2">
+          {user.firstName + (user.lastName ? ' ' + user.lastName : '')}
+        </Typography>
 
         {/* <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           {account.role}

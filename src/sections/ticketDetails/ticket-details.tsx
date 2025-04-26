@@ -189,7 +189,7 @@ function Details({ ticket }: { ticket: Ticket }) {
       <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
         <InfoWidget
           title="Ticket author"
-          value={author.firstName + ' ' + author.lastName}
+          value={author.firstName + (author.lastName ? ' ' + author.lastName : '')}
           icon={<Iconify icon="pajamas:status" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },
@@ -199,7 +199,11 @@ function Details({ ticket }: { ticket: Ticket }) {
 
         <InfoWidget
           title="Ticket assignee"
-          value={assignee ? assignee.firstName + ' ' + assignee.lastName : 'Unassigned'}
+          value={
+            assignee
+              ? assignee.firstName + (assignee.lastName ? ' ' + assignee.lastName : '')
+              : 'Unassigned'
+          }
           icon={<Iconify icon="majesticons:user-line" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },

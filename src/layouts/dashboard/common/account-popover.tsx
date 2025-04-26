@@ -65,7 +65,7 @@ export default function AccountPopover() {
         <Avatar
           src={user?.picture}
           imgProps={{ referrerPolicy: 'no-referrer' }}
-          alt={user?.firstName + ' ' + user?.lastName}
+          alt={user?.firstName + (user?.lastName ? ' ' + user?.lastName : '')}
           sx={{
             width: 36,
             height: 36,
@@ -94,7 +94,9 @@ export default function AccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2 }}>
-          <Typography variant="subtitle2">{user?.firstName + ' ' + user?.lastName}</Typography>
+          <Typography variant="subtitle2">
+            {user?.firstName + (user?.lastName ? ' ' + user?.lastName : '')}
+          </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }}>
             {user?.email}
           </Typography>

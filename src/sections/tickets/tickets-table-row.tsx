@@ -143,7 +143,7 @@ export default function TicketTableRow(props: TicketTableRowProps) {
               WebkitBoxOrient: 'vertical',
             }}
           >
-            {ticket.author.firstName + ' ' + ticket.author.lastName}
+            {ticket.author.firstName + (ticket.author.lastName ? ' ' + ticket.author.lastName : '')}
           </Typography>
         </TableCell>
         <TableCell sx={{ minWidth: 150 }}>
@@ -158,7 +158,8 @@ export default function TicketTableRow(props: TicketTableRowProps) {
             }}
           >
             {ticket.assignee
-              ? ticket.assignee.firstName + ' ' + ticket.assignee.lastName
+              ? ticket.assignee.firstName +
+                (ticket.assignee.lastName ? ' ' + ticket.assignee.lastName : '')
               : 'Unassigned'}
           </Typography>
         </TableCell>

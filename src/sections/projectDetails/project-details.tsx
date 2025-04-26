@@ -281,7 +281,7 @@ function Details({
 
         <InfoWidget
           title="Project owner"
-          value={owner.firstName + ' ' + owner.lastName}
+          value={owner.firstName + (owner.lastName ? ' ' + owner.lastName : '')}
           icon={<Iconify icon="grommet-icons:user-admin" sx={{ width: 64, height: 64 }} />}
           sx={{
             width: { xs: undefined, sm: 350 },
